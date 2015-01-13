@@ -3,53 +3,61 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.com.resource;
 
+
+import br.com.controller.MecanicaController;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PUT;
+import javax.ws.rs.QueryParam;
 
 /**
  * REST Web Service
  *
  * @author carleandro
  */
-@Path("Missao")
-public class MissaoResource {
+@Path("Mecanica")
+public class MecanicaResource {
 
     @Context
     private UriInfo context;
 
     /**
-     * Creates a new instance of MissaoResource
+     * Creates a new instance of MecanicaResource
      */
-    public MissaoResource() {
+    public MecanicaResource() {
     }
 
     /**
-     * Retrieves representation of an instance of br.com.resource.MissaoResource
+     * Retrieves representation of an instance of br.com.resource.MecanicaResource
      * @return an instance of java.lang.String
      */
     @GET
-    @Produces("application/json")
-    public String getJson() {
+    @Produces("application/xml")
+    public String getXml() {
         //TODO return proper representation object
         throw new UnsupportedOperationException();
     }
+    
+    @GET
+    @Path("/getMecanica")
+    @Produces("application/json")
+    public String getJogos(@QueryParam("mecanica_id") String jogo_id) {
+         return new MecanicaController().getMecania(jogo_id).toString();
+    }
 
     /**
-     * PUT method for updating or creating an instance of MissaoResource
+     * PUT method for updating or creating an instance of MecanicaResource
      * @param content representation for the resource
      * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
-    @Consumes("application/json")
-    public void putJson(String content) {
+    @Consumes("application/xml")
+    public void putXml(String content) {
     }
 }

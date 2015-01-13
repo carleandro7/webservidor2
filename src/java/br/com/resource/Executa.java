@@ -17,8 +17,8 @@ import java.io.File;
 public class Executa {
     
     public static void main(String[] args) { 
-        File file = new File("/var/www/pervasiveed/app/webroot/img/academico.png");
-        System.out.println(""+file.exists());
+       // File file = new File("/var/www/pervasiveed/app/webroot/img/academico.png");
+       // System.out.println(""+file.exists());
         JogosController j = new JogosController();
         System.out.println(""+j.listarTodos());
         

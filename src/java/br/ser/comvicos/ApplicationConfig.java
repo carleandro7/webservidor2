@@ -8,7 +8,7 @@ package br.ser.comvicos;
 
 import java.util.Set;
 import javax.ws.rs.core.Application;
-
+import org.glassfish.jersey.media.multipart.*;
 /**
  *
  * @author carleandro
@@ -33,7 +33,7 @@ public class ApplicationConfig extends Application {
         resources.add(br.com.resource.GrupoResource.class);
         resources.add(br.com.resource.JogadorResource.class);
         resources.add(br.com.resource.JogoResource.class);
-        resources.add(br.com.resource.MissaoResource.class);
+        resources.add(br.com.resource.MecanicaResource.class);
         
     }
     

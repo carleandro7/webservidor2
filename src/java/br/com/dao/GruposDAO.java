@@ -7,6 +7,8 @@
 package br.com.dao;
 
 import br.com.factory.ConnectionFactory;
+import java.io.File;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -75,6 +77,29 @@ public class GruposDAO extends ConnectionFactory{
 			fecharConexao(conexao, pstmt, rs);
 		}
 		return grupos;
+	}
+        
+        public boolean setCFoto(String image, String jogador_id, String latitude, String longitude, String cfotos_id){
+		Connection conexao = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		conexao = criarConexao();
+		try {                    
+                        String sql = "UPDATE `cfotos` SET  `image` =  '"+image+"',"+
+                                " `jogador_id` =  '"+jogador_id+"', `latitude` =  '"+latitude+
+                            "',`longitude` =  '"+longitude+"' WHERE  `cfotos`.`id` ="+cfotos_id+";";
+                        System.out.println(sql);
+                        pstmt = conexao.prepareStatement(sql);
+			pstmt.execute(sql);	
+                        return true;	
+		} catch (SQLException e) {
+			System.out.println("Erro ao salvar foto em grupo : " + e);
+                }catch (Exception e){
+                    System.out.println("Erro ao salvar arquivo foto em grupo : " + e);
+                }finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return false;
 	}
 
 	

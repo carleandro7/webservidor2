@@ -61,6 +61,7 @@ public class JogadorResource {
 	public Jogador getJogador(@QueryParam("id") String id){   
 		return new JogadoresController().getJogador(id);
 	}
+        
     /**
 	 * 
 	 * Método responsável receber uma string

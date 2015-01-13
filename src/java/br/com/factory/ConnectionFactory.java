@@ -19,9 +19,9 @@ public class ConnectionFactory {
 
 	// Caminho do banco de dados.
 	private static final String DRIVER = "com.mysql.jdbc.Driver";
-	private static final String URL = "jdbc:mysql://localhost/greatpervasivebd";
-	private static final String USUARIO = "root";
-	private static final String SENHA = "1234";
+	private static final String URL = "jdbc:mysql://localhost/pervasivebd";
+	private static final String USUARIO = "carleandronoleto";
+	private static final String SENHA = "GREat@201412";
 	
 
 	/**

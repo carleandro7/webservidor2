@@ -56,7 +56,7 @@ public class JogoResource {
     
     @GET
     @Path("/getDadosInicias")
-    @Produces("application/json")
+    @Produces("application/json"+";charset=utf-8")
     public String getDadosIniciais(@QueryParam("jogo_id") String jogo_id) {   
         
         return new JogosController().getDadosIniciais(jogo_id).toString();

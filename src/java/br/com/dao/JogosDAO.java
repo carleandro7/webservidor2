@@ -65,7 +65,8 @@ public class JogosDAO extends ConnectionFactory{
                                 jogo.put("id",rs.getInt("id"));
                                 jogo.put("nome",rs.getString("nome"));
                                 jogo.put("icone",rs.getString("icone"));
-						
+                                jogo.put("longitude",rs.getString("longitude"));
+                                jogo.put("latitude",rs.getString("latitude"));
 				jogos.put(jogo);
 			}
 			
