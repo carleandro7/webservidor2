@@ -48,11 +48,10 @@ public class MecanicasDAO extends ConnectionFactory{
 	 * @version 1.0
 	 */
 	public JSONArray getTodos(String jogo_id){
-                Connection conexao = null;
-		PreparedStatement pstmt = null;
+                PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		JSONArray mecanicas = null;
-		conexao = criarConexao();
+		Connection conexao = criarConexao();
 		try {
                         mecanicas= new JSONArray();
                          String sql = "SELECT `mecanicas`.`id`, `mecanicas`.`nome`, `mecanicas`.`tipo`, `mecanicas`.`ordem`, `mecanicas`.`tempo`, `mecanicas`.`missoes_id` FROM `mecanicas` " +
@@ -73,24 +72,32 @@ public class MecanicasDAO extends ConnectionFactory{
                                 mecanica.put("missoes_id",rs.getInt("missoes_id"));
                                 
                                 
-                                if(rs.getString("tipo").equals("vtextos")){
-                                    mecanica.put("mecanica", getMecTexto(rs.getInt("id")));
-                                }else if(rs.getString("tipo").equals("vfotos")){
-                                    mecanica.put("mecanica", getMecFotos(rs.getInt("id")));
-                                }else if(rs.getString("tipo").equals("irlocais")){
-                                    mecanica.put("mecanica", getMecIrLocais(rs.getInt("id")));
-                                }else if(rs.getString("tipo").equals("cfotos")){
-                                    mecanica.put("mecanica", getMecCFotos(rs.getInt("id")));
-                                }
+                            switch (rs.getString("tipo")) {
+                                case "vtextos":
+                                    mecanica.put("mecanica", new TextosDAO().getMecTexto(rs.getInt("id")));
+                                    break;
+                                case "vfotos":
+                                    mecanica.put("mecanica", new FotosDAO().getMecVFotos(rs.getInt("id")));
+                                    break;
+                                case "irlocais":
+                                    mecanica.put("mecanica", new IrLocaisDAO().getMecIrLocais(rs.getInt("id")));
+                                    break;
+                                case "cfotos":
+                                    mecanica.put("mecanica", new FotosDAO().getMecCFotos(rs.getInt("id")));
+                                    break;
+                                case "csons":
+                                    mecanica.put("mecanica", new SonsDAO().getMecCSons(rs.getInt("id")));
+                                    break;    
+                                case "cvideos":
+                                    mecanica.put("mecanica", new VideosDAO().getMecCVideos(rs.getInt("id")));
+                                    break;    
+                            }
                                 mecanicas.put(mecanica);
 			}
-                        
 			
-		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-                } catch (JSONException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-		} finally {
+		} catch (SQLException | JSONException e) {
+			System.out.println("Erro ao listar todas as mecanicas: " + e.getMessage());
+                } finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
 		return mecanicas;
@@ -98,11 +105,10 @@ public class MecanicasDAO extends ConnectionFactory{
         
         
         public JSONArray getMecania(String mecanica_id){
-                Connection conexao = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		JSONArray mecanicas = null;
-		conexao = criarConexao();
+		Connection conexao = criarConexao();
 		try {
                         mecanicas= new JSONArray();
                          String sql = "SELECT `mecanicas`.`id`, `mecanicas`.`nome`, `mecanicas`.`tipo`, `mecanicas`.`ordem`, `mecanicas`.`tempo`, `mecanicas`.`missoes_id` FROM `mecanicas` " +
@@ -121,140 +127,36 @@ public class MecanicasDAO extends ConnectionFactory{
                                 mecanica.put("missoes_id",rs.getInt("missoes_id"));
                                 
                                 
-                                if(rs.getString("tipo").equals("vtextos")){
-                                    mecanica.put("mecanica", getMecTexto(rs.getInt("id")));
-                                }else if(rs.getString("tipo").equals("vfotos")){
-                                    mecanica.put("mecanica", getMecFotos(rs.getInt("id")));
-                                }else if(rs.getString("tipo").equals("irlocais")){
-                                    mecanica.put("mecanica", getMecIrLocais(rs.getInt("id")));
-                                }else if(rs.getString("tipo").equals("cfotos")){
-                                    mecanica.put("mecanica", getMecCFotos(rs.getInt("id")));
-                                }
+                            switch (rs.getString("tipo")) {
+                                case "vtextos":
+                                    mecanica.put("mecanica", new TextosDAO().getMecTexto(rs.getInt("id")));
+                                    break;
+                                case "vfotos":
+                                    mecanica.put("mecanica", new FotosDAO().getMecVFotos(rs.getInt("id")));
+                                    break;
+                                case "irlocais":
+                                    mecanica.put("mecanica", new IrLocaisDAO().getMecIrLocais(rs.getInt("id")));
+                                    break;
+                                case "cfotos":
+                                    mecanica.put("mecanica", new FotosDAO().getMecCFotos(rs.getInt("id")));
+                                    break;
+                                case "csons":
+                                    mecanica.put("mecanica", new SonsDAO().getMecCSons(rs.getInt("id")));
+                                    break; 
+                                case "cvideos":
+                                    mecanica.put("mecanica", new VideosDAO().getMecCVideos(rs.getInt("id")));
+                                    break;    
+                            }
                                 mecanicas.put(mecanica);
 			}
                         
 			
-		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-                } catch (JSONException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-		} finally {
+		} catch (SQLException | JSONException e) {
+			System.out.println("Erro ao listar dados de uma mecanica: " + e.getMessage());
+                } finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
 		return mecanicas;
 	}
         
-        
-        
-        private JSONObject getMecTexto(int mecanica_id){
-                Connection conexao = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		conexao = criarConexao();
-                JSONObject vtexto =null;
-                try{
-                        String sql = "SELECT * FROM  `vtextos` WHERE  `vtextos`.`mecanica_id` =  "+mecanica_id;
-                        pstmt = conexao.prepareStatement(sql);
-                        rs = pstmt.executeQuery();
-			rs.next();
-				vtexto = new JSONObject();
-                                vtexto.put("id",rs.getInt("id"));
-                                vtexto.put("nome",rs.getString("texto"));
-                                vtexto.put("mecanicas_id",rs.getInt("mecanica_id"));
-                                
-		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-                } catch (JSONException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-		} finally {
-			fecharConexao(conexao, pstmt, rs);
-		}
-		return vtexto;
-            
-        }
-        
-	private JSONObject getMecFotos(int mecanica_id){
-                Connection conexao = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		conexao = criarConexao();
-                JSONObject vfoto =null;
-                try{
-                        String sql = "SELECT * FROM  `vfotos` WHERE  `vfotos`.`mecanica_id` =  "+mecanica_id;
-                        pstmt = conexao.prepareStatement(sql);
-                        rs = pstmt.executeQuery();
-			rs.next();
-				vfoto = new JSONObject();
-                                vfoto.put("id",rs.getInt("id"));
-                                vfoto.put("arqimage",rs.getString("arqimage"));
-                                vfoto.put("mecanicas_id",rs.getInt("mecanica_id"));
-                                
-		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-                } catch (JSONException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-		} finally {
-			fecharConexao(conexao, pstmt, rs);
-		}
-		return vfoto;
-            
-        }
-        
-        private JSONObject getMecIrLocais(int mecanica_id){
-                Connection conexao = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		conexao = criarConexao();
-                JSONObject irLocais =null;
-                try{
-                        String sql = "SELECT * FROM  `irlocais` WHERE  `irlocais`.`mecanica_id` =  "+mecanica_id;
-                        pstmt = conexao.prepareStatement(sql);
-                        rs = pstmt.executeQuery();
-			rs.next();
-				irLocais = new JSONObject();
-                                irLocais.put("id",rs.getInt("id"));
-                                irLocais.put("latitude",rs.getString("latitude"));
-                                irLocais.put("longitude",rs.getString("longitude"));
-                                irLocais.put("mecanicas_id",rs.getInt("mecanica_id"));
-                                
-		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-                } catch (JSONException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-		} finally {
-			fecharConexao(conexao, pstmt, rs);
-		}
-		return irLocais;
-            
-        }
-        
-        private JSONObject getMecCFotos(int mecanica_id){
-                Connection conexao = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		conexao = criarConexao();
-                JSONObject cFotos =null;
-                try{
-                        String sql = "SELECT * FROM  `cfotos` WHERE  `cfotos`.`mecanica_id` =  "+mecanica_id;
-                        pstmt = conexao.prepareStatement(sql);
-                        rs = pstmt.executeQuery();
-			rs.next();
-				cFotos = new JSONObject();
-                                cFotos.put("id",rs.getInt("id"));
-                                cFotos.put("image",rs.getString("image"));
-                                cFotos.put("jogador_id",rs.getString("jogador_id"));
-                                cFotos.put("latitude",rs.getString("latitude"));
-                                cFotos.put("longitude",rs.getString("longitude"));
-                                cFotos.put("mecanicas_id",rs.getInt("mecanica_id"));
-                                
-		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-                } catch (JSONException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-		} finally {
-			fecharConexao(conexao, pstmt, rs);
-		}
-		return cFotos;
-            
-        }
 }

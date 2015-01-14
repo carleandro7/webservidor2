@@ -31,9 +31,12 @@ public class ApplicationConfig extends Application {
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
         resources.add(br.com.resource.GrupoResource.class);
+        resources.add(br.com.resource.ImageResource.class);
         resources.add(br.com.resource.JogadorResource.class);
         resources.add(br.com.resource.JogoResource.class);
         resources.add(br.com.resource.MecanicaResource.class);
+        resources.add(br.com.resource.SomResource.class);
+        resources.add(br.com.resource.VideoResource.class);
         
     }
     

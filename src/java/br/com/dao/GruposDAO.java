@@ -7,8 +7,6 @@
 package br.com.dao;
 
 import br.com.factory.ConnectionFactory;
-import java.io.File;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -24,7 +22,7 @@ import org.json.JSONObject;
 public class GruposDAO extends ConnectionFactory{
     
     private static GruposDAO instance;
-                /**
+         /**
 	 * 
 	 * Método responsável por criar uma instancia da classe GruposDAO (Singleton)
 	 *
@@ -44,17 +42,16 @@ public class GruposDAO extends ConnectionFactory{
 	 * Método responsável por listar todos os grupos de um jogo do banco
 	 *
          * @param jogo_id
-	 * @return
+	 * @return JSONArray
 	 * @author Carleandro Noleto
 	 * @since 10/12/2014
 	 * @version 1.0
 	 */
 	public JSONArray getTodos(String jogo_id){
-		Connection conexao = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		JSONArray grupos = null;
-		conexao = criarConexao();
+		Connection conexao = criarConexao();
 		try {
                         grupos= new JSONArray();
                         pstmt = conexao.prepareStatement("select * from grupos where jogo_id = "+jogo_id+" order by nome");
@@ -69,38 +66,12 @@ public class GruposDAO extends ConnectionFactory{
 				grupos.put(grupo);
 			}
 			
-		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-                } catch (JSONException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-		} finally {
+		} catch (SQLException | JSONException e) {
+			System.out.println("Erro ao listar todos os grupos: " + e.getMessage());
+                } finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
 		return grupos;
 	}
         
-        public boolean setCFoto(String image, String jogador_id, String latitude, String longitude, String cfotos_id){
-		Connection conexao = null;
-		PreparedStatement pstmt = null;
-		ResultSet rs = null;
-		conexao = criarConexao();
-		try {                    
-                        String sql = "UPDATE `cfotos` SET  `image` =  '"+image+"',"+
-                                " `jogador_id` =  '"+jogador_id+"', `latitude` =  '"+latitude+
-                            "',`longitude` =  '"+longitude+"' WHERE  `cfotos`.`id` ="+cfotos_id+";";
-                        System.out.println(sql);
-                        pstmt = conexao.prepareStatement(sql);
-			pstmt.execute(sql);	
-                        return true;	
-		} catch (SQLException e) {
-			System.out.println("Erro ao salvar foto em grupo : " + e);
-                }catch (Exception e){
-                    System.out.println("Erro ao salvar arquivo foto em grupo : " + e);
-                }finally {
-			fecharConexao(conexao, pstmt, rs);
-		}
-		return false;
-	}
-
-	
 }

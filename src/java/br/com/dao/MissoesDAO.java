@@ -48,11 +48,10 @@ public class MissoesDAO extends ConnectionFactory{
 	 * @version 1.0
 	 */
 	public JSONArray getTodos(String jogo_id){
-		Connection conexao = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		JSONArray missoes = null;
-		conexao = criarConexao();
+		Connection conexao = criarConexao();
 		try {
                         missoes= new JSONArray();
                          String sql = "SELECT  `missoes`.`id`, `missoes`.`nome`, `missoes`.`ordem`, `missoes`.`grupo_id`   FROM `grupos` " +
@@ -72,11 +71,9 @@ public class MissoesDAO extends ConnectionFactory{
 			}
                         
 			
-		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-                } catch (JSONException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-		} finally {
+		} catch (SQLException | JSONException e) {
+			System.out.println("Erro ao listar todas as missoes: " + e.getMessage());
+                } finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
 		return missoes;

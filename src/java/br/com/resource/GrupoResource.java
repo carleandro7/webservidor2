@@ -48,7 +48,7 @@ public class GrupoResource {
 
     @Context
     private UriInfo context;
-    private static final java.nio.file.Path BASE_DIR = Paths.get(System.getProperty("user.home"), "Documentos", "Saved Images");
+    
     /**
      * Creates a new instance of GruposResource
      */
@@ -69,45 +69,6 @@ public class GrupoResource {
     public String getJogos(@QueryParam("jogo_id") String jogo_id) {
          return new GruposController().getJogos(jogo_id).toString();
     }
-    
-    @POST
-    @Path("/setFoto")
-    @Consumes(MediaType.WILDCARD)
-    public String postFormData(InputStream in) throws IOException {
-        String fileName = "" + System.currentTimeMillis();         
-        fileName +=".jpg";
-        try {
-            // Copy the file to its location.
-            Files.copy(in, BASE_DIR.resolve(fileName), StandardCopyOption.REPLACE_EXISTING);
-        } catch (Exception ex) {
-            Logger.getLogger(GrupoResource.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        System.err.println("Conectado:"+in.toString());
-        //System.err.println(headers.getRequestHeader("Authorization").get(0)+" teste "+in.toString());
-        // Return a 201 Created response with the appropriate Location header.
-        return fileName;   
-    }
-    //setFotoMeta
-    /**
-     * Método responsável get todos os grupos de um jogo
-     * @param image
-     * @param jogador_id
-     * @param latitude
-     * @param longitude
-     * @param cfotos_id
-     * @return Boolena
-     * @author Carleandro Noleto
-     * @since 12/01/2015
-     * @version 1.0
-     */
-    @GET
-    @Path("/setFotoMeta")
-    @Produces("application/json")
-    public Boolean setFotoMeta(@QueryParam("image") String image, @QueryParam("jogador_id") String jogador_id,
-            @QueryParam("latitude") String latitude, @QueryParam("longitude") String longitude, @QueryParam("cfotos_id") String cfotos_id) {
-         return new GruposController().setCFoto(image, jogador_id, latitude, longitude, cfotos_id);
-    }
-
     
     /**
      * PUT method for updating or creating an instance of JogoResource

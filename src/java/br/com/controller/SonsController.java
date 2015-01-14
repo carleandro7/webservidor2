@@ -3,21 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.com.controller;
 
-import br.com.dao.GruposDAO;
-import java.io.File;
-import org.json.JSONArray;
+import br.com.dao.SonsDAO;
 
 /**
  *
  * @author carleandro
  */
-public class GruposController {
-    
-    public JSONArray getJogos(String jogo_id){
+public class SonsController {
+    public boolean setCSom(String som, String jogador_id, String latitude, String longitude, String csons_id){
 		System.out.println("Enviando para o GIT");
-		return GruposDAO.getInstance().getTodos(jogo_id);
+                return SonsDAO.getInstance().setCSom(som, jogador_id, latitude, longitude, csons_id);
     }
 }

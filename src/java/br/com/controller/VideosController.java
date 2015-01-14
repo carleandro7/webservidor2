@@ -3,21 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package br.com.controller;
 
-import br.com.dao.GruposDAO;
-import java.io.File;
-import org.json.JSONArray;
+import br.com.dao.VideosDAO;
 
 /**
  *
  * @author carleandro
  */
-public class GruposController {
-    
-    public JSONArray getJogos(String jogo_id){
+public class VideosController {
+    public boolean setCVideo(String video, String jogador_id, String latitude, String longitude, String cvideos_id){
 		System.out.println("Enviando para o GIT");
-		return GruposDAO.getInstance().getTodos(jogo_id);
+                return VideosDAO.getInstance().setCVideo(video, jogador_id, latitude, longitude, cvideos_id);
     }
 }

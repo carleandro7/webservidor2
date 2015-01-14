@@ -49,11 +49,10 @@ public class JogosDAO extends ConnectionFactory{
 	 * @version 1.0
 	 */
 	public JSONArray listarTodos(){
-		Connection conexao = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		JSONArray jogos = null;
-		conexao = criarConexao();
+		Connection conexao = criarConexao();
 		try {
                         jogos= new JSONArray();
                         pstmt = conexao.prepareStatement("select * from jogos order by id");
@@ -70,11 +69,9 @@ public class JogosDAO extends ConnectionFactory{
 				jogos.put(jogo);
 			}
 			
-		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-                } catch (JSONException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-		} finally {
+		} catch (SQLException | JSONException e) {
+			System.out.println("Erro ao listar todos os jogos: " + e.getMessage());
+                } finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
 		return jogos;
@@ -89,11 +86,10 @@ public class JogosDAO extends ConnectionFactory{
 	 * @version 1.0
 	 */
         public JSONArray getJogos(String latitude, String longitude, String distancia){
-		Connection conexao = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		JSONArray jogos = null;
-		conexao = criarConexao();
+		Connection conexao = criarConexao();
 		try {
                         jogos= new JSONArray();
                         //distancia em KM
@@ -114,20 +110,16 @@ public class JogosDAO extends ConnectionFactory{
 				jogos.put(jogo);
 			}
 			
-		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-                } catch (JSONException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
-		} finally {
+		} catch (SQLException | JSONException e) {
+			System.out.println("Erro ao listar todos os jogos em uma distancia em KM: " + e.getMessage());
+                } finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
 		return jogos;
 	}
         
     public JSONArray getDadosIniciais(String idJogo){
-		
 		JSONArray jogos = null;
-                
 		try {
                         jogos= new JSONArray();
                         
@@ -135,7 +127,7 @@ public class JogosDAO extends ConnectionFactory{
                         jogos.put(new MissoesDAO().getTodos(idJogo));
                         jogos.put(new MecanicasDAO().getTodos(idJogo));
                 } catch (Exception e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
+			System.out.println("Erro ao listar todos os dados iniciais do jogo: " + e.getMessage());
                 }
                 
 		return jogos;

@@ -72,7 +72,7 @@ public class JogadoresDAO extends ConnectionFactory {
 			}
 			
 		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
+			System.out.println("Erro ao listar todos os jogadores: " + e);
 		} finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
@@ -149,7 +149,7 @@ public class JogadoresDAO extends ConnectionFactory {
 			}
 			
 		} catch (SQLException e) {
-			System.out.println("Erro ao listar todos os clientes: " + e);
+			System.out.println("Erro ao listar dados de um jogador: " + e);
 		} finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
