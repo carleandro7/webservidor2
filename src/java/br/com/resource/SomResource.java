@@ -44,11 +44,11 @@ public class SomResource {
     
     /**
      * Método responsável por set em uma mecanica csons
-     * @param som
-     * @param jogador_id
-     * @param latitude
-     * @param longitude
-     * @param csons_id
+     * @param som String
+     * @param jogador_id String
+     * @param latitude String
+     * @param longitude String
+     * @param csons_id String
      * @return String
      * @author Carleandro Noleto
      * @since 12/01/2015
@@ -64,10 +64,10 @@ public class SomResource {
     
      /**
      * Método responsável por criar um arquivo de som no servidor
-     * @param in
+     * @param in InputStream
      * @return String
      * @author Carleandro Noleto
-     * @throws java.io.IOException
+     * @throws java.io.IOException Execeção ao salvar o arquivo em mp3
      * @since 12/01/2015
      * @version 1.0
      */
@@ -90,10 +90,9 @@ public class SomResource {
     /**
      * PUT method for updating or creating an instance of MecanicaResource
      * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
-    @Consumes("application/xml")
+    @Consumes("application/json")
     public void putXml(String content) {
     }
 }

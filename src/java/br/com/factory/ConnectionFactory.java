@@ -10,8 +10,6 @@ import java.sql.ResultSet;
  * 
  * Classe respons�vel por conter os metodos criar e fechar o banco de dados.
  *
- *
- * @return
  * @author Carleandro Noleto
  * @since 26/11/2014
  */
@@ -28,8 +26,8 @@ public class ConnectionFactory {
 	 * 
 	 * M�todo respons�vel por criar uma conexao com o banco 
 	 *
-	 * @return
 	 * @author Carleandro Noleto
+     * @return  Connection
 	 * @since 26/11/2014
 	 */
 	public Connection criarConexao(){
@@ -48,8 +46,13 @@ public class ConnectionFactory {
 		return conexao;
 	}
 	
-	
-	public void fecharConexao(Connection conexao, PreparedStatement pstmt, ResultSet rs){
+    /**
+     *
+     * @param conexao Connection
+     * @param pstmt PreparedStatement
+     * @param rs ResultSet
+     */
+    public void fecharConexao(Connection conexao, PreparedStatement pstmt, ResultSet rs){
 		
 		try {
 			

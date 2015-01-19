@@ -23,7 +23,7 @@ public class VideosDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por criar uma instancia da classe VideosDAO (Singleton)
 	 *
-	 * @return
+	 * @return static
 	 * @author Carleandro Noleto
 	 * @since 14/01/2015
 	 * @version 1.0
@@ -39,11 +39,11 @@ public class VideosDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por set os dados da CSons no banco de dados
 	 *
-         * @param video
-         * @param jogador_id
-         * @param latitude
-         * @param longitude
-         * @param cvideos_id
+         * @param video String
+         * @param jogador_id String
+         * @param latitude String
+         * @param longitude String
+         * @param cvideos_id String
 	 * @return boolean
 	 * @author Carleandro Noleto
 	 * @since 14/01/2015
@@ -59,8 +59,7 @@ public class VideosDAO extends ConnectionFactory{
                             "',`longitude` =  '"+longitude+"' WHERE  `cvideos`.`id` ="+cvideos_id+";";
                         System.out.println(sql);
                         pstmt = conexao.prepareStatement(sql);
-			pstmt.execute(sql);	
-                        return true;	
+			return pstmt.execute(sql);
 		} catch (SQLException e) {
 			System.out.println("Erro ao salvar video em grupo : " + e);
                 }catch (Exception e){
@@ -76,7 +75,7 @@ public class VideosDAO extends ConnectionFactory{
 	 * Método responsável por get os dados da CSons no banco de dados
 	 *
 	 * @author Carleandro Noleto
-         * @param mecanica_id
+         * @param mecanica_id int
          * @return JSONObject
 	 * @since 14/01/2015
 	 * @version 1.0

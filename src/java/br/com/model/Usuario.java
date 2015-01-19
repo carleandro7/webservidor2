@@ -13,26 +13,50 @@ package br.com.model;
 public class Usuario {
     private int id;
 
+    /**
+     *
+     * @return int
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id int
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return String
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     *
+     * @param email String
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     *
+     * @return String
+     */
     public String getSenha() {
         return senha;
     }
 
+    /**
+     *
+     * @param senha String
+     */
     public void setSenha(String senha) {
         this.senha = senha;
     }

@@ -44,11 +44,11 @@ public class ImageResource {
     }
     /**
      * Método responsável por set em uma mecanica cfoto
-     * @param image
-     * @param jogador_id
-     * @param latitude
-     * @param longitude
-     * @param cfotos_id
+     * @param image String
+     * @param jogador_id String
+     * @param latitude String
+     * @param longitude String
+     * @param cfotos_id String
      * @return String
      * @author Carleandro Noleto
      * @since 12/01/2015
@@ -64,10 +64,10 @@ public class ImageResource {
     
     /**
      * Método responsável por criar uma imagem no servidor
-     * @param in
+     * @param in inputStream
      * @return String
      * @author Carleandro Noleto
-     * @throws java.io.IOException
+     * @throws java.io.IOException Exception ao salvar foto
      * @since 12/01/2015
      * @version 1.0
      */
@@ -89,7 +89,6 @@ public class ImageResource {
 /**
      * PUT method for updating or creating an instance of MecanicaResource
      * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
     @Consumes("application/xml")

@@ -5,25 +5,26 @@
  */
 package br.com.controller;
 
-import br.com.dao.SonsDAO;
+import br.com.dao.TextosDAO;
 
 /**
  *
  * @author carleandro
  */
-public class SonsController {
-
+public class TextosController {
+    
     /**
      *
-     * @param som String
+     * @param texto String
      * @param jogador_id String
      * @param latitude String
      * @param longitude String
-     * @param csons_id String
+     * @param ctexto_id String
      * @return boolean
      */
-    public boolean setCSom(String som, String jogador_id, String latitude, String longitude, String csons_id){
+    public boolean setCTexto(String texto, String jogador_id, String latitude, String longitude, String ctexto_id){
 		System.out.println("Enviando para o GIT");
-                return SonsDAO.getInstance().setCSom(som, jogador_id, latitude, longitude, csons_id);
+                return TextosDAO.getInstance().setCTexto(texto, jogador_id, latitude, longitude, ctexto_id);
     }
+    
 }

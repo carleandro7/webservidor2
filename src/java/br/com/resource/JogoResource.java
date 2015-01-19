@@ -47,6 +47,14 @@ public class JogoResource {
         
         return new JogosController().listarTodos().toString();
     }
+
+    /**
+     *
+     * @param latitude String
+     * @param longitude String
+     * @param distancia String
+     * @return String
+     */
     @GET
     @Path("/getJogos")
     @Produces("application/json")
@@ -54,6 +62,11 @@ public class JogoResource {
         return new JogosController().getJogos(latitude, longitude, distancia).toString();
     }
     
+    /**
+     *
+     * @param jogo_id String
+     * @return String
+     */
     @GET
     @Path("/getDadosInicias")
     @Produces("application/json"+";charset=utf-8")
@@ -65,7 +78,6 @@ public class JogoResource {
     /**
      * PUT method for updating or creating an instance of JogoResource
      * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
     @Consumes("application/json")

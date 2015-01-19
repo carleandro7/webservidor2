@@ -26,7 +26,7 @@ public class MissoesDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por criar uma instancia da classe MissoesDAO (Singleton)
 	 *
-	 * @return
+	 * @return static
 	 * @author Carleandro Noleto
 	 * @since 10/12/2014
 	 * @version 1.0
@@ -41,8 +41,8 @@ public class MissoesDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por listar todos os missoes dos grupos de um jogo do banco
 	 *
-         * @param jogo_id
-	 * @return
+         * @param jogo_id String
+	 * @return JSONArray
 	 * @author Carleandro Noleto
 	 * @since 10/12/2014
 	 * @version 1.0

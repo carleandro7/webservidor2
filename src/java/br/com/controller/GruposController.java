@@ -16,6 +16,11 @@ import org.json.JSONArray;
  */
 public class GruposController {
     
+    /**
+     *
+     * @param jogo_id String
+     * @return JSONArray
+     */
     public JSONArray getJogos(String jogo_id){
 		System.out.println("Enviando para o GIT");
 		return GruposDAO.getInstance().getTodos(jogo_id);

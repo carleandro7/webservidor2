@@ -16,19 +16,42 @@ import java.util.ArrayList;
  */
 public class JogadoresController {
     
+    /**
+     *
+     * @return ArrayList jogador
+     */
     public ArrayList<Jogador> listarTodos(){
 		System.out.println("Enviando para o GIT");
 		return JogadoresDAO.getInstance().listarTodos();
     }
-   public Jogador login(String email, String password){
+
+    /**
+     *
+     * @param email String
+     * @param password String
+     * @return Jogador
+     */
+    public Jogador login(String email, String password){
 		System.out.println("Enviando para o GIT");
 		return JogadoresDAO.getInstance().login(email, password);
     }
-   public Jogador getJogador(String id){
+
+    /**
+     *
+     * @param id String
+     * @return Jogador
+     */
+    public Jogador getJogador(String id){
 		System.out.println("Enviando para o GIT");
 		return JogadoresDAO.getInstance().getJogador(id);
     }
 
+    /**
+     *
+     * @param email String
+     * @param password String
+     * @return String
+     */
     public String cadastrarJogador(String email, String password) {
         System.out.println("Enviando para o GIT");
 		return JogadoresDAO.getInstance().cadastrar(email, password);

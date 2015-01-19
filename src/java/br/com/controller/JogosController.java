@@ -16,15 +16,32 @@ import org.json.JSONArray;
  */
 public class JogosController {
     
+    /**
+     *
+     * @return JSONArray
+     */
     public JSONArray listarTodos(){
 		System.out.println("Enviando para o GIT");
 		return JogosDAO.getInstance().listarTodos();
     }
+
+    /**
+     *
+     * @param latitude String
+     * @param longitude String
+     * @param distancia String
+     * @return JSONArrau
+     */
     public JSONArray getJogos(String latitude, String longitude,String distancia){
 		System.out.println("Enviando para o GIT");
 		return JogosDAO.getInstance().getJogos(latitude, longitude, distancia);
     }
     
+    /**
+     *
+     * @param jogo_id String
+     * @return JSONArrya
+     */
     public JSONArray getDadosIniciais(String jogo_id){
 		System.out.println("Enviando para o GIT");
 		return JogosDAO.getInstance().getDadosIniciais(jogo_id);

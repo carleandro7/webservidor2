@@ -16,6 +16,10 @@ import org.glassfish.jersey.media.multipart.*;
 @javax.ws.rs.ApplicationPath("webresources")
 public class ApplicationConfig extends Application {
 
+    /**
+     *
+     * @return Set Class
+     */
     @Override
     public Set<Class<?>> getClasses() {
         Set<Class<?>> resources = new java.util.HashSet<>();
@@ -36,6 +40,7 @@ public class ApplicationConfig extends Application {
         resources.add(br.com.resource.JogoResource.class);
         resources.add(br.com.resource.MecanicaResource.class);
         resources.add(br.com.resource.SomResource.class);
+        resources.add(br.com.resource.TextoResource.class);
         resources.add(br.com.resource.VideoResource.class);
         
     }

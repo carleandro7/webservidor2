@@ -57,7 +57,7 @@ public class GrupoResource {
 
     /**
      * Método responsável get todos os grupos de um jogo
-     * @param jogo_id
+     * @param jogo_id String
      * @return String
      * @author Carleandro Noleto
      * @since 10/12/2014
@@ -73,7 +73,6 @@ public class GrupoResource {
     /**
      * PUT method for updating or creating an instance of JogoResource
      * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
     @Consumes("application/json")

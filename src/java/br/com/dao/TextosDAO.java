@@ -23,7 +23,7 @@ public class TextosDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por criar uma instancia da classe TextosDAO (Singleton)
 	 *
-	 * @return
+	 * @return static
 	 * @author Carleandro Noleto
 	 * @since 14/01/2015
 	 * @version 1.0
@@ -34,7 +34,17 @@ public class TextosDAO extends ConnectionFactory{
 		return instance;
 	}
         
-        public JSONObject getMecTexto(int mecanica_id){
+        /**
+	 * 
+	 * Método responsável por get os dados da VTextos no banco de dados
+	 *
+         * @param mecanica_id int
+	 * @return JSONObject
+	 * @author Carleandro Noleto
+	 * @since 14/01/2015
+	 * @version 1.0
+	 */
+        public JSONObject getMecVTexto(int mecanica_id){
                	PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conexao = criarConexao();
@@ -57,6 +67,79 @@ public class TextosDAO extends ConnectionFactory{
 		return vtexto;
             
         }
+        
+        
+        /**
+	 * 
+	 * Método responsável por set os dados da CTextos no banco de dados
+	 *
+         * @param texto String
+         * @param jogador_id String
+         * @param latitude String
+         * @param longitude String
+         * @param ctexto_id String
+	 * @return boolean
+	 * @author Carleandro Noleto
+	 * @since 19/01/2015
+	 * @version 1.0
+	 */
+        public boolean setCTexto(String texto, String jogador_id, String latitude, String longitude, String ctexto_id){
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection conexao = criarConexao();
+		try {                    
+                        String sql = "UPDATE `ctextos` SET  `texto` =  '"+texto+"',"+
+                                " `jogador_id` =  '"+jogador_id+"', `latitude` =  '"+latitude+
+                            "',`longitude` =  '"+longitude+"' WHERE  `ctextos`.`id` ="+ctexto_id+";";
+                        System.out.println(sql);
+                        pstmt = conexao.prepareStatement(sql);
+			return pstmt.execute(sql);
+		} catch (SQLException e) {
+			System.out.println("Erro ao salvar settexto em grupo : " + e);
+                }catch (Exception e){
+                    System.out.println("Erro ao salvar arquivo settexto em grupo : " + e);
+                }finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return false;
+	}
+        
+        /**
+	 * 
+	 * Método responsável por get os dados da CTextos no banco de dados
+	 *
+	 * @author Carleandro Noleto
+         * @param mecanica_id int
+         * @return JSONObject
+	 * @since 19/01/2015
+	 * @version 1.0
+	 */
+        public JSONObject getMecCTextos(int mecanica_id){
+                PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		Connection conexao = criarConexao();
+                JSONObject cTextos =null;
+                try{
+                        String sql = "SELECT * FROM  `ctextos` WHERE  `ctexto`.`mecanica_id` =  "+mecanica_id;
+                        pstmt = conexao.prepareStatement(sql);
+                        rs = pstmt.executeQuery();
+			rs.next();
+				cTextos = new JSONObject();
+                                cTextos.put("id",rs.getInt("id"));
+                                cTextos.put("texto",rs.getString("texto"));
+                                cTextos.put("jogador_id",rs.getString("jogador_id"));
+                                cTextos.put("latitude",rs.getString("latitude"));
+                                cTextos.put("longitude",rs.getString("longitude"));
+                                cTextos.put("mecanicas_id",rs.getInt("mecanica_id"));
+                                
+		} catch (SQLException | JSONException e) {
+			System.out.println("Erro ao listar dados de uma mecanica cTextos: " + e.getMessage());
+                } finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return cTextos;
+            
+    }
         
     
 }

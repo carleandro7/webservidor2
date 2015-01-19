@@ -27,7 +27,7 @@ public class JogadoresDAO extends ConnectionFactory {
 	 * 
 	 * Método responsável por criar uma instancia da classe JogadoresDAO (Singleton)
 	 *
-	 * @return
+	 * @return Static
 	 * @author Carleandro Noleto
 	 * @since 27/12/2014
 	 * @version 1.0
@@ -42,7 +42,7 @@ public class JogadoresDAO extends ConnectionFactory {
 	 * 
 	 * Método responsável por listar todos os jogadores do banco
 	 *
-	 * @return
+	 * @return ArrayList do tipo Jogador
 	 * @author Carleandro Noleto
 	 * @since 27/12/2014
 	 * @version 1.0
@@ -82,8 +82,8 @@ public class JogadoresDAO extends ConnectionFactory {
 	 * 
 	 * Método responsável por fazer o login do jogador
 	 *
-         * @param email
-         * @param password
+         * @param email String
+         * @param password String
 	 * @return Jogador
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
@@ -118,7 +118,7 @@ public class JogadoresDAO extends ConnectionFactory {
 	 * 
 	 * Método responsável por get em todos os dados do jogador recebendo o id
 	 *
-         * @param id
+         * @param id String
 	 * @return Jogadores
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
@@ -159,8 +159,8 @@ public class JogadoresDAO extends ConnectionFactory {
 	 * 
 	 * Método responsável cadastrar um jogador
 	 *
-         * @param email
-         * @param password 
+         * @param email String
+         * @param password  String
 	 * @return String
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014

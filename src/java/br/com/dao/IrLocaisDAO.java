@@ -23,7 +23,7 @@ public class IrLocaisDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por criar uma instancia da classe IrLocaisDAO (Singleton)
 	 *
-	 * @return
+	 * @return static
 	 * @author Carleandro Noleto
 	 * @since 14/01/2015
 	 * @version 1.0
@@ -34,7 +34,12 @@ public class IrLocaisDAO extends ConnectionFactory{
 		return instance;
 	}
         
-        public JSONObject getMecIrLocais(int mecanica_id){
+    /**
+     *
+     * @param mecanica_id Int
+     * @return JSONObjet
+     */
+    public JSONObject getMecIrLocais(int mecanica_id){
                 PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conexao = criarConexao();

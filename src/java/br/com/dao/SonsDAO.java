@@ -23,7 +23,7 @@ public class SonsDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por criar uma instancia da classe SonsDAO (Singleton)
 	 *
-	 * @return
+	 * @return static
 	 * @author Carleandro Noleto
 	 * @since 14/01/2015
 	 * @version 1.0
@@ -39,28 +39,28 @@ public class SonsDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por set os dados da CSons no banco de dados
 	 *
-         * @param som
-         * @param jogador_id
-         * @param latitude
-         * @param longitude
-         * @param cvideos_id
+         * @param som String
+         * @param jogador_id String
+         * @param latitude String
+         * @param longitude String
+         * @param csons_id String
 	 * @return boolean
 	 * @author Carleandro Noleto
 	 * @since 14/01/2015
 	 * @version 1.0
 	 */
-        public boolean setCSom(String som, String jogador_id, String latitude, String longitude, String cvideos_id){
+        public boolean setCSom(String som, String jogador_id, String latitude, String longitude, String csons_id){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conexao = criarConexao();
 		try {                    
                         String sql = "UPDATE `csons` SET  `som` =  '"+som+"',"+
                                 " `jogador_id` =  '"+jogador_id+"', `latitude` =  '"+latitude+
-                            "',`longitude` =  '"+longitude+"' WHERE  `csons`.`id` ="+cvideos_id+";";
+                            "',`longitude` =  '"+longitude+"' WHERE  `csons`.`id` ="+csons_id+";";
                         System.out.println(sql);
                         pstmt = conexao.prepareStatement(sql);
-			pstmt.execute(sql);	
-                        return true;	
+                        pstmt.execute(sql);
+                        return true;
 		} catch (SQLException e) {
 			System.out.println("Erro ao salvar som em grupo : " + e);
                 }catch (Exception e){
@@ -76,7 +76,7 @@ public class SonsDAO extends ConnectionFactory{
 	 * Método responsável por get os dados da CSons no banco de dados
 	 *
 	 * @author Carleandro Noleto
-         * @param mecanica_id
+         * @param mecanica_id int
          * @return JSONObject
 	 * @since 14/01/2015
 	 * @version 1.0

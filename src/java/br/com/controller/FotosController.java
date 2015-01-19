@@ -13,6 +13,15 @@ import br.com.dao.FotosDAO;
  */
 public class FotosController {
     
+    /**
+     *
+     * @param image String
+     * @param jogador_id String
+     * @param latitude String
+     * @param longitude String
+     * @param cfotos_id String
+     * @return boolean
+     */
     public boolean setCFoto(String image, String jogador_id, String latitude, String longitude, String cfotos_id){
 		System.out.println("Enviando para o GIT");
                 return FotosDAO.getInstance().setCFoto(image, jogador_id, latitude, longitude, cfotos_id);

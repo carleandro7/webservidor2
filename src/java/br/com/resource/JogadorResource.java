@@ -36,6 +36,9 @@ public class JogadorResource {
  @Context
     private UriInfo context;
 
+    /**
+     *
+     */
     public JogadorResource(){
         
     }
@@ -43,7 +46,7 @@ public class JogadorResource {
 	 * 
 	 * Método responsável por fazer chamada ao controller listando
 	 *todos os jogadores
-	 * @return ArrayList</Jogador> 
+	 * @return ArrayList tipo Jogador
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
 	 * @version 1.0
@@ -55,7 +58,13 @@ public class JogadorResource {
             
 		return new JogadoresController().listarTodos();
 	}
-        @GET
+
+    /**
+     *
+     * @param id String
+     * @return Jogador
+     */
+    @GET
 	@Path("/getJogador")
 	@Produces("application/json")
 	public Jogador getJogador(@QueryParam("id") String id){   
@@ -66,6 +75,7 @@ public class JogadorResource {
 	 * 
 	 * Método responsável receber uma string
 	 *
+     * @param content String
 	 * @return String
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
@@ -89,8 +99,8 @@ public class JogadorResource {
     
     /**
      * Método responsável por realizar o login do jogador no servidor
-     * @param email
-     * @param password
+     * @param email String
+     * @param password String
      * @return String
      * @author Carleandro Noleto
      * @since 27/11/2014
@@ -100,11 +110,15 @@ public class JogadorResource {
     @Path("login")
     @Produces("application/json")
     public Jogador login(@QueryParam("email") String email, @QueryParam("password") String password){
-
-        System.out.println("ent "+email+" / "+password+" sai");
 		return new JogadoresController().login(email,password);
     }
     
+    /**
+     *
+     * @param email String
+     * @param password String
+     * @return String
+     */
     @GET
     @Path("cadastrarJogador")
     @Produces("application/json")
@@ -120,6 +134,10 @@ public class JogadorResource {
 		return ("{\"salvo\":\""+salvo+"\",\"mensagem\":\""+mensagem+"\"}");
     }
     
+    /**
+     *
+     * @return FileInputStream
+     */
     @GET
     @Path("enviarfoto")
     @Produces("application/json")

@@ -47,10 +47,10 @@ public class VideoResource {
     
     /**
      * Método responsável por criar um arquivo de video no servidor
-     * @param in
+     * @param in InputStream
      * @return String
      * @author Carleandro Noleto
-     * @throws java.io.IOException
+     * @throws java.io.IOException Exceptions ao salvar o arquivo
      * @since 12/01/2015
      * @version 1.0
      */
@@ -71,11 +71,11 @@ public class VideoResource {
     
     /**
      * Método responsável por set em uma mecanica cvideos
-     * @param video
-     * @param jogador_id
-     * @param latitude
-     * @param longitude
-     * @param cfotos_id
+     * @param video String
+     * @param jogador_id String
+     * @param latitude String
+     * @param longitude String
+     * @param cvideos_id String
      * @return String
      * @author Carleandro Noleto
      * @since 12/01/2015
@@ -92,7 +92,6 @@ public class VideoResource {
     /**
      * PUT method for updating or creating an instance of MecanicaResource
      * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
     @Consumes("application/xml")

@@ -24,9 +24,8 @@ public class FotosDAO extends ConnectionFactory{
         /**
 	 * 
 	 * Método responsável por criar uma instancia da classe FotosDAO (Singleton)
-	 *
-	 * @return
 	 * @author Carleandro Noleto
+         * @return  static
 	 * @since 14/01/2015
 	 * @version 1.0
 	 */
@@ -40,11 +39,11 @@ public class FotosDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por set os dados da CFotos no banco de dados
 	 *
-         * @param image
-         * @param jogador_id
-         * @param latitude
-         * @param longitude
-         * @param cfotos_id
+         * @param image String
+         * @param jogador_id String
+         * @param latitude String
+         * @param longitude String
+         * @param cfotos_id String
 	 * @return boolean
 	 * @author Carleandro Noleto
 	 * @since 14/01/2015
@@ -60,8 +59,7 @@ public class FotosDAO extends ConnectionFactory{
                             "',`longitude` =  '"+longitude+"' WHERE  `cfotos`.`id` ="+cfotos_id+";";
                         System.out.println(sql);
                         pstmt = conexao.prepareStatement(sql);
-			pstmt.execute(sql);	
-                        return true;	
+			return pstmt.execute(sql);
 		} catch (SQLException e) {
 			System.out.println("Erro ao salvar foto em grupo : " + e);
                 }catch (Exception e){
@@ -77,7 +75,7 @@ public class FotosDAO extends ConnectionFactory{
 	 * Método responsável por get os dados da VFotos no banco de dados
 	 *
 	 * @author Carleandro Noleto
-         * @param mecanica_id
+         * @param mecanica_id int
          * @return JSONObject
 	 * @since 14/01/2015
 	 * @version 1.0
@@ -110,7 +108,7 @@ public class FotosDAO extends ConnectionFactory{
 	 * Método responsável por get os dados da CFotos no banco de dados
 	 *
 	 * @author Carleandro Noleto
-         * @param mecanica_id
+         * @param mecanica_id int
          * @return JSONObject
 	 * @since 14/01/2015
 	 * @version 1.0

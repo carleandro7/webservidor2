@@ -26,7 +26,7 @@ public class MecanicasDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por criar uma instancia da classe MecanicasDAO (Singleton)
 	 *
-	 * @return
+	 * @return static
 	 * @author Carleandro Noleto
 	 * @since 10/12/2014
 	 * @version 1.0
@@ -37,12 +37,12 @@ public class MecanicasDAO extends ConnectionFactory{
 		return instance;
 	}
         
-        	/**
+        /**
 	 * 
 	 * Método responsável por listar todos as Mecanicas das missoes de um jogo do banco
 	 *
-         * @param jogo_id
-	 * @return
+         * @param jogo_id String
+	 * @return JSONArray
 	 * @author Carleandro Noleto
 	 * @since 10/12/2014
 	 * @version 1.0
@@ -74,7 +74,7 @@ public class MecanicasDAO extends ConnectionFactory{
                                 
                             switch (rs.getString("tipo")) {
                                 case "vtextos":
-                                    mecanica.put("mecanica", new TextosDAO().getMecTexto(rs.getInt("id")));
+                                    mecanica.put("mecanica", new TextosDAO().getMecVTexto(rs.getInt("id")));
                                     break;
                                 case "vfotos":
                                     mecanica.put("mecanica", new FotosDAO().getMecVFotos(rs.getInt("id")));
@@ -91,6 +91,9 @@ public class MecanicasDAO extends ConnectionFactory{
                                 case "cvideos":
                                     mecanica.put("mecanica", new VideosDAO().getMecCVideos(rs.getInt("id")));
                                     break;    
+                                case "ctextos":
+                                    mecanica.put("mecanica", new TextosDAO().getMecCTextos(rs.getInt("id")));
+                                    break;    
                             }
                                 mecanicas.put(mecanica);
 			}
@@ -103,7 +106,16 @@ public class MecanicasDAO extends ConnectionFactory{
 		return mecanicas;
 	}
         
-        
+        /**
+	 * 
+	 * Método responsável por get em uma Mecanica de uma missao de um jogo do banco de dados
+	 *
+         * @param mecanica_id String
+	 * @return JSONArray
+	 * @author Carleandro Noleto
+	 * @since 10/12/2014
+	 * @version 1.0
+	 */
         public JSONArray getMecania(String mecanica_id){
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -129,7 +141,7 @@ public class MecanicasDAO extends ConnectionFactory{
                                 
                             switch (rs.getString("tipo")) {
                                 case "vtextos":
-                                    mecanica.put("mecanica", new TextosDAO().getMecTexto(rs.getInt("id")));
+                                    mecanica.put("mecanica", new TextosDAO().getMecVTexto(rs.getInt("id")));
                                     break;
                                 case "vfotos":
                                     mecanica.put("mecanica", new FotosDAO().getMecVFotos(rs.getInt("id")));
@@ -145,6 +157,9 @@ public class MecanicasDAO extends ConnectionFactory{
                                     break; 
                                 case "cvideos":
                                     mecanica.put("mecanica", new VideosDAO().getMecCVideos(rs.getInt("id")));
+                                    break;    
+                                case "ctextos":
+                                    mecanica.put("mecanica", new TextosDAO().getMecCTextos(rs.getInt("id")));
                                     break;    
                             }
                                 mecanicas.put(mecanica);

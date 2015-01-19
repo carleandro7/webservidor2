@@ -28,7 +28,7 @@ public class JogosDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por criar uma instancia da classe JogosDAO (Singleton)
 	 *
-	 * @return
+	 * @return static
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
 	 * @version 1.0
@@ -43,7 +43,7 @@ public class JogosDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por listar todos os jogos do banco
 	 *
-	 * @return
+	 * @return JSONArray
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
 	 * @version 1.0
@@ -80,7 +80,10 @@ public class JogosDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por listar todos os jogos perto de um local com distancia definida
 	 *
-	 * @return
+     * @param latitude String
+     * @param longitude String
+     * @param distancia String
+	 * @return JSONArray
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
 	 * @version 1.0
@@ -118,6 +121,11 @@ public class JogosDAO extends ConnectionFactory{
 		return jogos;
 	}
         
+    /**
+     *
+     * @param idJogo String
+     * @return JSONArray
+     */
     public JSONArray getDadosIniciais(String idJogo){
 		JSONArray jogos = null;
 		try {

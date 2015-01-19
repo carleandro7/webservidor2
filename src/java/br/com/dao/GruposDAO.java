@@ -26,7 +26,7 @@ public class GruposDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por criar uma instancia da classe GruposDAO (Singleton)
 	 *
-	 * @return
+	 * @return static
 	 * @author Carleandro Noleto
 	 * @since 10/12/2014
 	 * @version 1.0
@@ -41,7 +41,7 @@ public class GruposDAO extends ConnectionFactory{
 	 * 
 	 * Método responsável por listar todos os grupos de um jogo do banco
 	 *
-         * @param jogo_id
+         * @param jogo_id String
 	 * @return JSONArray
 	 * @author Carleandro Noleto
 	 * @since 10/12/2014

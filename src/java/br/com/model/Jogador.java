@@ -18,34 +18,66 @@ public class Jogador{
     private String password;
     private String iddispositivo;
 
+    /**
+     *
+     * @return String
+     */
     public String getIddispositivo() {
         return iddispositivo;
     }
 
+    /**
+     *
+     * @param iddispositivo String
+     */
     public void setIddispositivo(String iddispositivo) {
         this.iddispositivo = iddispositivo;
     }
 
+    /**
+     *
+     * @return int
+     */
     public int getId() {
         return id;
     }
 
+    /**
+     *
+     * @param id int
+     */
     public void setId(int id) {
         this.id = id;
     }
 
+    /**
+     *
+     * @return String
+     */
     public String getEmail() {
         return email;
     }
 
+    /**
+     *
+     * @param email String
+     */
     public void setEmail(String email) {
         this.email = email;
     }
 
+    /**
+     *
+     * @return String
+     */
     public String getPassword() {
         return password;
     }
 
+    /**
+     *
+     * @param password String
+     */
     public void setPassword(String password) {
         this.password = password;
     }

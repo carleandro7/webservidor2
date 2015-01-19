@@ -14,7 +14,11 @@ import org.json.JSONArray;
  */
 public class MecanicaController {
     
-    
+    /**
+     *
+     * @param mecanica_id String
+     * @return JSONArray
+     */
     public JSONArray getMecania(String mecanica_id){
         System.out.println("Enviando para o GIT");
                 return MecanicasDAO.getInstance().getMecania(mecanica_id);
