@@ -104,7 +104,7 @@ public class JogadoresDAO extends ConnectionFactory {
                             jogador.setId(rs.getInt("id"));
                             jogador.setEmail(rs.getString("email"));
                             jogador.setPassword(rs.getString("password"));
-                            System.out.println(""+jogador.toString());
+                            jogador.setIddispositivo(rs.getString("iddispositivo"));                            
                         }
 			
 		} catch (SQLException e) {
@@ -211,7 +211,7 @@ public class JogadoresDAO extends ConnectionFactory {
 		conexao = criarConexao();		
 		try {
                         jogadores = new ArrayList<Jogador>();
-			pstmt = conexao.prepareStatement("SELECT jogador_jogos.jogador_id, jogadores.iddispositivo FROM jogador_jogos "
+			pstmt = conexao.prepareStatement("SELECT jogador_jogos.jogador_id, jogadores.iddispositivo, jogadores.email FROM jogador_jogos "
                                 + "LEFT JOIN jogadores ON (jogadores.id = jogador_jogos.jogador_id) "
                                 + "WHERE jogador_jogos.jogo_id ="+jogo_id);
 			rs = pstmt.executeQuery();
@@ -220,6 +220,7 @@ public class JogadoresDAO extends ConnectionFactory {
 				Jogador jogador = new Jogador();				
 				jogador.setId(rs.getInt("jogador_jogos.jogador_id"));
 				jogador.setIddispositivo(rs.getString("jogadores.iddispositivo"));				
+                                jogador.setEmail(rs.getString("jogadores.email"));				
 				jogadores.add(jogador);
 			}
 			
@@ -230,6 +231,53 @@ public class JogadoresDAO extends ConnectionFactory {
 		}
 		return jogadores;
 	}
+
+    public String registroDevice(String jogador_id, String device_id) {
+        	Connection conexao = null;
+                    PreparedStatement pstmt = null;
+                    ResultSet rs = null;
+                    String mensagem="false";
+                    conexao = criarConexao();
+		try {
+                    pstmt = conexao.prepareStatement("UPDATE jogadores SET iddispositivo ='"+device_id+"' WHERE id = "+jogador_id);
+                    pstmt.executeUpdate();
+                    mensagem="true";
+			
+		} catch (SQLException e) {
+			System.out.println("Erro ao atualizar deviceRegsID dos jogadores: " + e.getMessage());
+		} finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return mensagem;
+    }
+
+    public ArrayList<Jogador> getJogadores(int grupo_id) {
+            	Connection conexao = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Jogador> jogadores = null;		
+		conexao = criarConexao();		
+		try {
+                        jogadores = new ArrayList<Jogador>();
+			pstmt = conexao.prepareStatement("SELECT jogador_jogos.jogador_id, jogadores.iddispositivo, jogadores.email FROM jogador_jogos "
+                                + "LEFT JOIN jogadores ON (jogadores.id = jogador_jogos.jogador_id) "
+                                + "WHERE jogador_jogos.grupo_id ="+grupo_id);
+			rs = pstmt.executeQuery();
+			while(rs.next()){
+				Jogador jogador = new Jogador();				
+				jogador.setId(rs.getInt("jogador_jogos.jogador_id"));
+				jogador.setIddispositivo(rs.getString("jogadores.iddispositivo"));				
+                                jogador.setEmail(rs.getString("jogadores.email"));				
+				jogadores.add(jogador);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Erro ao listar todos por grupo getJogadores: " + e.getMessage());
+		} finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return jogadores;
+    }
 	
 }
     

@@ -18,11 +18,27 @@ public class GruposController {
     
     /**
      *
-     * @param jogo_id String
+     * @param jogo_id
      * @return JSONArray
      */
     public JSONArray getJogos(String jogo_id){
 		System.out.println("Enviando para o GIT");
 		return GruposDAO.getInstance().getTodos(jogo_id);
     }
+     /**
+     *
+     * @param jogo_id String
+     * @param grupo_id String
+     * @param jogador_id String
+     * @return boolean
+     */
+    public boolean setGrupoParticipando(int jogo_id, int grupo_id, int jogador_id){
+	System.out.println("Enviando para o GIT");
+        if(GruposDAO.getInstance().getGrupoParticipando(jogo_id, grupo_id, jogador_id)){
+            return true;  
+        }else{
+            return GruposDAO.getInstance().setGrupoParticipando(jogo_id, grupo_id, jogador_id);
+        }
+    }
 }
+

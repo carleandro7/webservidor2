@@ -24,6 +24,11 @@ public final class Constants {
    * Chave da API do Google GCM
    */
    public static final String API_KEY = "AIzaSyCmu6aVxeFh6ZQ_u1J7DXg_fndmeXGP83g";
+   
+   public static final int JOGO_NEWJOGO = 1;
+   public static final int JOGO_LISTAGRUPOS = 2;
+   public static final int JOGO_LISTAEXECUTANDO = 3;
+   public static final int GRUPO_INSERIRPARTICIPANTE = 1;
  
  
   private Constants() {

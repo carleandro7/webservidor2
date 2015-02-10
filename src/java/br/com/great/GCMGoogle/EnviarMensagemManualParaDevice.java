@@ -22,16 +22,17 @@ public class EnviarMensagemManualParaDevice {
 	
         /**
         * Envia uma mensagem para os dispositivos
+        * @param user nome do usuario
         * @param mensagem Mensagem enviada para os dispositivos moveis  
         * @param DEVICE_REGISTRATION_ID  Lista de resgistro dos dispositivos exemplo: device1,device2
         * @return boolean
         **/
-	public boolean enviarMensagem(String mensagem, String DEVICE_REGISTRATION_ID){
+	public boolean enviarMensagem(String user, String mensagem, String DEVICE_REGISTRATION_ID){
             try{
 		Map<String, String> params = new HashMap<String, String>();
-		params.put("msg", mensagem);
-		String result = post(API_KEY, DEVICE_REGISTRATION_ID, params );
-		System.out.println("mensagem enviada:"+result);
+		params.put("message", mensagem);
+                params.put("user", user);
+		post(API_KEY, DEVICE_REGISTRATION_ID, params );
                 return true;
             }catch(Exception e){
                 System.err.println("Error ao enviar mensagem GCM:"+e.getMessage());

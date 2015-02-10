@@ -56,4 +56,19 @@ public class JogadoresController {
         System.out.println("Enviando para o GIT");
 		return JogadoresDAO.getInstance().cadastrar(email, password);
     }
+    
+      /**
+     *
+     * @param email String
+     * @param password String
+     * @return String
+     */
+    public String registroDevice(String jogador_id, String device_id) {
+        System.out.println("Enviando para o GIT");
+		return JogadoresDAO.getInstance().registroDevice(jogador_id, device_id);
+    }
+
+    public ArrayList<Jogador> getJogadores(int grupo_id) {
+        return JogadoresDAO.getInstance().getJogadores(grupo_id);
+    }
 }

@@ -6,12 +6,13 @@
 
 package br.com.great.controller;
 
-import br.com.great.GCMGoogle.EnviarMensagem;
-import br.com.great.GCMGoogle.EnviarMensagemManualParaDevice;
+import br.com.great.GCMGoogle.EnviarMensagemGCM;
 import br.com.great.dao.JogadoresDAO;
 import br.com.great.dao.JogosDAO;
 import br.com.great.model.Jogador;
+import br.com.great.model.Jogo;
 import java.util.ArrayList;
+import java.util.List;
 
 import org.json.JSONArray;
 
@@ -58,21 +59,28 @@ public class JogosController {
      * @return boolean
      */
     public boolean enviarMensagem(String jogo_id, String mensagem, String jogador_id){
-        ArrayList<Jogador> j = new JogadoresDAO().getDeviceRegsID(jogo_id);
-        String resgDeviceID ="";
-        for(int i=0; i<j.size(); i++){
-           if(!jogador_id.equals(String.valueOf(j.get(i).getId()))){
-                if((i+1)!=j.size()){
-                    resgDeviceID +=j.get(i).getIddispositivo()+",";
-                }else{
-                    resgDeviceID +=j.get(i).getIddispositivo();
-                }
-           }
+        ArrayList<Jogador> listJogador = new JogadoresDAO().getDeviceRegsID(jogo_id);
+        List<String> regIdList = new ArrayList<String>();
+        String user = "user";
+        for (Jogador jogador : listJogador) {
+            if (!jogador_id.equals(String.valueOf(jogador.getId()))) {
+                regIdList.add(jogador.getIddispositivo());
+            } else {
+                user = jogador.getEmail();
+            }
         }
-        System.err.println("regs "+resgDeviceID);
-        if(!resgDeviceID.equals(""))
-            return new EnviarMensagem().enviarManual(mensagem, resgDeviceID);
-        else 
-            return true;
+        if(!regIdList.isEmpty()){
+           new EnviarMensagemGCM().enviarParaDeviceBck(user,mensagem, regIdList);
+           return true;
+        }
+        return true;
     } 
+    
+    public Jogo setNewJogo(int jogo_id, int jogador_id, String nome) {
+        return JogosDAO.getInstance().setNewJogo(jogo_id, jogador_id, nome);
+    }
+
+    public ArrayList<Jogo> getJogosExecutando() {
+        return JogosDAO.getInstance().getJogosExecutando();
+    }
 }

@@ -134,6 +134,18 @@ public class JogadorResource {
 		return ("{\"salvo\":\""+salvo+"\",\"mensagem\":\""+mensagem+"\"}");
     }
     
+     /**
+     *
+     * @param jogador_id String
+     * @param device_id String
+     * @return String
+     */
+    @GET
+    @Path("registroDevice")
+    @Produces("application/json")
+    public String registroDevice(@QueryParam("jogador_id") String jogador_id, @QueryParam("device_id") String device_id){
+      	return (new JogadoresController().registroDevice(jogador_id,device_id));
+    }
     /**
      *
      * @return FileInputStream

@@ -12,9 +12,66 @@ package br.com.great.model;
  */
 public class Jogo {
     private int id;
-    private String nome, icone;
-    private float latitude,longitude;
-    private int user_id;
+    private String nome, icone, ordMecanicas, nomeficticio;
+    private String latitude,longitude;
+    private int user_id, status, jogador_id, jogopai_id;
+
+    public int getJogopai_id() {
+        return jogopai_id;
+    }
+
+    public void setJogopai_id(int jogopai_id) {
+        this.jogopai_id = jogopai_id;
+    }
+
+    public String getOrdMecanicas() {
+        return ordMecanicas;
+    }
+
+    public void setOrdMecanicas(String ordMecanicas) {
+        this.ordMecanicas = ordMecanicas;
+    }
+
+    public String getNomeficticio() {
+        return nomeficticio;
+    }
+
+    public void setNomeficticio(String nomeficticio) {
+        this.nomeficticio = nomeficticio;
+    }
+
+    public String getLatitude() {
+        return latitude;
+    }
+
+    public void setLatitude(String latitude) {
+        this.latitude = latitude;
+    }
+
+    public String getLongitude() {
+        return longitude;
+    }
+
+    public void setLongitude(String longitude) {
+        this.longitude = longitude;
+    }
+
+    public int getStatus() {
+        return status;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
+    public int getJogador_id() {
+        return jogador_id;
+    }
+
+    public void setJogador_id(int jogador_id) {
+        this.jogador_id = jogador_id;
+    }
+    
 
     /**
      *
@@ -62,38 +119,6 @@ public class Jogo {
      */
     public void setIcone(String icone) {
         this.icone = icone;
-    }
-
-    /**
-     *
-     * @return float
-     */
-    public float getLatitude() {
-        return latitude;
-    }
-
-    /**
-     *
-     * @param latitude float
-     */
-    public void setLatitude(float latitude) {
-        this.latitude = latitude;
-    }
-
-    /**
-     *
-     * @return float
-     */
-    public float getLongitude() {
-        return longitude;
-    }
-
-    /**
-     *
-     * @param longitude float
-     */
-    public void setLongitude(float longitude) {
-        this.longitude = longitude;
     }
 
     /**

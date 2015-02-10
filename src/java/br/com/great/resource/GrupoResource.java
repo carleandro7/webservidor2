@@ -7,35 +7,20 @@
 package br.com.great.resource;
 
 import br.com.great.controller.GruposController;
-import org.glassfish.jersey.media.multipart.FormDataContentDisposition;
-import org.glassfish.jersey.media.multipart.FormDataParam;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URI;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.Random;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.scene.media.Media;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.Encoded;
+import br.com.great.gerenciamento.ServidorJogo;
+import static br.com.great.util.Constants.GRUPO_INSERIRPARTICIPANTE;
+import static br.com.great.util.Constants.JOGO_LISTAGRUPOS;
+import br.com.great.util.Operacoes;
 
-import javax.ws.rs.core.MediaType;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Path;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.HeaderParam;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
+
 
 
 /**
@@ -54,7 +39,6 @@ public class GrupoResource {
      */
     public GrupoResource() {
     }
-
     /**
      * Método responsável get todos os grupos de um jogo
      * @param jogo_id String
@@ -66,10 +50,27 @@ public class GrupoResource {
     @GET
     @Path("/getGrupos")
     @Produces("application/json")
-    public String getJogos(@QueryParam("jogo_id") String jogo_id) {
-         return new GruposController().getJogos(jogo_id).toString();
+    public String getGrupos(@QueryParam("jogo_id") String jogo_id) {
+         return ServidorJogo.getInstance().acao(JOGO_LISTAGRUPOS, Integer.valueOf(jogo_id), null).toString();
     }
     
+    /**
+     * Método responsável get todos os grupos de um jogo
+     * @param jogo_id String
+     * @return String
+     * @author Carleandro Noleto
+     * @since 10/12/2014
+     * @version 1.0
+     */
+    @GET
+    @Path("/setGrupoParticipando")
+    @Produces("application/json")
+    public String setGrupoParticipando(@QueryParam("jogo_id") String jogo_id, @QueryParam("grupo_id") String grupo_id,
+            @QueryParam("jogador_id") String jogador_id) {
+        String[][] key = {{"jogador_id"}};
+        String[][] value = {{jogador_id}} ;
+         return ServidorJogo.getInstance().acaoGrupo(GRUPO_INSERIRPARTICIPANTE,Integer.valueOf(grupo_id),Integer.valueOf(jogo_id), (new Operacoes().toJSONArray(key, value))).toString();
+    }
     /**
      * PUT method for updating or creating an instance of JogoResource
      * @param content representation for the resource
