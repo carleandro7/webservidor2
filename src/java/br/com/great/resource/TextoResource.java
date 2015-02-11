@@ -17,11 +17,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 
 /**
- * REST Web Service
+ * REST Web Service Texto
  *
  * @author carleandro
  */
-@Path("Texto")
+@Path("texto")
 public class TextoResource {
 
     @Context
@@ -46,7 +46,7 @@ public class TextoResource {
     
     
     /**
-     * Método responsável por set em uma mecanica csons
+     * Método responsável por set em uma mecanica cTexto
      * @param texto String
      * @param jogador_id String
      * @param latitude String
@@ -60,7 +60,7 @@ public class TextoResource {
     @GET
     @Path("/setTextoMeta")
     @Produces("application/json")
-    public String setSomMeta(@QueryParam("texto") String texto, @QueryParam("jogador_id") String jogador_id,
+    public String setTextoMeta(@QueryParam("texto") String texto, @QueryParam("jogador_id") String jogador_id,
             @QueryParam("latitude") String latitude, @QueryParam("longitude") String longitude, @QueryParam("ctextos_id") String ctexto_id) {
             return String.valueOf(new TextosController().setCTexto(texto, jogador_id, latitude, longitude, ctexto_id));
     }

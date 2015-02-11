@@ -14,7 +14,7 @@ import br.com.great.dao.SonsDAO;
 public class SonsController {
 
     /**
-     *
+     * Método responsável por set os dados da CSons no banco de dados
      * @param som String
      * @param jogador_id String
      * @param latitude String

@@ -25,7 +25,7 @@ import org.json.simple.JSONObject;
 
 
 /**
- * REST Web Service
+ * REST Web Service jogo
  *
  * @author carleandro
  */
@@ -42,24 +42,23 @@ public class JogoResource {
     }
 
     /**
-     * Retrieves representation of an instance of br.com.resource.JogoResource
-     * @return an instance of java.lang.String
+     * Método responsável por listar todos os pjogos
+     * @return String Dados do jogo
      */
     @GET
     @Path("/listarTodos")
     @Produces("application/json")
     public String listaTodos() {
         //TODO return proper representation object
-        
         return new JogosController().listarTodos().toString();
     }
 
     /**
-     *
+     * Método responsável por listar todos os pjogos em uma distancia X
      * @param latitude String
      * @param longitude String
      * @param distancia String
-     * @return String
+     * @return String Dados dos jogos
      */
     @GET
     @Path("/getJogos")
@@ -68,8 +67,9 @@ public class JogoResource {
         return new JogosController().getJogos(latitude, longitude, distancia).toString();
     }
     /**
+     * Funcao de lista todos os dados de determinado jogo
      * @param jogo_id String
-     * @return String
+     * @return String Todos os dados de um jogo
      */
     @GET
     @Path("/getDadosInicias")
@@ -83,7 +83,8 @@ public class JogoResource {
      * Enviar mensagem para todos os participantes de um jogo
      * @param jogo_id id do jogo que está participando o jogador
      * @param mensagem mensagem para todos os participantes do grupo
-     * @return String
+     * @param jogador_id String
+     * @return String Se enviado mensagem True ou false
      */
     @GET
     @Path("/setEnviarMensagem")
@@ -102,10 +103,13 @@ public class JogoResource {
     public void putJson(String content) {
     }
     
-        /**
-     * Enviar mensagem para todos os participantes de um jogo
+     /**
+     * Executar um determinada acao
      * @param jogo_id id do jogo que está participando o jogador
-     * @param mensagem mensagem para todos os participantes do grupo
+     * @param objeto_id String
+     * @param grupo_id String
+     * @param mecanica_id String
+     * @param jogador_id String
      * @return String
      */
     @GET
@@ -117,9 +121,9 @@ public class JogoResource {
     }
     
     /**
-     * Enviar mensagem para todos os participantes de um jogo
-     * @param jogo_id id do jogo que está participando o jogador
-     * @param jogador_id
+     * Metodo responsavel por lista todas as instancia de um jogoPai
+     * @param jogo_id Id do jogo que está participando o jogador
+     * @param jogador_id Id do jogador
      * @return String
      */
     @GET
@@ -132,9 +136,10 @@ public class JogoResource {
     }
     
     /**
-     * Enviar mensagem para todos os participantes de um jogo
-     * @param jogo_id id do jogo que está participando o jogador
-     * @param jogador_id
+     * Criar uma nova instancia do jogo no servidor
+     * @param jogopai_id Id do pjogo
+     * @param nomefecticio Nome ficticio para um jogo
+     * @param jogador_id Id do jogador que esta criando o jogo
      * @return String
      */
     @GET

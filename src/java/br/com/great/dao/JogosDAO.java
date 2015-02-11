@@ -21,7 +21,7 @@ import org.json.JSONObject;
 
 
 /**
- *
+ * Classe responsavel realizar toda a interação com banco de dados relacionado com entidade jogo
  * @author carleandro
  */
 public class JogosDAO extends ConnectionFactory{
@@ -44,9 +44,9 @@ public class JogosDAO extends ConnectionFactory{
 	
 	/**
 	 * 
-	 * Método responsável por listar todos os jogos do banco
+	 * Método responsável por listar todos os pjogos do banco
 	 *
-	 * @return JSONArray
+	 * @return JSONArray lista de jogos
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
 	 * @version 1.0
@@ -85,7 +85,7 @@ public class JogosDAO extends ConnectionFactory{
          * @param latitude String
          * @param longitude String
          * @param distancia String
-	 * @return JSONArray
+	 * @return JSONArray lista de jogos
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
 	 * @version 1.0
@@ -124,8 +124,9 @@ public class JogosDAO extends ConnectionFactory{
 	}
         
     /**
+     * Dados iniciais de um jogo com todas as mecanicas e missoes
      * @param idJogo String
-     * @return JSONArray
+     * @return JSONArray lista de grupos, missoes e mecanicas
      */
     public JSONArray getDadosIniciais(String idJogo){
 		JSONArray jogos = null;
@@ -141,7 +142,11 @@ public class JogosDAO extends ConnectionFactory{
                 
 		return jogos;
     }
-    
+    /**
+     * Get em todos os dados de um pjogo 
+     * @param jogo_id id do jogo
+     * @return Jogo dados do jogo
+     */
     public Jogo getpJogo(int jogo_id){
         Jogo jogo = new Jogo();
         PreparedStatement pstmt = null;
@@ -167,6 +172,13 @@ public class JogosDAO extends ConnectionFactory{
 	}
         return jogo;
     }
+    /**
+     * Criar um novo jogo
+     * @param jogo_id id do jogo
+     * @param jogador_id id do jogador
+     * @param nome nome ficticio para o jogo
+     * @return Jogo Dados do novo jogo
+     */
     public Jogo setNewJogo(int jogo_id, int jogador_id, String nome) {
         	PreparedStatement pstmt = null;
                 Jogo jogo = new Jogo();
@@ -200,7 +212,10 @@ public class JogosDAO extends ConnectionFactory{
 		}
 	return jogo;
     }
-
+    /**
+     * Lista de todos os jogos que ainda estao sendo executados com status 1
+     * @return JSONArray lista de todos os jogos
+     */
     public ArrayList<Jogo> getJogosExecutando() {
         ArrayList<Jogo> jogos= new ArrayList<Jogo>();
         PreparedStatement pstmt = null;

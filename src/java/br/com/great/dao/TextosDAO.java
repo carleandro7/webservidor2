@@ -14,7 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * Classe responsavel realizar toda a interação com banco de dados relacionado com entidade Textos
  * @author carleandro
  */
 public class TextosDAO extends ConnectionFactory{
@@ -39,7 +39,7 @@ public class TextosDAO extends ConnectionFactory{
 	 * Método responsável por get os dados da VTextos no banco de dados
 	 *
          * @param mecanica_id int
-	 * @return JSONObject
+	 * @return JSONObject Dados de VTextos
 	 * @author Carleandro Noleto
 	 * @since 14/01/2015
 	 * @version 1.0
@@ -78,7 +78,7 @@ public class TextosDAO extends ConnectionFactory{
          * @param latitude String
          * @param longitude String
          * @param ctexto_id String
-	 * @return boolean
+	 * @return boolean Se atualiza True ou False
 	 * @author Carleandro Noleto
 	 * @since 19/01/2015
 	 * @version 1.0
@@ -111,7 +111,7 @@ public class TextosDAO extends ConnectionFactory{
 	 *
 	 * @author Carleandro Noleto
          * @param mecanica_id int
-         * @return JSONObject
+         * @return JSONObject Dados de CTextos
 	 * @since 19/01/2015
 	 * @version 1.0
 	 */

@@ -83,6 +83,7 @@ public final class MulticastResult implements Serializable {
 
   /**
    * Gets the multicast id.
+     * @return long
    */
   public long getMulticastId() {
     return multicastId;
@@ -90,6 +91,7 @@ public final class MulticastResult implements Serializable {
 
   /**
    * Gets the number of successful messages.
+     * @return int
    */
   public int getSuccess() {
     return success;
@@ -97,6 +99,7 @@ public final class MulticastResult implements Serializable {
 
   /**
    * Gets the total number of messages sent, regardless of the status.
+     * @return int
    */
   public int getTotal() {
     return success + failure;
@@ -104,6 +107,7 @@ public final class MulticastResult implements Serializable {
 
   /**
    * Gets the number of failed messages.
+     * @return int
    */
   public int getFailure() {
     return failure;
@@ -112,6 +116,7 @@ public final class MulticastResult implements Serializable {
   /**
    * Gets the number of successful messages that also returned a canonical
    * registration id.
+     * @return int
    */
   public int getCanonicalIds() {
     return canonicalIds;
@@ -119,6 +124,7 @@ public final class MulticastResult implements Serializable {
 
   /**
    * Gets the results of each individual message, which is immutable.
+     * @return List Result
    */
   public List<Result> getResults() {
     return results;
@@ -126,6 +132,7 @@ public final class MulticastResult implements Serializable {
 
   /**
    * Gets additional ids if more than one multicast message was sent.
+     * @return List Long
    */
   public List<Long> getRetryMulticastIds() {
     return retryMulticastIds;

@@ -14,7 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * Classe responsavel realizar toda a interação com banco de dados relacionado com entidade Videos
  * @author carleandro
  */
 public class VideosDAO extends ConnectionFactory{
@@ -44,7 +44,7 @@ public class VideosDAO extends ConnectionFactory{
          * @param latitude String
          * @param longitude String
          * @param cvideos_id String
-	 * @return boolean
+	 * @return boolean Se atualiza true ou false
 	 * @author Carleandro Noleto
 	 * @since 14/01/2015
 	 * @version 1.0
@@ -77,7 +77,7 @@ public class VideosDAO extends ConnectionFactory{
 	 *
 	 * @author Carleandro Noleto
          * @param mecanica_id int
-         * @return JSONObject
+         * @return JSONObject Dados de CVideos
 	 * @since 14/01/2015
 	 * @version 1.0
 	 */

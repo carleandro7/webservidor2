@@ -17,34 +17,33 @@ import org.json.JSONObject;
  *
  * @author carleandro
  */
-public class EstadoJogo extends Thread{
+public class EstadoJogo extends Thread {
+
     private Jogo jogo;
     private int versao;
-    private int acao=0;
+    private int acao = 0;
     private ArrayList<EstadoGrupo> listGrupo = new ArrayList<EstadoGrupo>();
 
-    
     @Override
-    public void run(){
-        while(true){
-            switch( acao )
-                {
-                    case 1:
-                                                      
-                            break;
-                    case 2:
-                          
-                            break;
-                    case 3:
-                          
-                            break;
-                    default:
-                            //comandos caso nenhuma das opções anteriores tenha sido escolhida
+    public void run() {
+        while (true) {
+            switch (acao) {
+                case 1:
+
+                    break;
+                case 2:
+
+                    break;
+                case 3:
+
+                    break;
+                default:
+                //comandos caso nenhuma das opções anteriores tenha sido escolhida
                 }
         }
     }
-    
-    public void iniciaConfiguracoes(){
+
+    public void iniciaConfiguracoes() {
         ArrayList<Grupo> grupos = new GruposDAO().getTodosGrupos(String.valueOf(jogo.getId()));
         for (Grupo grupo : grupos) {
             EstadoGrupo estGrupo = new EstadoGrupo();
@@ -61,8 +60,7 @@ public class EstadoJogo extends Thread{
     public void setListGrupo(ArrayList<EstadoGrupo> listGrupo) {
         this.listGrupo = listGrupo;
     }
-    
-    
+
     public int getVersao() {
         return versao;
     }
@@ -74,29 +72,31 @@ public class EstadoJogo extends Thread{
     public void setJogo(Jogo jogo) {
         this.jogo = jogo;
     }
-    
-    public Jogo getJogo(){
+
+    public Jogo getJogo() {
         return this.jogo;
     }
-    
-    public JSONArray getGrupos(){
-       JSONArray json = new JSONArray();
-       try{ 
-        for(EstadoGrupo grupo:listGrupo){
-            JSONObject jobj = new JSONObject();
-            jobj.put("id", grupo.getGrupo().getId());
-            jobj.put("nome", grupo.getGrupo().getNome());
-            json.put(jobj);
+
+    public JSONArray getGrupos() {
+        JSONArray json = new JSONArray();
+        try {
+            for (EstadoGrupo grupo : listGrupo) {
+                JSONObject jobj = new JSONObject();
+                jobj.put("id", grupo.getGrupo().getId());
+                jobj.put("nome", grupo.getGrupo().getNome());
+                json.put(jobj);
+            }
+        } catch (JSONException ex) {
+            System.err.println("Erro getGrupos:" + ex.getMessage());
         }
-       }catch(JSONException ex){
-           System.err.println("Erro getGrupos:"+ex.getMessage());
-       }
         return json;
     }
-    public int grupoJogadorParticipando(int jogador_id){
-        for(EstadoGrupo grupo:listGrupo){
-            if(grupo.getJogadorParticipando(jogador_id) == 1)
+
+    public int grupoJogadorParticipando(int jogador_id) {
+        for (EstadoGrupo grupo : listGrupo) {
+            if (grupo.getJogadorParticipando(jogador_id) == 1) {
                 return grupo.getGrupo().getId();
+            }
         }
         return 0;
     }

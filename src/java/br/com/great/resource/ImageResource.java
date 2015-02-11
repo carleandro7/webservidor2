@@ -25,11 +25,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
- * REST Web Service
+ * REST Web Service Image
  *
  * @author carleandro
  */
-@Path("Image")
+@Path("image")
 public class ImageResource {
     
     @Context

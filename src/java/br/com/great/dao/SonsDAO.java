@@ -14,7 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * Classe responsavel realizar toda a interação com banco de dados relacionado com entidade sons
  * @author carleandro
  */
 public class SonsDAO extends ConnectionFactory{
@@ -44,7 +44,7 @@ public class SonsDAO extends ConnectionFactory{
          * @param latitude String
          * @param longitude String
          * @param csons_id String
-	 * @return boolean
+	 * @return boolean Se atualizar true ou false
 	 * @author Carleandro Noleto
 	 * @since 14/01/2015
 	 * @version 1.0
@@ -77,7 +77,7 @@ public class SonsDAO extends ConnectionFactory{
 	 *
 	 * @author Carleandro Noleto
          * @param mecanica_id int
-         * @return JSONObject
+         * @return JSONObject Dados CSons
 	 * @since 14/01/2015
 	 * @version 1.0
 	 */

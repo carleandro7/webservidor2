@@ -8,13 +8,14 @@ package br.com.great.controller;
 import br.com.great.dao.FotosDAO;
 
 /**
- *
+ * Classe responsavel por fazer o controle entre os serviços oferecidos pelo jogos
+ * no banco de dados com os eventos relacionados as imagens
  * @author carleandro
  */
 public class FotosController {
     
     /**
-     *
+     * Método responsável por set os dados da CFotos no banco de dados
      * @param image String
      * @param jogador_id String
      * @param latitude String

@@ -6,10 +6,8 @@
 
 package br.com.great.resource;
 
-import br.com.great.controller.GruposController;
 import br.com.great.gerenciamento.ServidorJogo;
-import static br.com.great.util.Constants.GRUPO_INSERIRPARTICIPANTE;
-import static br.com.great.util.Constants.JOGO_LISTAGRUPOS;
+import br.com.great.util.Constants;
 import br.com.great.util.Operacoes;
 
 import javax.ws.rs.Consumes;
@@ -24,11 +22,11 @@ import javax.ws.rs.QueryParam;
 
 
 /**
- * REST Web Service
+ * REST Web Service Grupo
  *
  * @author carleandro
  */
-@Path("Grupo")
+@Path("grupo")
 public class GrupoResource {
 
     @Context
@@ -51,12 +49,14 @@ public class GrupoResource {
     @Path("/getGrupos")
     @Produces("application/json")
     public String getGrupos(@QueryParam("jogo_id") String jogo_id) {
-         return ServidorJogo.getInstance().acao(JOGO_LISTAGRUPOS, Integer.valueOf(jogo_id), null).toString();
+         return ServidorJogo.getInstance().acao(Constants.JOGO_LISTAGRUPOS, Integer.valueOf(jogo_id), null).toString();
     }
     
     /**
-     * Método responsável get todos os grupos de um jogo
+     * Método responsável por seta um jogador em um grupo
      * @param jogo_id String
+     * @param grupo_id String
+     * @param jogador_id String
      * @return String
      * @author Carleandro Noleto
      * @since 10/12/2014
@@ -69,7 +69,27 @@ public class GrupoResource {
             @QueryParam("jogador_id") String jogador_id) {
         String[][] key = {{"jogador_id"}};
         String[][] value = {{jogador_id}} ;
-         return ServidorJogo.getInstance().acaoGrupo(GRUPO_INSERIRPARTICIPANTE,Integer.valueOf(grupo_id),Integer.valueOf(jogo_id), (new Operacoes().toJSONArray(key, value))).toString();
+         return ServidorJogo.getInstance().acaoGrupo(Constants.GRUPO_INSERIRPARTICIPANTE,Integer.valueOf(grupo_id),Integer.valueOf(jogo_id), (new Operacoes().toJSONArray(key, value))).toString();
+    }
+    /**
+     * Método responsável lista todos os arquivos para um jogador a depender da localização
+     * @param jogo_id String
+     * @param grupo_id String
+     * @param latitude String
+     * @param longitude String
+     * @return String
+     * @author Carleandro Noleto
+     * @since 10/12/2014
+     * @version 1.0
+     */
+    @GET
+    @Path("/getTodosArquivos")
+    @Produces("application/json")
+    public String getTodosArquivos(@QueryParam("jogo_id") String jogo_id, @QueryParam("grupo_id") String grupo_id, @QueryParam("latitude") String latitude,
+            @QueryParam("longitude") String longitude) {
+        String[][] key = {{"latitude", "longitude"}};
+        String[][] value = {{latitude, longitude}} ;
+         return ServidorJogo.getInstance().acaoGrupo(Constants.GRUPO_LISTAARQUIVOS,Integer.valueOf(grupo_id),Integer.valueOf(jogo_id), (new Operacoes().toJSONArray(key, value))).toString();
     }
     /**
      * PUT method for updating or creating an instance of JogoResource

@@ -14,7 +14,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * Classe responsavel realizar toda a interação com banco de dados relacionado com entidade irlocais
  * @author carleandro
  */
 public class IrLocaisDAO extends ConnectionFactory{
@@ -35,9 +35,9 @@ public class IrLocaisDAO extends ConnectionFactory{
 	}
         
     /**
-     *
-     * @param mecanica_id Int
-     * @return JSONObjet
+     * Metodo responsavel por retornar todos os dados de uma entidade irlocias
+     * @param mecanica_id id da mecanica
+     * @return JSONObjet objeto com todos os dados da entidade irlocais
      */
     public JSONObject getMecIrLocais(int mecanica_id){
                 PreparedStatement pstmt = null;

@@ -10,7 +10,7 @@ import java.util.Set;
 import javax.ws.rs.core.Application;
 
 /**
- *
+ * Classe responsavel por adicionar as paginas restful para o usuario
  * @author carleandro
  */
 @javax.ws.rs.ApplicationPath("webresources")

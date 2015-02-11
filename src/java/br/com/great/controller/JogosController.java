@@ -17,14 +17,15 @@ import java.util.List;
 import org.json.JSONArray;
 
 /**
- *
+ * Classe responsavel por fazer o controle entre os serviços oferecidos pelo jogos
+ * no banco de dados com os eventos relacionados a cada jogo
  * @author carleandro
  */
 public class JogosController {
     
     /**
-     *
-     * @return JSONArray
+     * Método responsável por listar todos os pjogos do banco
+     * @return JSONArray lista de jogos
      */
     public JSONArray listarTodos(){
 		System.out.println("Enviando para o GIT");
@@ -32,20 +33,22 @@ public class JogosController {
     }
 
     /**
-     *
-     * @param latitude String
-     * @param longitude String
-     * @param distancia String
-     * @return JSONArrau
+     * Método responsável por listar todos os pjogos perto de um local com distancia definida
+         *
+         * @param latitude String
+         * @param longitude String
+         * @param distancia String
+	 * @return JSONArray lista de jogos
      */
     public JSONArray getJogos(String latitude, String longitude,String distancia){
 		System.out.println("Enviando para o GIT");
 		return JogosDAO.getInstance().getJogos(latitude, longitude, distancia);
     }
     /**
-     *
+     /**
+     * Dados iniciais de um jogo com todas as mecanicas e missoes
      * @param jogo_id String
-     * @return JSONArrya
+     * @return JSONArray lista de grupos, missoes e mecanicas
      */
     public JSONArray getDadosIniciais(String jogo_id){
 		System.out.println("Enviando para o GIT");
@@ -56,7 +59,7 @@ public class JogosController {
      * @param jogo_id String
      * @param mensagem mensagem que sera enviada para todos os dispositivos
      * @param jogador_id id do jogador que enviou a mensagem
-     * @return boolean
+     * @return boolean true se envou com sucesso
      */
     public boolean enviarMensagem(String jogo_id, String mensagem, String jogador_id){
         ArrayList<Jogador> listJogador = new JogadoresDAO().getDeviceRegsID(jogo_id);
@@ -75,11 +78,20 @@ public class JogosController {
         }
         return true;
     } 
-    
+    /**
+     * Criar um novo jogo
+     * @param jogo_id id do jogo
+     * @param jogador_id id do jogador
+     * @param nome nome ficticio para o jogo
+     * @return Jogo Dados do novo jogo
+     */
     public Jogo setNewJogo(int jogo_id, int jogador_id, String nome) {
         return JogosDAO.getInstance().setNewJogo(jogo_id, jogador_id, nome);
     }
-
+    /**
+     * Lista de todos os jogos que ainda estao sendo executados com status 1
+     * @return JSONArray lista de todos os jogos
+     */
     public ArrayList<Jogo> getJogosExecutando() {
         return JogosDAO.getInstance().getJogosExecutando();
     }

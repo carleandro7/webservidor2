@@ -27,7 +27,7 @@ public class ConnectionFactory {
 	 * M�todo respons�vel por criar uma conexao com o banco 
 	 *
 	 * @author Carleandro Noleto
-     * @return  Connection
+         * @return  Connection Conexao com banco de dados
 	 * @since 26/11/2014
 	 */
 	public Connection criarConexao(){

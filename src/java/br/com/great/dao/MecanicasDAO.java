@@ -16,7 +16,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * Classe responsavel realizar toda a interação com banco de dados relacionado com entidade mecanica
  * @author carleandro
  */
 public class MecanicasDAO extends ConnectionFactory{

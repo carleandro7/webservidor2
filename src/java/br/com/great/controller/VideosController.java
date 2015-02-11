@@ -14,7 +14,7 @@ import br.com.great.dao.VideosDAO;
 public class VideosController {
 
     /**
-     *
+     * Método responsável por set os dados da CSons no banco de dados
      * @param video String
      * @param jogador_id String
      * @param latitude String

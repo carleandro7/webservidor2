@@ -9,13 +9,14 @@ import br.com.great.dao.MecanicasDAO;
 import org.json.JSONArray;
 
 /**
- *
+ * Classe responsavel por fazer o controle entre os serviços oferecidos pelo jogos
+ * no banco de dados com os eventos relacionados a cada jogo
  * @author carleandro
  */
 public class MecanicaController {
     
     /**
-     *
+    * Método responsável por get em uma Mecanica de uma missao de um jogo do banco de dados
      * @param mecanica_id String
      * @return JSONArray
      */

@@ -15,7 +15,7 @@ import org.json.JSONObject;
 
 
 /**
- *
+ * Classe responsavel realizar toda a interação com banco de dados relacionado com entidade foto
  * @author carleandro
  */
 public class FotosDAO extends ConnectionFactory{

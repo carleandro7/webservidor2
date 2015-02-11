@@ -25,11 +25,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
- * REST Web Service
+ * REST Web Service SOM
  *
  * @author carleandro
  */
-@Path("Som")
+@Path("som")
 public class SomResource {
 
     @Context

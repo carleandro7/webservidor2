@@ -5,18 +5,21 @@
  */
 package br.com.great.util;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * Classe responsavel com Operacores com JSON
  * @author carleandro
  */
 public class Operacoes {
-    
+    /**
+     * Método responsável por receber um conjunto de chaves com valores retornar objetos json
+     * @param key String[]
+     * @param value String[]
+     * @return JSONObject
+     */
     public JSONObject toJSONObject(String[] key, String[] value){
         JSONObject jobj = new JSONObject();
         int i =0;
@@ -30,6 +33,12 @@ public class Operacoes {
         }
         return jobj;
     }
+    /**
+     * Método responsável por receber um conjunto de chaves com valores retornar jsonArray
+     * @param key String[]
+     * @param value String[]
+     * @return JSONArray
+     */
     public JSONArray toJSONArray(String[][] key, String[][] value){
        JSONArray json = new JSONArray();
        for(int j=0; j<key.length; j++){ 
@@ -38,6 +47,12 @@ public class Operacoes {
        return json;
     }
     
+    /**
+     * Método responsável por receber jsonArray e retornar objetos json da posicao X
+     * @param json JSONArray
+     * @param posObjeto int
+     * @return JSONObject
+     */
     public JSONObject toJSONObject(JSONArray json, int posObjeto){
         JSONObject jobj = null;
         try {
@@ -47,6 +62,14 @@ public class Operacoes {
         }
         return jobj;
     }
+    
+    /**
+     * Método responsável por receber jsonArray e retornar um item do objeto json da posicao X
+     * @param json JSONArray
+     * @param posObjeto int
+     * @param key String
+     * @return String 
+     */
     public String toJSONObject(JSONArray json, int posObjeto, String key){
         String value ="";
         try {

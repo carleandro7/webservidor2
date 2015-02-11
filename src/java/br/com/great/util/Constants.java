@@ -28,8 +28,9 @@ public final class Constants {
    public static final int JOGO_NEWJOGO = 1;
    public static final int JOGO_LISTAGRUPOS = 2;
    public static final int JOGO_LISTAEXECUTANDO = 3;
+   
    public static final int GRUPO_INSERIRPARTICIPANTE = 1;
- 
+   public static final int GRUPO_LISTAARQUIVOS = 2;
  
   private Constants() {
     throw new UnsupportedOperationException();

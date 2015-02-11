@@ -22,35 +22,7 @@ import java.util.Map;
 
 /**
  * GCM message.
- *
- * <p>
- * Instances of this class are immutable and should be created using a
- * {@link Builder}. Examples:
- *
- * <strong>Simplest message:</strong>
- * <pre><code>
- * Message message = new Message.Builder().build();
- * </pre></code>
- *
- * <strong>Message with optional attributes:</strong>
- * <pre><code>
- * Message message = new Message.Builder()
- *    .collapseKey(collapseKey)
- *    .timeToLive(3)
- *    .delayWhileIdle(true)
- *    .build();
- * </pre></code>
- *
- * <strong>Message with optional attributes and payload data:</strong>
- * <pre><code>
- * Message message = new Message.Builder()
- *    .collapseKey(collapseKey)
- *    .timeToLive(3)
- *    .delayWhileIdle(true)
- *    .addData("key1", "value1")
- *    .addData("key2", "value2")
- *    .build();
- * </pre></code>
+ 
  */
 public final class Message implements Serializable {
 
@@ -74,6 +46,8 @@ public final class Message implements Serializable {
 
     /**
      * Sets the collapseKey property.
+       * @param value String
+       * @return Builder
      */
     public Builder collapseKey(String value) {
       collapseKey = value;
@@ -82,6 +56,8 @@ public final class Message implements Serializable {
 
     /**
      * Sets the delayWhileIdle property (default value is {@literal false}).
+       * @param value boolean
+       * @return Builder
      */
     public Builder delayWhileIdle(boolean value) {
       delayWhileIdle = value;
@@ -90,6 +66,8 @@ public final class Message implements Serializable {
 
     /**
      * Sets the time to live, in seconds.
+       * @param value int
+       * @return  Builder
      */
     public Builder timeToLive(int value) {
       timeToLive = value;
@@ -98,6 +76,9 @@ public final class Message implements Serializable {
 
     /**
      * Adds a key/value pair to the payload data.
+       * @param key String
+       * @param value String
+       * @return Builder
      */
     public Builder addData(String key, String value) {
       data.put(key, value);
@@ -124,6 +105,7 @@ public final class Message implements Serializable {
 
   /**
    * Gets the collapse key.
+     * @return String
    */
   public String getCollapseKey() {
     return collapseKey;
@@ -131,6 +113,7 @@ public final class Message implements Serializable {
 
   /**
    * Gets the delayWhileIdle flag.
+     * @return Boolean
    */
   public Boolean isDelayWhileIdle() {
     return delayWhileIdle;
@@ -138,6 +121,7 @@ public final class Message implements Serializable {
 
   /**
    * Gets the time to live (in seconds).
+     * @return Integer
    */
   public Integer getTimeToLive() {
     return timeToLive;
@@ -145,12 +129,11 @@ public final class Message implements Serializable {
 
   /**
    * Gets the payload data, which is immutable.
+     * @return Map String, String
    */
   public Map<String, String> getData() {
     return data;
   }
-
-
 
   @Override
   public String toString() {

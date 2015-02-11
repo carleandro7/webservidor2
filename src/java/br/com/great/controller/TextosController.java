@@ -14,7 +14,7 @@ import br.com.great.dao.TextosDAO;
 public class TextosController {
     
     /**
-     *
+     * Método responsável por set os dados da CTextos no banco de dados
      * @param texto String
      * @param jogador_id String
      * @param latitude String

@@ -13,13 +13,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.List;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
- *
+ * Classe responsavel realizar toda a interação com banco de dados relacionado com entidade Grupo
  * @author carleandro
  */
 public class GruposDAO extends ConnectionFactory{
@@ -65,7 +64,7 @@ public class GruposDAO extends ConnectionFactory{
 				JSONObject grupo = new JSONObject();
                                 grupo.put("id",rs.getInt("id"));
                                 grupo.put("nome",rs.getString("nome"));
-                                
+                                grupo.put("jogo_id",rs.getString("jogo_id"));
 				grupos.put(grupo);
 			}
 			
@@ -113,7 +112,18 @@ public class GruposDAO extends ConnectionFactory{
 		}
 		return grupos;
 	}
-
+    /**
+	 * 
+	 * Método responsável por verificar se jogador esta participando de um grupo
+	 *
+         * @param jogo_id id do jogo 
+         * @param grupo_id id do grupo 
+         * @param jogador_id id do jogador
+	 * @return boolean true se o jogador esta participando do jogo no grupo expeciaficado
+	 * @author Carleandro Noleto
+	 * @since 10/12/2014
+	 * @version 1.0
+	 */
     public boolean getGrupoParticipando(int jogo_id, int grupo_id, int jogador_id) {
         	PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -132,7 +142,18 @@ public class GruposDAO extends ConnectionFactory{
 		}
 		return false;
     }
-    
+    /**
+	 * 
+	 * Método responsável por adicionar jogador a um grupo
+	 *
+         * @param jogo_id id do jogo 
+         * @param grupo_id id do grupo 
+         * @param jogador_id id do jogador
+	 * @return boolean true se inseriou o jogador com sucesso
+	 * @author Carleandro Noleto
+	 * @since 10/12/2014
+	 * @version 1.0
+	 */
     public boolean setGrupoParticipando(int jogo_id, int grupo_id, int jogador_id) {
         	PreparedStatement pstmt = null;
 		ResultSet rs = null;

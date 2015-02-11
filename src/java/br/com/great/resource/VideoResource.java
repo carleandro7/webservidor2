@@ -27,11 +27,11 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
 /**
- * REST Web Service
+ * REST Web Service Video
  *
  * @author carleandro
  */
-@Path("Video")
+@Path("video")
 public class VideoResource {
 
     @Context

@@ -12,27 +12,31 @@ import org.json.JSONArray;
  * @author carleandro
  */
 public class ServidorJogo {
+
     private Thread servidor;
     private GerenciamentoJogos gerJogos;
-    
-    
+
     private static ServidorJogo instance;
+
     /**
-     * 
-     * Método responsável por criar uma instancia da classe ServidorJogo (Singleton)
+     *
+     * Método responsável por criar uma instancia da classe ServidorJogo
+     * (Singleton)
+     *
      * @author Carleandro Noleto
-     * @return  static
+     * @return static
      * @since 14/01/2015
      * @version 1.0
      */
-    public static ServidorJogo getInstance(){
-	if(instance == null){
+    public static ServidorJogo getInstance() {
+        if (instance == null) {
             instance = new ServidorJogo();
         }
-	return instance;
+        return instance;
     }
-    public boolean StartServidor(){
-        if(servidor == null){
+
+    public boolean StartServidor() {
+        if (servidor == null) {
             servidor = new Thread(gerJogos);
             servidor.start();
             gerJogos = new GerenciamentoJogos();
@@ -40,21 +44,21 @@ public class ServidorJogo {
         }
         return true;
     }
-    
-    public boolean StopServidor(){
-        if(servidor != null){
+
+    public boolean StopServidor() {
+        if (servidor != null) {
             servidor.interrupt();
             gerJogos = null;
             servidor = null;
         }
         return true;
     }
-    
-    public JSONArray acao(int acao, int jogo_id, JSONArray json){
+
+    public JSONArray acao(int acao, int jogo_id, JSONArray json) {
         return gerJogos.acao(acao, jogo_id, json);
     }
-    
-    public JSONArray acaoGrupo(int acao,int grupo_id, int jogo_id, JSONArray json){
+
+    public JSONArray acaoGrupo(int acao, int grupo_id, int jogo_id, JSONArray json) {
         return gerJogos.acaoGrupo(acao, grupo_id, jogo_id, json);
     }
 }

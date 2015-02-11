@@ -84,6 +84,7 @@ public final class Result implements Serializable {
 
   /**
    * Gets the message id, if any.
+     * @return String
    */
   public String getMessageId() {
     return messageId;
@@ -91,6 +92,7 @@ public final class Result implements Serializable {
 
   /**
    * Gets the canonical registration id, if any.
+     * @return STring
    */
   public String getCanonicalRegistrationId() {
     return canonicalRegistrationId;
@@ -98,6 +100,7 @@ public final class Result implements Serializable {
 
   /**
    * Gets the error code, if any.
+     * @return String
    */
   public String getErrorCodeName() {
     return errorCode;

@@ -14,6 +14,7 @@ import javax.net.ssl.HttpsURLConnection;
 import javax.net.ssl.SSLSession;
 
 /**
+ * Classe responsavel por enviar mensagem GCM para um unico dispositivo
  * @author Carleandro
  * 
  */

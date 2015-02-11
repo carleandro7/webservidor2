@@ -17,11 +17,11 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 
 /**
- * REST Web Service
+ * REST Web Service Mecanica
  *
  * @author carleandro
  */
-@Path("Mecanica")
+@Path("mecanica")
 public class MecanicaResource {
 
     @Context
@@ -45,7 +45,7 @@ public class MecanicaResource {
     }
     
     /**
-     *
+     * Método responsável por get em uma Mecanica de uma missao
      * @param jogo_id String
      * @return String
      */

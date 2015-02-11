@@ -143,6 +143,8 @@ public class Sender {
    * Sends a message without retrying in case of service unavailability. See
    * {@link #send(Message, String, int)} for more info.
    *
+     * @param message Message
+     * @param registrationId registro do dispositivo
    * @return result of the post, or {@literal null} if the GCM service was
    *         unavailable.
    *
@@ -336,6 +338,8 @@ public class Sender {
    * Sends a message without retrying in case of service unavailability. See
    * {@link #send(Message, List, int)} for more info.
    *
+     * @param message mensagem
+     * @param registrationIds lista de dispositivos
    * @return {@literal true} if the message was sent successfully,
    *         {@literal false} if it failed but could be retried.
    *
@@ -455,7 +459,10 @@ public class Sender {
   /**
    * Make an HTTP post to a given URL.
    *
-   * @return HTTP response.
+     * @param url String
+     * @param body String
+     * @return HTTP response.
+     * @throws java.io.IOException Error no post
    */
   protected HttpURLConnection post(String url, String body)
       throws IOException {
@@ -488,6 +495,9 @@ public class Sender {
 
   /**
    * Creates a map with just one key-value pair.
+     * @param key String
+     * @param value String
+     * @return  Map String, String
    */
   protected static final Map<String, String> newKeyValues(String key,
       String value) {
@@ -522,6 +532,9 @@ public class Sender {
 
   /**
    * Gets an {@link HttpURLConnection} given an URL.
+     * @param url String
+     * @return HttpURLConnection
+     * @throws java.io.IOException Errot na conexao
    */
   protected HttpURLConnection getConnection(String url) throws IOException {
     HttpURLConnection conn = (HttpURLConnection) new URL(url).openConnection();
@@ -533,6 +546,9 @@ public class Sender {
    *
    * <p>
    * If the stream ends in a newline character, it will be stripped.
+     * @param stream InputStream
+     * @return String
+     * @throws java.io.IOException  InputStreamReader
    */
   protected static String getString(InputStream stream) throws IOException {
     BufferedReader reader =

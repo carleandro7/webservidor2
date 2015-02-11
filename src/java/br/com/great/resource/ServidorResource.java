@@ -8,7 +8,6 @@ package br.com.great.resource;
 import br.com.great.gerenciamento.ServidorJogo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -16,11 +15,11 @@ import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 
 /**
- * REST Web Service
+ * REST Web Service do Servidor
  *
  * @author carleandro
  */
-@Path("Servidor")
+@Path("servidor")
 public class ServidorResource {
 
     @Context
@@ -46,7 +45,6 @@ public class ServidorResource {
     /**
      * PUT method for updating or creating an instance of ServidorResource
      * @param content representation for the resource
-     * @return an HTTP response with content of the updated or created resource.
      */
     @PUT
     @Consumes("application/json")
@@ -55,7 +53,7 @@ public class ServidorResource {
     
     /**
      * Start o servidor dos jogos
-     * @return String
+     * @return String Informando se True ou False
      */
     @GET
     @Path("/startServidor")
@@ -66,7 +64,7 @@ public class ServidorResource {
     
     /**
      * Stop no servidor dos jogos
-     * @return String
+     * @return String Informando se True ou False
      */
     @GET
     @Path("/stopServidor")

@@ -13,9 +13,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import org.json.JSONArray;
+import org.json.JSONException;
 
 /**
- *
+ * Classe responsavel realizar toda a interação com banco de dados relacionado com entidade jogadores
  * @author carleandro
  */
 public class JogadoresDAO extends ConnectionFactory {
@@ -84,7 +86,7 @@ public class JogadoresDAO extends ConnectionFactory {
 	 *
          * @param email String
          * @param password String
-	 * @return Jogador
+	 * @return Jogador Dados do jogador
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
 	 * @version 1.0
@@ -116,10 +118,10 @@ public class JogadoresDAO extends ConnectionFactory {
 	}
         /**
 	 * 
-	 * Método responsável por get em todos os dados do jogador recebendo o id
+	 * Método responsável por get em todos os dados do jogador
 	 *
          * @param id String
-	 * @return Jogadores
+	 * @return Jogadores Dados do jogador
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
 	 * @version 1.0
@@ -160,7 +162,7 @@ public class JogadoresDAO extends ConnectionFactory {
 	 *
          * @param email String
          * @param password  String
-	 * @return String
+	 * @return String Mensagem true ou false
 	 * @author Carleandro Noleto
 	 * @since 27/11/2014
 	 * @version 1.0
@@ -232,7 +234,14 @@ public class JogadoresDAO extends ConnectionFactory {
 		return jogadores;
 	}
 
-    public String registroDevice(String jogador_id, String device_id) {
+      /**
+     * Metodo responsavel por verificar e alterar se o usuario estiver com outro
+     * dispositivo
+     * @param jogador_id id do jogador
+     * @param device_id id que idencifica o dispositivo atraves de msg GCM
+     * @return String Mensagem tru e false
+     */
+        public String registroDevice(String jogador_id, String device_id) {
         	Connection conexao = null;
                     PreparedStatement pstmt = null;
                     ResultSet rs = null;
@@ -251,6 +260,12 @@ public class JogadoresDAO extends ConnectionFactory {
 		return mensagem;
     }
 
+     /**
+     * Metodo responsavel por verificar e alterar se o usuario estiver com outro
+     * dispositivo
+     * @param grupo_id id do grupo do jogo
+     * @return ArrayList lista de jogadores que estao naquele grupo
+     */
     public ArrayList<Jogador> getJogadores(int grupo_id) {
             	Connection conexao = null;
 		PreparedStatement pstmt = null;
@@ -278,6 +293,57 @@ public class JogadoresDAO extends ConnectionFactory {
 		}
 		return jogadores;
     }
+    /**
+     * Metodo responsavel lista todos os arquivos necessario para o inicio do jogo
+     * dispositivo
+     * @param grupo_id id do grupo do jogo
+     * @param latitude localização do jogador
+     * @param longitude localização do jogador
+     * @return JSONArray lista com todos os arquivos e o id de sua mecanica
+     */
+    public JSONArray getTodosArquivos(int grupo_id, String latitude, String longitude){
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JSONArray arquivos = new JSONArray();
+                JSONArray listMissoes = new JSONArray();
+		Connection conexao = criarConexao();
+		try {
+                         listMissoes = MissoesDAO.getInstance().getMissoesRegiao(1, grupo_id, latitude, longitude, listMissoes,"");
+                         listMissoes = MissoesDAO.getInstance().getMissoesRegiao(2, grupo_id, latitude, longitude , listMissoes, sqlMissoesAnd(listMissoes));
+                         listMissoes = MissoesDAO.getInstance().getMissoesRegiao(3, grupo_id, latitude, longitude, listMissoes, sqlMissoesAnd(listMissoes));
+                         listMissoes = MissoesDAO.getInstance().getMissoesRegiao(4, grupo_id, latitude, longitude, listMissoes, sqlMissoesAnd(listMissoes));
+                         listMissoes = MissoesDAO.getInstance().getMissoesRegiao(0, grupo_id, latitude, longitude, listMissoes, sqlMissoesAnd(listMissoes));
+                         for(int j=0; j<listMissoes.length(); j++){
+                            arquivos.put(MissoesDAO.getInstance().getMissoes(listMissoes.getJSONObject(j).getInt("id"),
+                                    listMissoes.getJSONObject(j).getInt("prioridade")));
+                         }
+		} catch (JSONException e) {
+			System.out.println("Erro ao listar getTodosArquivos: " + e.getMessage());
+                } finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return arquivos;
+    }
+    
+    private String sqlMissoesAnd(JSONArray listMissoes){
+        String sql ="";
+        try {
+            for(int j=0; j<listMissoes.length(); j++){
+                 if((j+1) ==listMissoes.length()){
+                     sql+=" missoes.id != "+listMissoes.getJSONObject(j).getInt("id");
+                 }else{
+                     sql+=" missoes.id != "+listMissoes.getJSONObject(j).getInt("id")+" AND ";
+                 }     
+            }    
+        } catch (Exception ex) {
+             System.out.println("Erro em sqlMissoesAnd: " + ex.getMessage()); 
+        }
+          if(sql.length()>0){
+              sql=" AND ("+sql+")";
+          }
+        return sql;
+    }
+
 	
 }
     
