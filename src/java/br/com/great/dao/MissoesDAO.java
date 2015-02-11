@@ -7,10 +7,12 @@
 package br.com.great.dao;
 
 import br.com.great.factory.ConnectionFactory;
+import br.com.great.model.Missao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -72,6 +74,46 @@ public class MissoesDAO extends ConnectionFactory{
                         
 			
 		} catch (SQLException | JSONException e) {
+			System.out.println("Erro ao listar todas as missoes: " + e.getMessage());
+                } finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return missoes;
+	}
+        
+         /**
+	 * Método responsável por listar todos as missoes de um grupo
+	 *
+         * @param grupo_id String
+	 * @return JSONArray
+	 * @author Carleandro Noleto
+	 * @since 10/12/2014
+	 * @version 1.0
+	 */
+	public ArrayList<Missao> getMissoesGrupo(int grupo_id){
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Missao> missoes = null;
+		Connection conexao = criarConexao();
+		try {
+                        missoes= new ArrayList<Missao>();
+                         String sql = "SELECT  *  FROM missoes  WHERE  grupo_id = "+grupo_id;
+                        pstmt = conexao.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				Missao missao = new Missao();
+                                missao.setId(rs.getInt("id"));
+                                missao.setNome(rs.getString("nome"));
+                                missao.setOrdem(rs.getInt("ordem"));
+                                missao.setGrupo_id(rs.getInt("grupo_id"));
+                                missao.setLongitude(rs.getString("longitude"));
+                                missao.setLatitude(rs.getString("latitude"));
+				missoes.add(missao);
+			}
+                        
+			
+		} catch (SQLException e) {
 			System.out.println("Erro ao listar todas as missoes: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);
@@ -153,7 +195,7 @@ public class MissoesDAO extends ConnectionFactory{
 				JSONObject missao = new JSONObject();
                                 missao.put("mecanica_id",rs.getInt("mecanicas.id"));
                                 missao.put("tipo",rs.getString("mecanicas.tipo"));
-                                missao.put("foto_id",rs.getInt("vfotos.id"));
+                                missao.put("arquivo_id",rs.getInt("vfotos.id"));
                                 missao.put("arquivo",rs.getString("vfotos.arqimage"));        
                                 missao.put("prioridade",prioridade);
 				missoes.put(missao);

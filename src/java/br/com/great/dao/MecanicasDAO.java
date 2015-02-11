@@ -7,10 +7,12 @@
 package br.com.great.dao;
 
 import br.com.great.factory.ConnectionFactory;
+import br.com.great.model.Mecanica;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -167,6 +169,47 @@ public class MecanicasDAO extends ConnectionFactory{
                         
 			
 		} catch (SQLException | JSONException e) {
+			System.out.println("Erro ao listar dados de uma mecanica: " + e.getMessage());
+                } finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return mecanicas;
+	}
+        
+        /**
+	 * 
+	 * Método responsável por lista todas as mecanicas de uma missao
+	 *
+         * @param missao_id int
+	 * @return JSONArray
+	 * @author Carleandro Noleto
+	 * @since 10/12/2014
+	 * @version 1.0
+	 */
+        public ArrayList<Mecanica> getMecaniaMissao(int missao_id){
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Mecanica> mecanicas = null;
+		Connection conexao = criarConexao();
+		try {
+                        mecanicas= new ArrayList<Mecanica>();
+                         String sql = "SELECT * FROM mecanicas  WHERE missoes_id = "+missao_id;
+                
+                        pstmt = conexao.prepareStatement(sql);
+			rs = pstmt.executeQuery();
+                
+			while(rs.next()){
+				Mecanica mecanica = new Mecanica();
+                                mecanica.setId(rs.getInt("id"));
+                                mecanica.setNome(rs.getString("nome"));
+                                mecanica.setTipo(rs.getString("tipo"));
+                                mecanica.setOrdem(rs.getInt("ordem"));
+                                mecanica.setTempo(rs.getTime("tempo"));
+                                mecanica.setMissoes_id(rs.getInt("missoes_id"));
+                                mecanicas.add(mecanica);
+			}
+                        	
+		} catch (SQLException e) {
 			System.out.println("Erro ao listar dados de uma mecanica: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);

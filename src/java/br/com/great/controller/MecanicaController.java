@@ -6,6 +6,8 @@
 package br.com.great.controller;
 
 import br.com.great.dao.MecanicasDAO;
+import br.com.great.model.Mecanica;
+import java.util.ArrayList;
 import org.json.JSONArray;
 
 /**
@@ -22,7 +24,16 @@ public class MecanicaController {
      */
     public JSONArray getMecania(String mecanica_id){
         System.out.println("Enviando para o GIT");
-                return MecanicasDAO.getInstance().getMecania(mecanica_id);
+        return MecanicasDAO.getInstance().getMecania(mecanica_id);
     }
     
+    /**
+    * Método responsável lista todas as mecanicas de uma missao
+     * @param missao_id int
+     * @return ArrayList Mecanica
+     */
+    public ArrayList<Mecanica> getMecaniaMissao(int missao_id){
+        System.out.println("Enviando para o GIT");
+        return MecanicasDAO.getInstance().getMecaniaMissao(missao_id);
+    }
 }

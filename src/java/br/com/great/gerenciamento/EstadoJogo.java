@@ -27,6 +27,7 @@ public class EstadoJogo extends Thread {
     @Override
     public void run() {
         while (true) {
+           if(jogo.getOrdMecanicas().equals("0")){
             switch (acao) {
                 case 1:
 
@@ -40,6 +41,7 @@ public class EstadoJogo extends Thread {
                 default:
                 //comandos caso nenhuma das opções anteriores tenha sido escolhida
                 }
+           }
         }
     }
 
@@ -48,7 +50,9 @@ public class EstadoJogo extends Thread {
         for (Grupo grupo : grupos) {
             EstadoGrupo estGrupo = new EstadoGrupo();
             estGrupo.setGrupo(grupo);
+            estGrupo.setTipoOrdem(Integer.valueOf(jogo.getOrdMecanicas()));
             estGrupo.inicializaJogadoresGrupos();
+            estGrupo.inicializaMissoesGrupos();
             listGrupo.add(estGrupo);
         }
     }
