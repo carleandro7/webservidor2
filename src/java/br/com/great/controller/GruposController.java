@@ -6,8 +6,13 @@
 
 package br.com.great.controller;
 
+import br.com.great.GCMGoogle.EnviarMensagemGCM;
 import br.com.great.dao.GruposDAO;
+import br.com.great.dao.JogadoresDAO;
+import br.com.great.model.Jogador;
 import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
 import org.json.JSONArray;
 
 /**
@@ -31,15 +36,35 @@ public class GruposController {
      * @param jogo_id String
      * @param grupo_id String
      * @param jogador_id String
-     * @return boolean se o jogador foi cadastrado ou se ja estiver
+     * @return int se o jogador foi cadastrado return 1 ou se ja estiver return 2
      */
-    public boolean setGrupoParticipando(int jogo_id, int grupo_id, int jogador_id){
+    public int setGrupoParticipando(int jogo_id, int grupo_id, int jogador_id){
 	System.out.println("Enviando para o GIT");
         if(GruposDAO.getInstance().getGrupoParticipando(jogo_id, grupo_id, jogador_id)){
-            return true;  
+            return 2;  
         }else{
             return GruposDAO.getInstance().setGrupoParticipando(jogo_id, grupo_id, jogador_id);
         }
     }
+    
+    /**
+     * Envia uma mensagem para todos os dipositivos que estão participando de um grupo
+     * @param grupo_id int
+     * @param mensagem mensagem que sera enviada para todos os dispositivos
+     * @return boolean true se envou com sucesso
+     */
+    public boolean enviarMensagem(int grupo_id, String mensagem){
+        ArrayList<Jogador> listJogador = new JogadoresDAO().getDeviceRegsID(grupo_id);
+        List<String> regIdList = new ArrayList<String>();
+        String user = "root";
+        for (Jogador jogador : listJogador) {
+            regIdList.add(jogador.getIddispositivo());
+        }
+        if(!regIdList.isEmpty()){
+           new EnviarMensagemGCM().enviarParaDeviceBck(user,mensagem, regIdList);
+           return true;
+        }
+        return true;
+    } 
 }
 

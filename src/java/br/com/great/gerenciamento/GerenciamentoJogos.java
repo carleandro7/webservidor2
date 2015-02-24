@@ -10,7 +10,7 @@ import br.com.great.model.Jogo;
 import static br.com.great.util.Constants.JOGO_LISTAEXECUTANDO;
 import static br.com.great.util.Constants.JOGO_LISTAGRUPOS;
 import static br.com.great.util.Constants.JOGO_NEWJOGO;
-import br.com.great.util.Operacoes;
+import br.com.great.util.OperacoesJSON;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -66,8 +66,9 @@ public class GerenciamentoJogos extends Thread {
                     jsonResult = listGrupos(jogo_id);
                     break;
                 case JOGO_LISTAEXECUTANDO:
-                    jsonResult = listJogosExecutando(jogo_id, Integer.valueOf(new Operacoes().toJSONObject(json, 0, "jogador_id")));
+                    jsonResult = listJogosExecutando(jogo_id, Integer.valueOf(new OperacoesJSON().toJSONObject(json, 0, "jogador_id")));
                     break;
+                
                 default:
                 //comandos caso nenhuma das opções anteriores tenha sido escolhida
             }
@@ -83,6 +84,12 @@ public class GerenciamentoJogos extends Thread {
             if (lisJogos.get(i).getJogo().getId() == jogo_id) {
                 for (int j = 0; j < lisJogos.get(i).getListGrupo().size(); j++) {
                     if (lisJogos.get(i).getListGrupo().get(j).getGrupo().getId() == grupo_id) {
+                        /*String[] key={"id", "nome", "nomeficticio", "latitude", "longitude", "status"};
+                        String[] value={String.valueOf(lisJogos.get(i).getJogo().getId()), 
+                            lisJogos.get(i).getJogo().getNome(), lisJogos.get(i).getJogo().getNomeficticio(),
+                            lisJogos.get(i).getJogo().getLatitude(), lisJogos.get(i).getJogo().getLongitude(), 
+                            String.valueOf(lisJogos.get(i).getJogo().getStatus())};
+                            json.put(new OperacoesJSON().toJSONObject(key, value));*/
                         jsonResult = lisJogos.get(i).getListGrupo().get(j).acao(acao, json);
                     }
                 }
@@ -148,5 +155,7 @@ public class GerenciamentoJogos extends Thread {
         }
         return json;
     }
+    
+    
 
 }

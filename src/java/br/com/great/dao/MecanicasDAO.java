@@ -125,22 +125,20 @@ public class MecanicasDAO extends ConnectionFactory{
 		Connection conexao = criarConexao();
 		try {
                         mecanicas= new JSONArray();
-                         String sql = "SELECT `mecanicas`.`id`, `mecanicas`.`nome`, `mecanicas`.`tipo`, `mecanicas`.`ordem`, `mecanicas`.`tempo`, `mecanicas`.`missoes_id` FROM `mecanicas` " +
-                                       " WHERE  `mecanicas`. `id` = "+mecanica_id;
+                         String sql = "SELECT * FROM mecanicas " +
+                                       " WHERE  id = "+mecanica_id+"  ORDER BY ordem ";
                 
                         pstmt = conexao.prepareStatement(sql);
 			rs = pstmt.executeQuery();
                 
 			while(rs.next()){
 				JSONObject mecanica = new JSONObject();
-                                mecanica.put("id",rs.getInt("id"));
+                                mecanica.put("mecanica_id",rs.getInt("id"));
                                 mecanica.put("nome",rs.getString("nome"));
                                 mecanica.put("tipo",rs.getString("tipo"));
                                 mecanica.put("ordem",rs.getInt("ordem"));
                                 mecanica.put("tempo",rs.getTime("tempo"));
-                                mecanica.put("missoes_id",rs.getInt("missoes_id"));
-                                
-                                
+                                mecanica.put("missoes_id",rs.getInt("missoes_id"));            
                             switch (rs.getString("tipo")) {
                                 case "vtextos":
                                     mecanica.put("mecanica", new TextosDAO().getMecVTexto(rs.getInt("id")));
@@ -193,7 +191,7 @@ public class MecanicasDAO extends ConnectionFactory{
 		Connection conexao = criarConexao();
 		try {
                         mecanicas= new ArrayList<Mecanica>();
-                         String sql = "SELECT * FROM mecanicas  WHERE missoes_id = "+missao_id;
+                         String sql = "SELECT * FROM mecanicas  WHERE missoes_id = "+missao_id+"  ORDER BY ordem";
                 
                         pstmt = conexao.prepareStatement(sql);
 			rs = pstmt.executeQuery();

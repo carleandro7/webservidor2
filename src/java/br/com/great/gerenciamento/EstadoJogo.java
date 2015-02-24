@@ -8,6 +8,7 @@ package br.com.great.gerenciamento;
 import br.com.great.dao.GruposDAO;
 import br.com.great.model.Grupo;
 import br.com.great.model.Jogo;
+import br.com.great.util.OperacoesJSON;
 import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -44,6 +45,7 @@ public class EstadoJogo extends Thread {
            }
         }
     }
+    
 
     public void iniciaConfiguracoes() {
         ArrayList<Grupo> grupos = new GruposDAO().getTodosGrupos(String.valueOf(jogo.getId()));

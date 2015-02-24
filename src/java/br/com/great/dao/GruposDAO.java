@@ -149,12 +149,12 @@ public class GruposDAO extends ConnectionFactory{
          * @param jogo_id id do jogo 
          * @param grupo_id id do grupo 
          * @param jogador_id id do jogador
-	 * @return boolean true se inseriou o jogador com sucesso
+	 * @return int 1 se inseriou o jogador com sucesso
 	 * @author Carleandro Noleto
 	 * @since 10/12/2014
 	 * @version 1.0
 	 */
-    public boolean setGrupoParticipando(int jogo_id, int grupo_id, int jogador_id) {
+    public int setGrupoParticipando(int jogo_id, int grupo_id, int jogador_id) {
         	PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		ArrayList<Grupo> grupos = null;
@@ -165,12 +165,12 @@ public class GruposDAO extends ConnectionFactory{
                             pstmt.setInt(2, jogo_id);
                             pstmt.setInt(3, grupo_id);
                             pstmt.executeUpdate();
-                            return true;
+                            return 1;
 		} catch (SQLException e) {
 			System.out.println("Erro ao salvar participante em grupo: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
-		return false;
+		return 0;
     }
 }

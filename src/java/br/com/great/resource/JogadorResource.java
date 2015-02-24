@@ -64,7 +64,7 @@ public class JogadorResource {
     @Path("/getJogador")
     @Produces("application/json")
     public Jogador getJogador(@QueryParam("id") String id) {
-        return new JogadoresController().getJogador(id);
+        return new JogadoresController().getJogador(Integer.valueOf(id));
     }
 
     /**

@@ -43,7 +43,7 @@ public class JogadoresController {
      * @param id String
      * @return Jogador todos dos dados do jogador
      */
-    public Jogador getJogador(String id){
+    public Jogador getJogador(int id){
 		System.out.println("Enviando para o GIT");
 		return JogadoresDAO.getInstance().getJogador(id);
     }
@@ -89,5 +89,9 @@ public class JogadoresController {
      */
     public JSONArray getTodosArquivos(int grupo_id, String latitude, String longitude) {
         return JogadoresDAO.getInstance().getTodosArquivos(grupo_id, latitude, longitude);
+    }
+
+    public JSONArray getTodosArquivos(int grupo_id) {
+        return JogadoresDAO.getInstance().getTodosArquivos(grupo_id);
     }
 }

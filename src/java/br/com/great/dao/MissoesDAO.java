@@ -97,7 +97,7 @@ public class MissoesDAO extends ConnectionFactory{
 		Connection conexao = criarConexao();
 		try {
                         missoes= new ArrayList<Missao>();
-                         String sql = "SELECT  *  FROM missoes  WHERE  grupo_id = "+grupo_id;
+                         String sql = "SELECT  *  FROM missoes  WHERE  grupo_id = "+grupo_id+"  ORDER BY ordem ";
                         pstmt = conexao.prepareStatement(sql);
 			rs = pstmt.executeQuery();
 			

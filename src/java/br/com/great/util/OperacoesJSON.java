@@ -13,7 +13,7 @@ import org.json.JSONObject;
  * Classe responsavel com Operacores com JSON
  * @author carleandro
  */
-public class Operacoes {
+public class OperacoesJSON {
     /**
      * Método responsável por receber um conjunto de chaves com valores retornar objetos json
      * @param key String[]

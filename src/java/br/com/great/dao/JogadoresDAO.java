@@ -126,28 +126,20 @@ public class JogadoresDAO extends ConnectionFactory {
 	 * @since 27/11/2014
 	 * @version 1.0
 	 */
-        public Jogador getJogador(String id){
+        public Jogador getJogador(int id){
 		Connection conexao = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
-		Jogador jogadores = new Jogador();
-		
+		Jogador jogador = new Jogador();
 		conexao = criarConexao();
-		
 		try {
-                        jogadores = new Jogador();
 			pstmt = conexao.prepareStatement("select * from jogadores where id = "+id);
 			rs = pstmt.executeQuery();
 			
 			while(rs.next()){
-				Jogador jogador = new Jogador();
-				
 				jogador.setId(rs.getInt("id"));
 				jogador.setEmail(rs.getString("email"));
 				jogador.setPassword(rs.getString("password"));
-				jogadores = jogador;
-				
-				
 			}
 			
 		} catch (SQLException e) {
@@ -155,7 +147,7 @@ public class JogadoresDAO extends ConnectionFactory {
 		} finally {
 			fecharConexao(conexao, pstmt, rs);
 		}
-		return jogadores;
+		return jogador;
 	}
         /**
 	 * Método responsável cadastrar um jogador
@@ -233,7 +225,43 @@ public class JogadoresDAO extends ConnectionFactory {
 		}
 		return jogadores;
 	}
-
+/**
+	 * Método lista todos os deviceRegsId dos jogadores de um grupo
+	 *
+         * @param jogo_id  String
+	 * @return ArrayList  Lista de Jogador
+	 * @author Carleandro Noleto
+	 * @since 23/01/2015
+	 * @version 1.0
+	 */
+        public ArrayList<Jogador> getDeviceRegsID(int grupo_id){
+            	Connection conexao = null;
+		PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		ArrayList<Jogador> jogadores = null;		
+		conexao = criarConexao();		
+		try {
+                        jogadores = new ArrayList<Jogador>();
+			pstmt = conexao.prepareStatement("SELECT jogador_jogos.jogador_id, jogadores.iddispositivo, jogadores.email FROM jogador_jogos "
+                                + "LEFT JOIN jogadores ON (jogadores.id = jogador_jogos.jogador_id) "
+                                + "WHERE jogador_jogos.grupo_id ="+grupo_id);
+			rs = pstmt.executeQuery();
+			
+			while(rs.next()){
+				Jogador jogador = new Jogador();				
+				jogador.setId(rs.getInt("jogador_jogos.jogador_id"));
+				jogador.setIddispositivo(rs.getString("jogadores.iddispositivo"));				
+                                jogador.setEmail(rs.getString("jogadores.email"));				
+				jogadores.add(jogador);
+			}
+			
+		} catch (SQLException e) {
+			System.out.println("Erro ao listar todos deviceRegsID dos jogadores: " + e.getMessage());
+		} finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return jogadores;
+	}
       /**
      * Metodo responsavel por verificar e alterar se o usuario estiver com outro
      * dispositivo
@@ -342,6 +370,26 @@ public class JogadoresDAO extends ConnectionFactory {
               sql=" AND ("+sql+")";
           }
         return sql;
+    }
+
+    public JSONArray getTodosArquivos(int grupo_id) {
+        PreparedStatement pstmt = null;
+		ResultSet rs = null;
+		JSONArray arquivos = new JSONArray();
+                JSONArray listMissoes = new JSONArray();
+		Connection conexao = criarConexao();
+		try {
+                         listMissoes = MissoesDAO.getInstance().getMissoesRegiao(0, grupo_id, "", "", listMissoes,"");
+                         for(int j=0; j<listMissoes.length(); j++){
+                            arquivos.put(MissoesDAO.getInstance().getMissoes(listMissoes.getJSONObject(j).getInt("id"),
+                                    listMissoes.getJSONObject(j).getInt("prioridade")));
+                         }
+		} catch (JSONException e) {
+			System.out.println("Erro ao listar getTodosArquivos: " + e.getMessage());
+                } finally {
+			fecharConexao(conexao, pstmt, rs);
+		}
+		return arquivos;
     }
 
 	

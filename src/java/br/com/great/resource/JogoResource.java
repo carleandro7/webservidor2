@@ -10,7 +10,7 @@ import br.com.great.controller.JogosController;
 import br.com.great.gerenciamento.ServidorJogo;
 import static br.com.great.util.Constants.JOGO_LISTAEXECUTANDO;
 import static br.com.great.util.Constants.JOGO_NEWJOGO;
-import br.com.great.util.Operacoes;
+import br.com.great.util.OperacoesJSON;
 import java.util.Random;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -132,7 +132,7 @@ public class JogoResource {
     public String getListaExecutando(@QueryParam("jogo_id") String jogo_id, @QueryParam("jogador_id") String jogador_id) {           
         String[][] key = {{"jogador_id"}} ;
         String[][] value = {{jogador_id}} ;
-        return ServidorJogo.getInstance().acao(JOGO_LISTAEXECUTANDO,Integer.valueOf(jogo_id) , new Operacoes().toJSONArray(key, value)).toString();
+        return ServidorJogo.getInstance().acao(JOGO_LISTAEXECUTANDO,Integer.valueOf(jogo_id) , new OperacoesJSON().toJSONArray(key, value)).toString();
     }
     
     /**
@@ -149,7 +149,7 @@ public class JogoResource {
             @QueryParam("nomeficticio") String nomefecticio) {           
         String[][] key = {{"jogopai_id","jogador_id","nomeficticio"}} ;
         String[][] value = {{jogopai_id,jogador_id, nomefecticio}} ;
-        return ServidorJogo.getInstance().acao(JOGO_NEWJOGO,0, new Operacoes().toJSONArray(key, value)).toString();
+        return ServidorJogo.getInstance().acao(JOGO_NEWJOGO,0, new OperacoesJSON().toJSONArray(key, value)).toString();
     }
 
 }

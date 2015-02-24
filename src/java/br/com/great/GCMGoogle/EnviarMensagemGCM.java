@@ -56,5 +56,5 @@ public class EnviarMensagemGCM {
     public MulticastResult enviarParaDeviceBck(String user, String mensagem, List<String> DEVICE_REGISTRATION_ID){
         return new EnviarMensagemParaDeviceBck().enviarMensagem(user,mensagem, DEVICE_REGISTRATION_ID);
     }
-   
+    
 }

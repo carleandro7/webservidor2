@@ -5,7 +5,9 @@
  */
 package br.com.great.gerenciamento;
 
+import br.com.great.controller.MecanicaController;
 import br.com.great.model.Mecanica;
+import org.json.JSONArray;
 
 /**
  *
@@ -29,6 +31,10 @@ public class EstadoMecanica {
 
     public void setMecanica(Mecanica mecanica) {
         this.mecanica = mecanica;
+    }
+    
+    public JSONArray getMecanicaJSON(){
+        return new MecanicaController().getMecania(String.valueOf(this.mecanica.getId()));
     }
     
 }

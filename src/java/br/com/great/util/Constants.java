@@ -31,6 +31,8 @@ public final class Constants {
    
    public static final int GRUPO_INSERIRPARTICIPANTE = 1;
    public static final int GRUPO_LISTAARQUIVOS = 2;
+   public static final int GRUPO_MECANICAATUAL = 3;
+   public static final int GRUPO_SETSTATUSMECANICA = 4;
  
   private Constants() {
     throw new UnsupportedOperationException();
