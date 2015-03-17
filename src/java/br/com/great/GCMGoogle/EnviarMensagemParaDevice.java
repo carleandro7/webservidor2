@@ -1,6 +1,6 @@
 package br.com.great.GCMGoogle;
 
-import static br.com.great.util.Constants.API_KEY;
+import static br.com.great.helpful.Constants.API_KEY;
 import java.io.IOException;
 
 import br.com.great.gcm.server.Message;

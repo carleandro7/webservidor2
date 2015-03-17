@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.great.gerenciamento;
+package br.com.great.management;
 
 import br.com.great.controller.MecanicaController;
 import br.com.great.model.Mecanica;

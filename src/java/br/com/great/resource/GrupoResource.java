@@ -6,9 +6,14 @@
 
 package br.com.great.resource;
 
-import br.com.great.gerenciamento.ServidorJogo;
-import br.com.great.util.Constants;
-import br.com.great.util.OperacoesJSON;
+import br.com.great.GCMGoogle.EnviarMensagemGCM;
+import br.com.great.management.ServidorJogo;
+import br.com.great.helpful.Constants;
+import br.com.great.helpful.OperacoesJSON;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.core.Context;
@@ -103,11 +108,35 @@ public class GrupoResource {
     @GET
     @Path("/setStatusMecanica")
     @Produces("application/json")
-    public String setSetStatusMecanica(@QueryParam("jogo_id") String jogo_id, @QueryParam("grupo_id") String grupo_id, 
-            @QueryParam("mecanica_id") String mecanica_id) {
-            String[][] key = {{"mecanica_id"}};
-            String[][] value = {{mecanica_id}} ;
+    public String setStatusMecanica(@QueryParam("jogo_id") String jogo_id, @QueryParam("grupo_id") String grupo_id, 
+            @QueryParam("mecanica_id") String mecanica_id, @QueryParam("jogador_id") String jogador_id) {
+            String[][] key = {{"mecanica_id", "jogador_id"}};
+            String[][] value = {{mecanica_id, jogador_id}};
          return ServidorJogo.getInstance().acaoGrupo(Constants.GRUPO_SETSTATUSMECANICA,Integer.valueOf(grupo_id),Integer.valueOf(jogo_id),(new OperacoesJSON().toJSONArray(key, value))).toString();
+    }
+    
+    @GET
+    @Path("/setLocalizacaoJogador")
+    @Produces("application/json")
+    public String setLocalizacaoJogador(@QueryParam("jogo_id") String jogo_id, @QueryParam("grupo_id") String grupo_id, 
+            @QueryParam("jogador_id") String jogador_id, @QueryParam("latitude") String latitude, @QueryParam("longitude") String longitude) {
+            String[][] key = {{"jogador_id", "latitude", "longitude"}};
+            String[][] value = {{jogador_id, latitude, longitude}} ;
+         return ServidorJogo.getInstance().acaoGrupo(Constants.JOGADOR_SETLOCALIZACAO,Integer.valueOf(grupo_id),Integer.valueOf(jogo_id),(new OperacoesJSON().toJSONArray(key, value))).toString();
+    }
+    
+    @GET
+    @Path("/setMensagem")
+    @Produces("application/json")
+    public String setMensagem(@QueryParam("regs_id") String regs_id, @QueryParam("user") String user, 
+            @QueryParam("tipoacao") String tipoacao) {
+            List<String> regIdList = new ArrayList<String>();
+            regIdList.add(regs_id);
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("user", user);
+            params.put("tipoacao", tipoacao);
+            new EnviarMensagemGCM().enviarParaDeviceBckMap(params, regIdList);
+         return "true";
     }
     /**
      * PUT method for updating or creating an instance of JogoResource

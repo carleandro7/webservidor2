@@ -1,6 +1,6 @@
 package br.com.great.GCMGoogle;
 
-import static br.com.great.util.Constants.API_KEY;
+import static br.com.great.helpful.Constants.API_KEY;
 import br.com.great.gcm.server.Message;
 import br.com.great.gcm.server.MulticastResult;
 import br.com.great.gcm.server.Sender;
@@ -24,7 +24,7 @@ public class EnviarMensagemParaDeviceBck {
             try{
 		Sender sender = new Sender(API_KEY);
                 Map<String, String> params = new HashMap<String, String>();
-		params.put("message", mensagem);
+                params.put("message", mensagem);
                 params.put("user", user);
 		Message message = new Message.Builder().collapseKey("mobileconf").setData(params).build();
                 return sender.send(message, DEVICE_REGISTRATION_ID, 5);
@@ -33,4 +33,14 @@ public class EnviarMensagemParaDeviceBck {
             }
             return null;
 	}
+       public MulticastResult enviarMensagemMap(Map<String, String> params, List<String> DEVICE_REGISTRATION_ID){
+            try{
+		Sender sender = new Sender(API_KEY);
+		Message message = new Message.Builder().collapseKey("mobileconf").setData(params).build();
+                return sender.send(message, DEVICE_REGISTRATION_ID, 5);
+            }catch(Exception e){
+                System.err.println("Error ao enviar mensagem GCM:"+e.getMessage());
+            }
+            return null;
+	} 
 }

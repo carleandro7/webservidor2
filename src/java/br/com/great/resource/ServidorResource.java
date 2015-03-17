@@ -5,7 +5,7 @@
  */
 package br.com.great.resource;
 
-import br.com.great.gerenciamento.ServidorJogo;
+import br.com.great.management.ServidorJogo;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;

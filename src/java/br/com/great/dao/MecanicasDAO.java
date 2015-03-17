@@ -56,7 +56,8 @@ public class MecanicasDAO extends ConnectionFactory{
 		Connection conexao = criarConexao();
 		try {
                         mecanicas= new JSONArray();
-                         String sql = "SELECT `mecanicas`.`id`, `mecanicas`.`nome`, `mecanicas`.`tipo`, `mecanicas`.`ordem`, `mecanicas`.`tempo`, `mecanicas`.`missoes_id` FROM `mecanicas` " +
+                         String sql = "SELECT `mecanicas`.`id`, `mecanicas`.`nome`, `mecanicas`.`tipo`, `mecanicas`.`ordem`, `mecanicas`.`tempo`, "
+                                 + "`mecanicas`.`missoes_id`, `mecanicas`.`latitude`, `mecanicas`.`longitude` FROM `mecanicas` " +
                                        " LEFT JOIN `missoes` ON (`mecanicas`.`missoes_id` = `missoes`.`id`) " +
                                        " LEFT JOIN `grupos`  ON (`missoes`.`grupo_id` = `grupos`.`id`) " +
                                        " WHERE  `grupos`. `jogo_id` = "+jogo_id;
@@ -71,6 +72,8 @@ public class MecanicasDAO extends ConnectionFactory{
                                 mecanica.put("tipo",rs.getString("tipo"));
                                 mecanica.put("ordem",rs.getInt("ordem"));
                                 mecanica.put("tempo",rs.getTime("tempo"));
+                                mecanica.put("latitude",rs.getDouble("latitude"));
+                                mecanica.put("longitude",rs.getDouble("longitude"));
                                 mecanica.put("missoes_id",rs.getInt("missoes_id"));
                                 
                                 
@@ -138,6 +141,8 @@ public class MecanicasDAO extends ConnectionFactory{
                                 mecanica.put("tipo",rs.getString("tipo"));
                                 mecanica.put("ordem",rs.getInt("ordem"));
                                 mecanica.put("tempo",rs.getTime("tempo"));
+                                mecanica.put("latitude",rs.getDouble("latitude"));
+                                mecanica.put("longitude",rs.getDouble("longitude"));
                                 mecanica.put("missoes_id",rs.getInt("missoes_id"));            
                             switch (rs.getString("tipo")) {
                                 case "vtextos":
@@ -203,6 +208,8 @@ public class MecanicasDAO extends ConnectionFactory{
                                 mecanica.setTipo(rs.getString("tipo"));
                                 mecanica.setOrdem(rs.getInt("ordem"));
                                 mecanica.setTempo(rs.getTime("tempo"));
+                                mecanica.setLatitude(rs.getDouble("latitude"));
+                                mecanica.setLongitude(rs.getDouble("longitude"));
                                 mecanica.setMissoes_id(rs.getInt("missoes_id"));
                                 mecanicas.add(mecanica);
 			}

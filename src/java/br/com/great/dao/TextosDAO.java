@@ -56,7 +56,7 @@ public class TextosDAO extends ConnectionFactory{
 			rs.next();
 				vtexto = new JSONObject();
                                 vtexto.put("id",rs.getInt("id"));
-                                vtexto.put("nome",rs.getString("texto"));
+                                vtexto.put("texto",rs.getString("texto"));
                                 vtexto.put("mecanicas_id",rs.getInt("mecanica_id"));
                                 
 		} catch (SQLException | JSONException e) {

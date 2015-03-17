@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.great.util;
+package br.com.great.helpful;
 
 import org.json.JSONArray;
 import org.json.JSONException;

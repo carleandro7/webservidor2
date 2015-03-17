@@ -13,6 +13,7 @@ import br.com.great.model.Jogador;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import org.json.JSONArray;
 
 /**
@@ -51,12 +52,12 @@ public class GruposController {
      * Envia uma mensagem para todos os dipositivos que estão participando de um grupo
      * @param grupo_id int
      * @param mensagem mensagem que sera enviada para todos os dispositivos
+     * @param user usuario
      * @return boolean true se envou com sucesso
      */
-    public boolean enviarMensagem(int grupo_id, String mensagem){
+    public boolean enviarMensagem(int grupo_id, String mensagem, String user){
         ArrayList<Jogador> listJogador = new JogadoresDAO().getDeviceRegsID(grupo_id);
         List<String> regIdList = new ArrayList<String>();
-        String user = "root";
         for (Jogador jogador : listJogador) {
             regIdList.add(jogador.getIddispositivo());
         }
@@ -65,6 +66,24 @@ public class GruposController {
            return true;
         }
         return true;
-    } 
+    }
+    /**
+     * Envia uma mensagem para todos os dipositivos que estão participando de um grupo
+     * @param grupo_id int
+     * @param params Parametros enviados para o dispositivos
+     * @return boolean true se envou com sucesso
+     */
+    public boolean enviarMensagemMap(int grupo_id, Map<String, String> params){
+        ArrayList<Jogador> listJogador = new JogadoresDAO().getDeviceRegsID(grupo_id);
+        List<String> regIdList = new ArrayList<String>();
+        for (Jogador jogador : listJogador) {
+            regIdList.add(jogador.getIddispositivo());
+        }
+        if(!regIdList.isEmpty()){
+           new EnviarMensagemGCM().enviarParaDeviceBckMap(params, regIdList);
+           return true;
+        }
+        return true;
+    }
 }
 

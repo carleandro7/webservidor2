@@ -7,10 +7,10 @@
 package br.com.great.resource;
 
 import br.com.great.controller.JogosController;
-import br.com.great.gerenciamento.ServidorJogo;
-import static br.com.great.util.Constants.JOGO_LISTAEXECUTANDO;
-import static br.com.great.util.Constants.JOGO_NEWJOGO;
-import br.com.great.util.OperacoesJSON;
+import br.com.great.management.ServidorJogo;
+import static br.com.great.helpful.Constants.JOGO_LISTAEXECUTANDO;
+import static br.com.great.helpful.Constants.JOGO_NEWJOGO;
+import br.com.great.helpful.OperacoesJSON;
 import java.util.Random;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;

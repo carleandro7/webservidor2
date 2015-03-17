@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package br.com.great.util;
+package br.com.great.helpful;
 
 /**
  * Constants used on GCM service communication.
@@ -33,6 +33,8 @@ public final class Constants {
    public static final int GRUPO_LISTAARQUIVOS = 2;
    public static final int GRUPO_MECANICAATUAL = 3;
    public static final int GRUPO_SETSTATUSMECANICA = 4;
+   public static final int JOGADOR_SETLOCALIZACAO = 5;
+   public static final int JOGADOR_ENVIARLOCALIZACAO = 6;
  
   private Constants() {
     throw new UnsupportedOperationException();

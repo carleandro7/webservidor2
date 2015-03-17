@@ -197,7 +197,7 @@ public class JogadoresDAO extends ConnectionFactory {
 	 * @since 23/01/2015
 	 * @version 1.0
 	 */
-        public ArrayList<Jogador> getDeviceRegsID(String jogo_id){
+        public ArrayList<Jogador> getDeviceRegsIDJogo(int jogo_id){
             	Connection conexao = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;

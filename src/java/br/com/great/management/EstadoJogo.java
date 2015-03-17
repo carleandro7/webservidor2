@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.great.gerenciamento;
+package br.com.great.management;
 
 import br.com.great.dao.GruposDAO;
 import br.com.great.model.Grupo;
 import br.com.great.model.Jogo;
-import br.com.great.util.OperacoesJSON;
 import java.util.ArrayList;
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -28,10 +27,10 @@ public class EstadoJogo extends Thread {
     @Override
     public void run() {
         while (true) {
-           if(jogo.getOrdMecanicas().equals("0")){
+           if(jogo.getOrdMecanicas().equals("1")){
             switch (acao) {
                 case 1:
-
+                    
                     break;
                 case 2:
 
@@ -98,13 +97,14 @@ public class EstadoJogo extends Thread {
         return json;
     }
 
-    public int grupoJogadorParticipando(int jogador_id) {
+    public Grupo grupoJogadorParticipando(int jogador_id) {
         for (EstadoGrupo grupo : listGrupo) {
             if (grupo.getJogadorParticipando(jogador_id) == 1) {
-                return grupo.getGrupo().getId();
+                return grupo.getGrupo();
             }
         }
-        return 0;
+        return null;
     }
+    
 
 }

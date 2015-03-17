@@ -7,6 +7,7 @@ package br.com.great.GCMGoogle;
 
 import br.com.great.gcm.server.MulticastResult;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 
@@ -56,5 +57,16 @@ public class EnviarMensagemGCM {
     public MulticastResult enviarParaDeviceBck(String user, String mensagem, List<String> DEVICE_REGISTRATION_ID){
         return new EnviarMensagemParaDeviceBck().enviarMensagem(user,mensagem, DEVICE_REGISTRATION_ID);
     }
-    
+    /**
+    * Método responsável por enviar mensagem para varios dispositivos com varios parametros
+    *
+     * @param params Parametros enviados para o dispositivos
+     * @param DEVICE_REGISTRATION_ID lista de registro dos dispositivos que vai receber a mensagem
+    * @return boolean
+    * @author Carleandro Noleto
+    * @version 1.0
+    */
+    public MulticastResult enviarParaDeviceBckMap(Map<String, String> params, List<String> DEVICE_REGISTRATION_ID){
+        return new EnviarMensagemParaDeviceBck().enviarMensagemMap(params, DEVICE_REGISTRATION_ID);
+    }
 }

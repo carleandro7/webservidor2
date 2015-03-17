@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package br.com.great.gerenciamento;
+package br.com.great.management;
 
 import br.com.great.controller.GruposController;
 import br.com.great.controller.JogadoresController;
@@ -11,9 +11,11 @@ import br.com.great.controller.MissoesController;
 import br.com.great.model.Grupo;
 import br.com.great.model.Jogador;
 import br.com.great.model.Missao;
-import br.com.great.util.Constants;
-import br.com.great.util.OperacoesJSON;
+import br.com.great.helpful.Constants;
+import br.com.great.helpful.OperacoesJSON;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -97,6 +99,9 @@ public class EstadoGrupo {
                 case Constants.GRUPO_SETSTATUSMECANICA :
                         jsonResult = setMecanicaAtualGrupo(json);
                     break;
+                case Constants.JOGADOR_SETLOCALIZACAO:
+                        jsonResult = setJogadorLocalizacao(json);
+                    break;
                 default:
                 //comandos caso nenhuma das opções anteriores tenha sido escolhida
             }
@@ -124,6 +129,7 @@ public class EstadoGrupo {
     private JSONArray setMecanicaAtualGrupo(JSONArray json) {
         JSONArray jsonResult = new JSONArray();
         String valueResult="";
+        Map<String, String> params = new HashMap<String, String>();
         //Se o jogo for do tipo ordenado
         if(this.tipoOrdem==1){
                 //se acao for um get na missao atual
@@ -138,9 +144,22 @@ public class EstadoGrupo {
                     valueResult = String.valueOf(result);
                     //ainda tem mecanica para realizar
                     if(getMissaoAtual() != -1){
-                        new GruposController().enviarMensagem(grupo.getId(), "getMecanicaAtual");
+                        String msg = "Mecanica "+listMissoes.get(missaoAtual).getMissao().getNome()+
+                                " Foi executada por "+getJogador(Integer.valueOf(new OperacoesJSON().toJSONObject(json, 0, "jogador_id"))).getEmail();
+                        enviarMsgJogador(msg);
+                        params.put("message", msg);
+                        params.put("tipoacao", "apresMensagem");
+                        params.put("user", "root");
+                        new GruposController().enviarMensagemMap(grupo.getId(), params);
+                        params.clear();
+                        params.put("tipoacao", "getMecanicaAtual");
+                        params.put("user", "root");
+                        new GruposController().enviarMensagemMap(grupo.getId(), params);
                     }else{
-                        new GruposController().enviarMensagem(grupo.getId(), "jogoFim");
+                        params.clear();
+                        params.put("tipoacao", "jogoFim");
+                        params.put("user", "root");
+                        new GruposController().enviarMensagemMap(grupo.getId(), params);
                     }
                 }else{
                     //se nao esxiste mais missoes para realizar
@@ -169,8 +188,8 @@ public class EstadoGrupo {
             result = true;
         }
         String[][] key = {{"result"}};
-        String[][] valeu = {{String.valueOf(result)}};
-        return new OperacoesJSON().toJSONArray(key, valeu);
+        String[][] value = {{String.valueOf(result)}};
+        return new OperacoesJSON().toJSONArray(key, value);
     }
     
     /*
@@ -218,6 +237,41 @@ public class EstadoGrupo {
       }else{
           return  new JogadoresController().getTodosArquivos(grupo.getId());
       }
+    }
+
+    private void enviarMsgJogador(String mensagem) {
+      for(int i=0; i< listJogadores.size(); i++){
+          listJogadores.get(i).getMensagens().add(mensagem);
+      }
+        System.err.println("Mensagem "+listJogadores.get(0).getMensagens().get(0));
+    }
+
+    private Jogador getJogador(int jogador_id) {
+        for(int i=0; i< listJogadores.size(); i++){
+          if(listJogadores.get(i).getJogador().getId() == jogador_id)
+              return listJogadores.get(i).getJogador();
+      }
+        return null;
+    }
+
+    private JSONArray setJogadorLocalizacao(JSONArray json) {
+      int jogador_id = Integer.valueOf(new OperacoesJSON().toJSONObject(json, 0, "jogador_id"));
+      boolean result = false;
+      Map<String, String> params = new HashMap<String, String>();
+      for(int i=0; i< listJogadores.size(); i++){
+          if(listJogadores.get(i).getJogador().getId() == jogador_id){
+              listJogadores.get(i).getJogador().setLatitude(Double.valueOf(new OperacoesJSON().toJSONObject(json, 0, "latitude")));
+              listJogadores.get(i).getJogador().setLongitude(Double.valueOf(new OperacoesJSON().toJSONObject(json, 0, "longitude")));
+              listJogadores.get(i).setAtualizarLocalizacao(1);
+              System.err.println("teste:"+listJogadores.get(i).getJogador().getLongitude());
+              System.err.println("teste:"+listJogadores.get(i).getJogador().getLatitude());
+              result = true;
+              break;
+          }
+      }
+        String[][] key = {{"result"}};
+        String[][] value = {{String.valueOf(result)}};
+        return new OperacoesJSON().toJSONArray(key, value);
     }
 
 }
