@@ -5,6 +5,9 @@
  */
 package br.com.great.dao;
 
+import br.com.great.contexto.CapturarObjeto;
+import br.com.great.contexto.Posicao;
+import br.com.great.contexto.Som;
 import br.com.great.factory.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -81,25 +84,24 @@ public class SonsDAO extends ConnectionFactory{
 	 * @since 14/01/2015
 	 * @version 1.0
 	 */
-        public JSONObject getMecCSons(int mecanica_id){
+        public Som getMecCSons(int mecanica_id){
                 PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conexao = criarConexao();
-                JSONObject cSons =null;
+                Som cSons =null;
                 try{
-                        String sql = "SELECT * FROM  `csons` WHERE  `csons`.`mecanica_id` =  "+mecanica_id;
+                        String sql = "SELECT * FROM  csons LEFT JOIN mecsimples ON "
+                                + " (mecsimples.id = csons.mecsimples_id) WHERE csons.mecsimples_id = "+mecanica_id;
                         pstmt = conexao.prepareStatement(sql);
                         rs = pstmt.executeQuery();
-			rs.next();
-				cSons = new JSONObject();
-                                cSons.put("id",rs.getInt("id"));
-                                cSons.put("som",rs.getString("som"));
-                                cSons.put("jogador_id",rs.getString("jogador_id"));
-                                cSons.put("latitude",rs.getString("latitude"));
-                                cSons.put("longitude",rs.getString("longitude"));
-                                cSons.put("mecanicas_id",rs.getInt("mecanica_id"));
-                                
-		} catch (SQLException | JSONException e) {
+			if(rs.next()){
+				cSons = new Som();
+                                cSons.setSom_id(rs.getInt("csons.id"));
+                                cSons.setArqSom(rs.getString("csons.som"));
+                                cSons.setPosicao(new Posicao(rs.getDouble("mecsimples.latitude"), rs.getDouble("mecsimples.longitude")));
+                                cSons.setMecsimples_id(rs.getInt("csons.mecsimples_id"));
+                        }
+		} catch (SQLException e) {
 			System.out.println("Erro ao listar dados de uma mecanica csons: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);

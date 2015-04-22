@@ -5,6 +5,8 @@
  */
 package br.com.great.dao;
 
+import br.com.great.contexto.IrLocal;
+import br.com.great.contexto.Posicao;
 import br.com.great.factory.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -39,23 +41,22 @@ public class IrLocaisDAO extends ConnectionFactory{
      * @param mecanica_id id da mecanica
      * @return JSONObjet objeto com todos os dados da entidade irlocais
      */
-    public JSONObject getMecIrLocais(int mecanica_id){
+    public IrLocal getMecIrLocais(int mecanica_id){
                 PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conexao = criarConexao();
-                JSONObject irLocais =null;
+                IrLocal irLocais =null;
                 try{
                         String sql = "SELECT * FROM  `irlocais` WHERE  `irlocais`.`mecanica_id` =  "+mecanica_id;
                         pstmt = conexao.prepareStatement(sql);
                         rs = pstmt.executeQuery();
-			rs.next();
-				irLocais = new JSONObject();
-                                irLocais.put("id",rs.getInt("id"));
-                                irLocais.put("latitude",rs.getString("latitude"));
-                                irLocais.put("longitude",rs.getString("longitude"));
-                                irLocais.put("mecanicas_id",rs.getInt("mecanica_id"));
-                                
-		} catch (SQLException | JSONException e) {
+			if(rs.next()){
+				irLocais = new IrLocal();
+                                irLocais.setIrlocal_id(rs.getInt("id"));
+                                irLocais.setPosicao(new Posicao(rs.getDouble("latitude"), rs.getDouble("longitude")));
+                                irLocais.setMecsimples_id(rs.getInt("mecanica_id"));
+                        }
+		} catch (SQLException  e) {
 			System.out.println("Erro ao listar todos os clientes: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);

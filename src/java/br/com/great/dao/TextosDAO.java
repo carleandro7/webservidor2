@@ -5,6 +5,9 @@
  */
 package br.com.great.dao;
 
+import br.com.great.contexto.CapturarObjeto;
+import br.com.great.contexto.Posicao;
+import br.com.great.contexto.Texto;
 import br.com.great.factory.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -44,22 +47,24 @@ public class TextosDAO extends ConnectionFactory{
 	 * @since 14/01/2015
 	 * @version 1.0
 	 */
-        public JSONObject getMecVTexto(int mecanica_id){
+        public Texto getMecVTexto(int mecanica_id){
                	PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conexao = criarConexao();
-                JSONObject vtexto =null;
+                Texto vtexto =null;
                 try{
-                        String sql = "SELECT * FROM  `vtextos` WHERE  `vtextos`.`mecanica_id` =  "+mecanica_id;
+                        String sql = "SELECT * FROM vtextos LEFT JOIN mecsimples ON "
+                                + " (mecsimples.id = vtextos.mecsimples_id) WHERE vtextos.mecsimples_id = "+mecanica_id;
                         pstmt = conexao.prepareStatement(sql);
                         rs = pstmt.executeQuery();
 			rs.next();
-				vtexto = new JSONObject();
-                                vtexto.put("id",rs.getInt("id"));
-                                vtexto.put("texto",rs.getString("texto"));
-                                vtexto.put("mecanicas_id",rs.getInt("mecanica_id"));
+				vtexto = new Texto();
+                                vtexto.setTexto_id(rs.getInt("vtextos.id"));
+                                vtexto.setTexto(rs.getString("vtextos.texto"));
+                                vtexto.setPosicao(new Posicao(rs.getDouble("mecsimples.latitude"), rs.getDouble("mecsimples.longitude")));
+                                vtexto.setMecsimples_id(rs.getInt("vtextos.mecanica_id"));
                                 
-		} catch (SQLException | JSONException e) {
+		} catch (SQLException e) {
 			System.out.println("Erro ao listar dados de uma mecanica texto: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);
@@ -115,25 +120,24 @@ public class TextosDAO extends ConnectionFactory{
 	 * @since 19/01/2015
 	 * @version 1.0
 	 */
-        public JSONObject getMecCTextos(int mecanica_id){
+        public Texto getMecCTextos(int mecanica_id){
                 PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conexao = criarConexao();
-                JSONObject cTextos =null;
+                Texto cTextos =null;
                 try{
-                        String sql = "SELECT * FROM  `ctextos` WHERE  `ctextos`.`mecanica_id` =  "+mecanica_id;
+                        String sql = "SELECT * FROM ctextos LEFT JOIN mecsimples ON "
+                                + " (mecsimples.id = ctextos.mecsimples_id) WHERE ctextos.mecsimples_id = "+mecanica_id;
                         pstmt = conexao.prepareStatement(sql);
                         rs = pstmt.executeQuery();
-			rs.next();
-				cTextos = new JSONObject();
-                                cTextos.put("id",rs.getInt("id"));
-                                cTextos.put("texto",rs.getString("texto"));
-                                cTextos.put("jogador_id",rs.getString("jogador_id"));
-                                cTextos.put("latitude",rs.getString("latitude"));
-                                cTextos.put("longitude",rs.getString("longitude"));
-                                cTextos.put("mecanicas_id",rs.getInt("mecanica_id"));
-                                
-		} catch (SQLException | JSONException e) {
+			if(rs.next()){
+				cTextos = new Texto();
+                                cTextos.setTexto_id(rs.getInt("ctextos.id"));
+                                cTextos.setTexto(rs.getString("ctextos.texto"));
+                                cTextos.setPosicao(new Posicao(rs.getDouble("mecsimples.latitude"), rs.getDouble("mecsimples.longitude")));
+                                cTextos.setMecsimples_id(rs.getInt("ctextos.mecsimples_id"));
+                        }
+		} catch (SQLException e) {
 			System.out.println("Erro ao listar dados de uma mecanica cTextos: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);

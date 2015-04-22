@@ -5,13 +5,14 @@
  */
 package br.com.great.dao;
 
+import br.com.great.contexto.CapturarObjeto;
+import br.com.great.contexto.Foto;
+import br.com.great.contexto.Posicao;
 import br.com.great.factory.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 
 /**
@@ -81,22 +82,24 @@ public class FotosDAO extends ConnectionFactory{
 	 * @since 14/01/2015
 	 * @version 1.0
 	 */
-        public JSONObject getMecVFotos(int mecanica_id){
+        public Foto getMecVFotos(int mecanica_id){
                 PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conexao = criarConexao();
-                JSONObject vfoto =null;
+                Foto vfoto =null;
                 try{
-                        String sql = "SELECT * FROM  `vfotos` WHERE  `vfotos`.`mecanica_id` =  "+mecanica_id;
+                        String sql = "SELECT * FROM  vfotos LEFT JOIN mecsimples ON "
+                                + " (mecsimples.id = vfotos.mecsimples_id) WHERE vfotos.mecsimples_id = "+mecanica_id;
                         pstmt = conexao.prepareStatement(sql);
                         rs = pstmt.executeQuery();
-			rs.next();
-				vfoto = new JSONObject();
-                                vfoto.put("id",rs.getInt("id"));
-                                vfoto.put("arqimage",rs.getString("arqimage"));
-                                vfoto.put("mecanicas_id",rs.getInt("mecanica_id"));
-                                
-		} catch (SQLException | JSONException e) {
+			if(rs.next()){
+				vfoto = new Foto();
+                                vfoto.setFoto_id(rs.getInt("vfotos.id"));
+                                vfoto.setArqimage(rs.getString("vfotos.arqimage"));
+                                vfoto.setPosicao(new Posicao(rs.getDouble("mecsimples.latitude"), rs.getDouble("mecsimples.longitude")));
+                                vfoto.setMecsimples_id(rs.getInt("vfotos.mecsimples_id"));
+                        }
+		} catch (SQLException e) {
 			System.out.println("Erro ao listar dados de uma mecanica vfotos: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);
@@ -114,25 +117,25 @@ public class FotosDAO extends ConnectionFactory{
 	 * @since 14/01/2015
 	 * @version 1.0
 	 */
-        public JSONObject getMecCFotos(int mecanica_id){
+        public Foto getMecCFotos(int mecanica_id){
                 PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conexao = criarConexao();
-                JSONObject cFotos =null;
+                Foto cFotos =null;
                 try{
-                        String sql = "SELECT * FROM  `cfotos` WHERE  `cfotos`.`mecanica_id` =  "+mecanica_id;
+                        String sql = "SELECT * FROM  cfotos  LEFT JOIN mecsimples ON "
+                                + " (mecsimples.id = cfotos.mecsimples_id) WHERE cfotos.mecsimples_id = "+mecanica_id;
                         pstmt = conexao.prepareStatement(sql);
                         rs = pstmt.executeQuery();
-			rs.next();
-				cFotos = new JSONObject();
-                                cFotos.put("id",rs.getInt("id"));
-                                cFotos.put("image",rs.getString("image"));
-                                cFotos.put("jogador_id",rs.getString("jogador_id"));
-                                cFotos.put("latitude",rs.getString("latitude"));
-                                cFotos.put("longitude",rs.getString("longitude"));
-                                cFotos.put("mecanicas_id",rs.getInt("mecanica_id"));
+			if(rs.next()){
+				cFotos = new Foto();
+                                cFotos.setFoto_id(rs.getInt("cfotos.id"));
+                                cFotos.setArqimage(rs.getString("cfotos.image"));
+                                cFotos.setPosicao(new Posicao(rs.getDouble("mecsimples.latitude"), rs.getDouble("mecsimples.longitude")));
+                                cFotos.setMecsimples_id(rs.getInt("cfotos.mecsimples_id"));
                                 
-		} catch (SQLException | JSONException e) {
+                        }
+		} catch (SQLException e) {
 			System.out.println("Erro ao listar dados de uma mecanica cfotos: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);

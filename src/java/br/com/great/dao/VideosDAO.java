@@ -5,6 +5,9 @@
  */
 package br.com.great.dao;
 
+import br.com.great.contexto.CapturarObjeto;
+import br.com.great.contexto.Posicao;
+import br.com.great.contexto.Video;
 import br.com.great.factory.ConnectionFactory;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -81,25 +84,24 @@ public class VideosDAO extends ConnectionFactory{
 	 * @since 14/01/2015
 	 * @version 1.0
 	 */
-        public JSONObject getMecCVideos(int mecanica_id){
+        public Video getMecCVideos(int mecanica_id){
                 PreparedStatement pstmt = null;
 		ResultSet rs = null;
 		Connection conexao = criarConexao();
-                JSONObject cVideos =null;
+                Video cVideos =null;
                 try{
-                        String sql = "SELECT * FROM  `cvideos` WHERE  `cvideos`.`mecanica_id` =  "+mecanica_id;
+                        String sql = "SELECT * FROM  cvideos LEFT JOIN mecsimples ON "
+                                + " (mecsimples.id = cvideos.mecsimples_id) WHERE cvideos.mecsimples_id = "+mecanica_id;
                         pstmt = conexao.prepareStatement(sql);
                         rs = pstmt.executeQuery();
-			rs.next();
-				cVideos = new JSONObject();
-                                cVideos.put("id",rs.getInt("id"));
-                                cVideos.put("video",rs.getString("video"));
-                                cVideos.put("jogador_id",rs.getString("jogador_id"));
-                                cVideos.put("latitude",rs.getString("latitude"));
-                                cVideos.put("longitude",rs.getString("longitude"));
-                                cVideos.put("mecanicas_id",rs.getInt("mecanica_id"));
-                                
-		} catch (SQLException | JSONException e) {
+			if(rs.next()){
+				cVideos = new Video();
+                                cVideos.setVideo_id(rs.getInt("cvideos.id"));
+                                cVideos.setArqVideo(rs.getString("cvideos.video"));
+                                cVideos.setPosicao(new Posicao(rs.getDouble("mecsimples.latitude"), rs.getDouble("mecsimples.longitude")));
+                                cVideos.setMecsimples_id(rs.getInt("cvideos.mecsimples_id"));
+                        }
+		} catch (SQLException e) {
 			System.out.println("Erro ao listar dados de uma mecanica cvideos: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);

@@ -1,6 +1,6 @@
 package br.com.great.GCMGoogle;
 
-import static br.com.great.helpful.Constants.API_KEY;
+import static br.com.great.util.Constants.API_KEY;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.URL;

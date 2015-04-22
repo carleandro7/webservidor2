@@ -7,10 +7,11 @@
 package br.com.great.controller;
 
 import br.com.great.GCMGoogle.EnviarMensagemGCM;
+import br.com.great.contexto.Jogador;
+import br.com.great.contexto.Jogo;
+import br.com.great.dao.ConfiMissaoDAO;
 import br.com.great.dao.JogadoresDAO;
 import br.com.great.dao.JogosDAO;
-import br.com.great.model.Jogador;
-import br.com.great.model.Jogo;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -25,15 +26,6 @@ import org.json.JSONArray;
 public class JogosController {
     
     /**
-     * Método responsável por listar todos os pjogos do banco
-     * @return JSONArray lista de jogos
-     */
-    public JSONArray listarTodos(){
-		System.out.println("Enviando para o GIT");
-		return JogosDAO.getInstance().listarTodos();
-    }
-
-    /**
      * Método responsável por listar todos os pjogos perto de um local com distancia definida
          *
          * @param latitude String
@@ -41,72 +33,16 @@ public class JogosController {
          * @param distancia String
 	 * @return JSONArray lista de jogos
      */
-    public JSONArray getJogos(String latitude, String longitude,String distancia){
+    public JSONArray getJogos(double latitude, double longitude,int distancia){
 		System.out.println("Enviando para o GIT");
 		return JogosDAO.getInstance().getJogos(latitude, longitude, distancia);
     }
-    /**
-     /**
-     * Dados iniciais de um jogo com todas as mecanicas e missoes
-     * @param jogo_id String
-     * @return JSONArray lista de grupos, missoes e mecanicas
-     */
-    public JSONArray getDadosIniciais(String jogo_id){
-		System.out.println("Enviando para o GIT");
-		return JogosDAO.getInstance().getDadosIniciais(jogo_id);
-    }
-    /**
-     * Envia uma mensagem para todos os dipositivos que estão participando do jogo
-     * @param jogo_id String
-     * @param mensagem mensagem que sera enviada para todos os dispositivos
-     * @param jogador_id id do jogador que enviou a mensagem
-     * @return boolean true se envou com sucesso
-     */
-    public boolean enviarMensagem(String jogo_id, String mensagem, String jogador_id){
-        ArrayList<Jogador> listJogador = new JogadoresDAO().getDeviceRegsID(Integer.valueOf(jogo_id));
-        List<String> regIdList = new ArrayList<String>();
-        String user = "user";
-        for (Jogador jogador : listJogador) {
-            if (!jogador_id.equals(String.valueOf(jogador.getId()))) {
-                regIdList.add(jogador.getIddispositivo());
-            } else {
-                user = jogador.getEmail();
-            }
-        }
-        if(!regIdList.isEmpty()){
-           new EnviarMensagemGCM().enviarParaDeviceBck(user,mensagem, regIdList);
-           return true;
-        }
-        return true;
-    } 
     
-    public boolean enviarMensagem(int jogo_id,  Map<String, String> params){
-        ArrayList<Jogador> listJogador = new JogadoresDAO().getDeviceRegsIDJogo(jogo_id);
-        List<String> regIdList = new ArrayList<String>();
-        for (Jogador jogador : listJogador) {
-            regIdList.add(jogador.getIddispositivo());
-        }
-        if(!regIdList.isEmpty()){
-           new EnviarMensagemGCM().enviarParaDeviceBckMap(params, regIdList);
-           return true;
-        }
-        return true;
-    } 
-    /**
-     * Criar um novo jogo
-     * @param jogo_id id do jogo
-     * @param jogador_id id do jogador
-     * @param nome nome ficticio para o jogo
-     * @return Jogo Dados do novo jogo
-     */
-    public Jogo setNewJogo(int jogo_id, int jogador_id, String nome) {
-        return JogosDAO.getInstance().setNewJogo(jogo_id, jogador_id, nome);
+    public Jogo getNewJogo(int jogo_id){
+		System.out.println("Enviando para o GIT");
+                Jogo jogo = JogosDAO.getInstance().getJogo(jogo_id);
+                jogo.setConfiguracaoMissao(ConfiMissaoDAO.getInstance().getConfiMissao(jogo_id));
+		return jogo;
     }
-    /**
-     * Lista de todos os jogos que ainda estao sendo executados com status 1
-     * @return JSONArray lista de todos os jogos
-     */
-    public ArrayList<Jogo> getJogosExecutando() {
-        return JogosDAO.getInstance().getJogosExecutando();
-    }
+
 }
