@@ -91,6 +91,9 @@ public class Jogo {
     }
 
     public ArrayList<DadosPersonagem> getDadosPersonagem() {
+        if(dadosPersonagem == null){
+            dadosPersonagem = new ArrayList<DadosPersonagem>();
+        }
         return dadosPersonagem;
     }
 
@@ -128,6 +131,9 @@ public class Jogo {
         for (int i = 0; i < configuracaoMissao.size(); i++) {
             if (configuracaoMissao.get(i).getGrupo(grupo_id) && !configuracaoMissao.get(i).getGrupoLista(grupo_id).getJogador(jogador.getId())) {
                 configuracaoMissao.get(i).getGrupoLista(grupo_id).getJogadores().add(jogador);
+                DadosPersonagem dPersonagem = new DadosPersonagem();
+                dPersonagem.setJogador(jogador);
+                getDadosPersonagem().add(dPersonagem);
                 return true;
             }
         }
@@ -154,6 +160,21 @@ public class Jogo {
             }
         }
         return null;
+    }
+
+    public DadosPersonagem getDadosPersonagem(int jogador_id) {
+        for (int i = 0; i < dadosPersonagem.size(); i++) {
+            if (dadosPersonagem.get(i).getJogador().getId() == jogador_id) {
+               return dadosPersonagem.get(i);
+            }
+        }
+        return null;
+    }
+    public JSONArray getDadosPersJSON(int jogador_id) {
+        JSONArray json = new JSONArray();
+        JSONObject obj = new JSONObject(getDadosPersonagem(jogador_id));
+        json.put(obj);
+        return json;
     }
 
     public Mecanica getMecanicaMissao(int mecanica_id, ArrayList<Missao> missoes) {
@@ -187,14 +208,14 @@ public class Jogo {
         for (int i = 0; i < listMecanicas.size(); i++) {
             String tipo = ((MecanicaSimples) listMecanicas.get(i)).getTiposimples();
             if (tipo.equals("vsons") || tipo.equals("vvideos") || tipo.equals("vfotos")) {
-                if (listMecanicas.get(i).getEstado().getEstado() == new Pronto().getEstado()
-                        || listMecanicas.get(i).getEstado().getEstado() == new Executando().getEstado()) {
+                if (listMecanicas.get(i).getEstado() instanceof Pronto
+                        || listMecanicas.get(i).getEstado() instanceof Executando) {
                     lista.add(listMecanicas.get(i));
                     Posicao p1 = new Posicao(latJ, longJ);
                     Posicao p2 = ((MecanicaSimples) listMecanicas.get(i)).getObjeto().getPosicao();
                     int prioridade = new FuncoesCalculo().distanciaMecJogador(p1, p2);
                     listaP.add(prioridade);
-                } else if (listMecanicas.get(i).getEstado().getEstado() == new Bloqueado().getEstado()) {
+                } else if (listMecanicas.get(i).getEstado() instanceof Bloqueado) {
                     bloqueadas.add(listMecanicas.get(i));
                 }
             }
@@ -242,6 +263,7 @@ public class Jogo {
                     arq = ((Foto) obj).getArqimage();
                 }
                 jobj.put("arquivo", arq);
+                jobj.put("tipo", tipo);
                 json.put(jobj);
             }
         } catch (JSONException ex) {

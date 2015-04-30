@@ -97,7 +97,7 @@ public class EngajamentoDAO extends ConnectionFactory {
             String sql = "INSERT INTO engajamento (estado, missoes_id, grupos_id) VALUES ("+estado+", "+missao_id+", "+grupo_id+")";
             System.out.println(sql);
             pstmt = conexao.prepareStatement(sql);
-            pstmt.execute(sql);
+    //        pstmt.execute(sql);
             return true;
         } catch (SQLException e) {
             System.out.println("Erro ao salvar engajamento : " + e);

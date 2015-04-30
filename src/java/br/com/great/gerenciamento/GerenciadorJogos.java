@@ -6,6 +6,7 @@
 package br.com.great.gerenciamento;
 
 import br.com.great.contexto.Bloqueado;
+import br.com.great.contexto.CapturarObjeto;
 import br.com.great.contexto.Engajamento;
 import br.com.great.contexto.Estado;
 import br.com.great.contexto.Executando;
@@ -15,12 +16,14 @@ import br.com.great.contexto.Jogador;
 import br.com.great.contexto.Jogo;
 import br.com.great.contexto.Mecanica;
 import br.com.great.contexto.MecanicaComposta;
+import br.com.great.contexto.MecanicaSimples;
 import br.com.great.contexto.Missao;
+import br.com.great.contexto.Objeto;
 import br.com.great.contexto.Pronto;
+import br.com.great.contexto.VisualizarObjeto;
 import br.com.great.controller.JogadoresController;
 import br.com.great.controller.JogosController;
 import br.com.great.dao.EngajamentoDAO;
-import br.com.great.dao.MecanicasDAO;
 import br.com.great.util.Constants;
 import br.com.great.util.OperacoesJSON;
 import java.util.ArrayList;
@@ -54,6 +57,7 @@ public class GerenciadorJogos extends Thread {
     }
 
     public void iniciar() {
+        PlayJogo.getJogos().clear();
         this.listJogos = PlayJogo.getJogos();
         carregaJogadores();
     }
@@ -101,7 +105,7 @@ public class GerenciadorJogos extends Thread {
                     break;
                 case Constants.JOGO_GRUPOSJOGADOR:
                     jobj = json.getJSONObject(1);
-                    jsonResult = new JSONArray().put(getGruposJogador(jobj.getInt("jogo_id"), jobj.getInt("jogador_id")));
+                    jsonResult = new JSONArray().put(getGruposJogador(getJogo(jobj.getInt("jogo_id")), jobj.getInt("jogador_id")));
                     break;
                 case Constants.JOGADOR_SETLOCALIZACAO:
                     jobj = json.getJSONObject(1);
@@ -111,7 +115,7 @@ public class GerenciadorJogos extends Thread {
                     break;
                 case Constants.JOGO_LISTJOGOSEXEFILHO:
                     jobj = json.getJSONObject(1);
-                    jsonResult = getJogos(jobj.getInt("jogo_id"));
+                    jsonResult = getJogos(jobj.getInt("jogo_id"), jobj.getInt("jogador_id"));
                     break;
                 case Constants.JOGADOR_REGDISPOSITIVO:
                     jobj = json.getJSONObject(1);
@@ -128,20 +132,22 @@ public class GerenciadorJogos extends Thread {
                     break;
                 case Constants.JOGO_SET_ESTADOEXE:
                     jobj = json.getJSONObject(1);
-                    executar = executarMecanica(jobj.getInt("jogo_id"), jobj.getInt("grupo_id"), jobj.getInt("mecanica_id"));
+                    executar = executarMecanica(jobj.getInt("jogo_id"), jobj.getInt("grupo_id"), jobj.getInt("mecanica_id"), jobj.getInt("jogador_id"));
                     value = new String[]{String.valueOf(executar)};
                     jsonResult = new JSONArray().put(new OperacoesJSON().toJSONObject(key, value));
                     break;
                 case Constants.JOGO_SET_ESTADOFINALIZAR:
                     jobj = json.getJSONObject(1);
-                    result = finalizarMecanica(jobj.getInt("jogo_id"), jobj.getInt("grupo_id"), jobj.getInt("mecanica_id"));
-                    value = new String[]{String.valueOf(result)};
-                    jsonResult = new JSONArray().put(new OperacoesJSON().toJSONObject(key, value));
+                    jsonResult = finalizarMecanica(jobj, json.getJSONObject(2));
                     break;
                 case Constants.JOGO_MECDOWNLOAD:
                     jobj = json.getJSONObject(1);
                     jsonResult = getJogo(jobj.getInt("jogo_id")).getListaMecPrioridade(jobj.getInt("grupo_id"), jobj.getDouble("latitude"), jobj.getDouble("longitude"));
-                    break;    
+                    break;
+                case Constants.JOGO_JOGADOR_DADOSPERSONAGEM:
+                    jobj = json.getJSONObject(1);
+                    jsonResult = getJogo(jobj.getInt("jogo_id")).getDadosPersJSON(jobj.getInt("jogador_id"));
+                    break;
                 default:
                 //comandos caso nenhuma das opções anteriores tenha sido escolhida
             }
@@ -232,9 +238,9 @@ public class GerenciadorJogos extends Thread {
         return null;
     }
 
-    private ArrayList<Grupo> getGruposJogador(int jogo_id, int jogador_id) {
+    private ArrayList<Grupo> getGruposJogador(Jogo jogo, int jogador_id) {
         ArrayList<Grupo> grupos = new ArrayList<Grupo>();
-        grupos = getJogo(jogo_id).getGruposJogadores();
+        grupos = jogo.getGruposJogadores();
         for (int i = 0; i < grupos.size(); i++) {
             if (!grupos.get(i).getJogador(jogador_id)) {
                 grupos.get(i).getJogadores().clear();
@@ -243,7 +249,20 @@ public class GerenciadorJogos extends Thread {
         return grupos;
     }
 
-    private JSONArray getJogos(int jogo_id) {
+    private ArrayList<Grupo> getGrupJogParticipando(Jogo jogo, int jogador_id) {
+        ArrayList<Grupo> grupos = new ArrayList<Grupo>();
+        ArrayList<Grupo> gruposAux = new ArrayList<Grupo>();
+        grupos = jogo.getGruposJogadores();
+        for (int i = 0; i < grupos.size(); i++) {
+            if (grupos.get(i).getJogador(jogador_id)) {
+                grupos.get(i).getJogadores().clear();
+                gruposAux.add(grupos.get(i));
+            }
+        }
+        return gruposAux;
+    }
+
+    private JSONArray getJogos(int jogo_id, int jogador_id) {
         JSONArray jogos = new JSONArray();
         try {
             for (int i = 0; i < listJogos.size(); i++) {
@@ -253,6 +272,8 @@ public class GerenciadorJogos extends Thread {
                     obj.put("nome", listJogos.get(i).getNome());
                     obj.put("nomeficticio", listJogos.get(i).getNomeficticio());
                     obj.put("codigo", listJogos.get(i).getCodigo());
+                    obj.put("icone", listJogos.get(i).getIcone());
+                    obj.put("grupos", getGrupJogParticipando(listJogos.get(i), jogador_id));
                     jogos.put(obj);
                 }
             }
@@ -262,39 +283,68 @@ public class GerenciadorJogos extends Thread {
         return jogos;
     }
 
-    private boolean finalizarMecanica(int jogo_id, int grupo_id, int mecanica_id) {
-        Jogo jogo = getJogo(jogo_id);
-        ArrayList<Missao> missoes = jogo.getMissaoGrupo(grupo_id);
-        Grupo grupo = jogo.getGrupo(grupo_id);
-        Mecanica mecanica = jogo.getMecanicaMissao(mecanica_id, missoes);
-        if (mecanica.getEstado().getEstado() == (new Executando()).getEstado()) {
-            mecanica.setEstado(new Finalizado());
-            reestEstMissoes(missoes, grupo);
-            alterarEstadoMissao(missoes, grupo);
-            return true;
+    private JSONArray finalizarMecanica(JSONObject jobj, JSONObject jobjExe) {
+        JSONArray json = new JSONArray();
+        try {
+            int jogo_id = jobj.getInt("jogo_id");
+            int grupo_id = jobj.getInt("grupo_id");
+            int mecanica_id = jobj.getInt("mecanica_id");
+            Jogo jogo = getJogo(jogo_id);
+            ArrayList<Missao> missoes = jogo.getMissaoGrupo(grupo_id);
+            Grupo grupo = jogo.getGrupo(grupo_id);
+            Mecanica mecanica = jogo.getMecanicaMissao(mecanica_id, missoes);
+            if (jogo.getDadosPersonagem(jobjExe.getInt("jogador_id")).getVida() > 0) {
+                if (mecanica.getEstado().getEstado() == (new Executando()).getEstado()) {
+                    Objeto objeto = ((MecanicaSimples) mecanica).executar(jobjExe);
+                    if (objeto != null) {
+                        if (mecanica instanceof CapturarObjeto) {
+                            jogo.getDadosPersonagem(jobjExe.getInt("jogador_id")).getObjJogador().add(objeto);
+                        }
+                        jogo.getDadosPersonagem(jobjExe.getInt("jogador_id")).setLifeSoma(((MecanicaSimples) mecanica).getLife());
+                        mecanica.setEstado(new Finalizado());
+                        reestEstMissoes(missoes, grupo);
+                        alterarEstadoMissao(missoes, grupo);
+
+                        json.put(jogo.getMecanicasAll(grupo_id, true));
+                        json.put(jogo.getDadosPersJSON(jobjExe.getInt("jogador_id")));
+                        json.put(new OperacoesJSON().toJSONArray("result", "true"));
+                        return json;
+                    }
+                }
+            } else {
+                json.put(new OperacoesJSON().toJSONArray("result", "false"));
+                json.put(new OperacoesJSON().toJSONArray("jogador", "100"));
+                return json;
+            }
+        } catch (JSONException ex) {
+            Logger.getLogger(GerenciadorJogos.class.getName()).log(Level.SEVERE, null, ex);
         }
-        return false;
+        json.put(new OperacoesJSON().toJSONArray("result", "false"));
+        return json;
     }
 
-    private int executarMecanica(int jogo_id, int grupo_id, int mecanica_id) {
+    private int executarMecanica(int jogo_id, int grupo_id, int mecanica_id, int jogador_id) {
+
         Jogo jogo = getJogo(jogo_id);
-        ArrayList<Missao> missoes = jogo.getMissaoGrupo(grupo_id);
-        Mecanica mecanica = jogo.getMecanicaMissao(mecanica_id, missoes);
-        Engajamento engajamento = EngajamentoDAO.getInstance().getEngajamento(jogo.getMissao(mecanica_id, missoes), jogo.getGrupo(grupo_id));
-        if (engajamento.getEstado().getEstado() == (new Executando()).getEstado()
-                || engajamento.getEstado().getEstado() == (new Pronto()).getEstado()) {
-            if (mecanica.getEstado().getEstado() == (new Executando()).getEstado()) {
-                return 1;
-            } else {
-                Estado estado = getEstSubMecanica(jogo.getMissao(mecanica_id, missoes).getMecanicas(), mecanica);
-                if (estado.getEstado() == new Pronto().getEstado() || estado.getEstado() == (new Executando()).getEstado()) {
-                    mecanica.setEstado(new Executando());
-                    ArrayList<Mecanica> mecs = jogo.getMissao(mecanica_id, missoes).getMecanicas();
-                    reestEstMecanicas(mecs, null, 0, mecs.size()-1);
-                    if (engajamento.getEstado().getEstado() == (new Pronto()).getEstado()) {
-                        engajamento.setEstado(new Executando());
+        if (jogo.getDadosPersonagem(jogador_id).getVida() > 0) {
+            ArrayList<Missao> missoes = jogo.getMissaoGrupo(grupo_id);
+            Mecanica mecanica = jogo.getMecanicaMissao(mecanica_id, missoes);
+            Engajamento engajamento = EngajamentoDAO.getInstance().getEngajamento(jogo.getMissao(mecanica_id, missoes), jogo.getGrupo(grupo_id));
+            if (engajamento.getEstado().getEstado() == (new Executando()).getEstado()
+                    || engajamento.getEstado().getEstado() == (new Pronto()).getEstado()) {
+                if (mecanica.getEstado().getEstado() == (new Executando()).getEstado()) {
+                    return 1;
+                } else {
+                    Estado estado = getEstSubMecanica(jogo.getMissao(mecanica_id, missoes).getMecanicas(), mecanica);
+                    if (estado.getEstado() == new Pronto().getEstado() || estado.getEstado() == (new Executando()).getEstado()) {
+                        mecanica.setEstado(new Executando());
+                        ArrayList<Mecanica> mecs = jogo.getMissao(mecanica_id, missoes).getMecanicas();
+                        reestEstMecanicas(mecs, null, 0, mecs.size() - 1);
+                        if (engajamento.getEstado().getEstado() == (new Pronto()).getEstado()) {
+                            engajamento.setEstado(new Executando());
+                        }
+                        return 2;
                     }
-                    return 2;
                 }
             }
         }
@@ -321,8 +371,8 @@ public class GerenciadorJogos extends Thread {
             Engajamento engajamento = EngajamentoDAO.getInstance().getEngajamento(missoes.get(i), grupo);
             if (engajamento.getEstado().getEstado() != (new Finalizado()).getEstado()) {
                 if (!missoes.get(i).getReqMissao().isEmpty()) {
-                    if (engajamento.getEstado().getEstado() == (new Bloqueado()).getEstado()
-                            || engajamento.getEstado().getEstado() == (new Executando()).getEstado()) {
+                    if (engajamento.getEstado() instanceof Bloqueado
+                            || engajamento.getEstado() instanceof Executando) {
                         boolean finalizado = true;
                         for (int j = 0; j < missoes.get(i).getReqMissao().size(); j++) {
                             if (missoes.get(i).getReqMissao().get(j).getFinMecanicas() != 1) {
@@ -331,7 +381,7 @@ public class GerenciadorJogos extends Thread {
                             }
                         }
                         if (finalizado) {
-                            if (engajamento.getEstado().getEstado() == (new Bloqueado()).getEstado()) {
+                            if (engajamento.getEstado() instanceof Bloqueado) {
                                 engajamento.setEstado(new Pronto());
                             } else if (missoes.get(i).getFinMecanicas() == 1) {
                                 engajamento.setEstado(new Finalizado());
@@ -348,9 +398,9 @@ public class GerenciadorJogos extends Thread {
     private void reestEstMissoes(ArrayList<Missao> missoes, Grupo grupo) {
         for (int i = 0; i < missoes.size(); i++) {
             if (missoes.get(i).getFinMecanicas() != 1) {
-                Estado estado = reestEstMecanicas(missoes.get(i).getMecanicas(), null, 0, missoes.get(i).getMecanicas().size()-1);
+                Estado estado = reestEstMecanicas(missoes.get(i).getMecanicas(), null, 0, missoes.get(i).getMecanicas().size() - 1);
                 desbloquearMecanicas(missoes.get(i).getMecanicas());
-                if (estado != null && (estado.getEstado() == new Finalizado().getEstado())) {
+                if (estado != null && (estado instanceof Finalizado)) {
                     missoes.get(i).setFinMecanicas(1);
                 }
             }
@@ -359,59 +409,68 @@ public class GerenciadorJogos extends Thread {
     }
 
     private Estado reestEstMecanicas(ArrayList<Mecanica> mecs, Estado estado, int aux, int fim) {
-        if(aux==fim){
-            if(mecs.get(aux).getTipo() == 1){
-               ArrayList<Mecanica> lista = ((MecanicaComposta) mecs.get(aux)).getMecanica();
-               int tam = ((MecanicaComposta) mecs.get(aux)).getMecanica().size()-1;
-               Estado estado_aux  = reestEstMecanicas(lista, null, 0, tam);
-               mecs.get(aux).setEstado(estado_aux);
-               
-               return estado_aux;
-            }else{
+        if (aux == fim) {
+            if (mecs.get(aux).getTipo() == 1) {
+                ArrayList<Mecanica> lista = ((MecanicaComposta) mecs.get(aux)).getMecanica();
+                int tam = ((MecanicaComposta) mecs.get(aux)).getMecanica().size() - 1;
+                Estado estado_aux = reestEstMecanicas(lista, null, 0, tam);
+                mecs.get(aux).setEstado(estado_aux);
+
+                return estado_aux;
+            } else {
                 return mecs.get(aux).getEstado();
             }
-        }else{
-            if(mecs.get(aux).getTipo() == 1){
-               ArrayList<Mecanica> lista = ((MecanicaComposta) mecs.get(aux)).getMecanica();
-               int tam = ((MecanicaComposta) mecs.get(aux)).getMecanica().size()-1;
-               Estado estado_aux  = reestEstMecanicas(lista, null, 0, tam);
-               mecs.get(aux).setEstado(estado);
-               estado = reestEstMecanicas(mecs, null, aux+1, fim);
-            }else{
-                estado = reestEstMecanicas(mecs, null, aux+1, fim);
+        } else {
+            if (mecs.get(aux).getTipo() == 1) {
+                ArrayList<Mecanica> lista = ((MecanicaComposta) mecs.get(aux)).getMecanica();
+                int tam = ((MecanicaComposta) mecs.get(aux)).getMecanica().size() - 1;
+                Estado estado_aux = reestEstMecanicas(lista, null, 0, tam);
+                mecs.get(aux).setEstado(estado);
+                estado = reestEstMecanicas(mecs, null, aux + 1, fim);
+            } else {
+                estado = reestEstMecanicas(mecs, null, aux + 1, fim);
             }
         }
-        if((mecs.get(aux).getEstado().getEstado() == new Pronto().getEstado()) && (estado.getEstado() == new Bloqueado().getEstado())){
-           estado  = new Pronto();
-        }else if((estado.getEstado() == new Pronto().getEstado()) && (mecs.get(aux).getEstado().getEstado() == new Bloqueado().getEstado())){
-           estado  = new Pronto();
-        }else if(mecs.get(aux).getEstado().getEstado() != estado.getEstado()){
+        if ((mecs.get(aux).getEstado() instanceof Pronto) && (estado instanceof Bloqueado)) {
+            estado = new Pronto();
+        } else if ((estado instanceof Pronto) && (mecs.get(aux).getEstado() instanceof Bloqueado)) {
+            estado = new Pronto();
+        } else if (mecs.get(aux).getEstado().getEstado() != estado.getEstado()) {
             estado = new Executando();
         }
-        
-       return estado;
-        
+
+        return estado;
+
     }
-    
-    private void desbloquearMecanicas(ArrayList<Mecanica> mecs){
+
+    private void desbloquearMecanicas(ArrayList<Mecanica> mecs) {
         for (Mecanica mecanicaAux : mecs) {
             if (mecanicaAux.getTipo() == 1) {
                 desbloquearMecanicas(((MecanicaComposta) mecanicaAux).getMecanica());
-                if(mecanicaAux.getEstado().getEstado() == new Bloqueado().getEstado())
-                if (verificar(mecanicaAux.getReqMecanicas()).getEstado() == new Pronto().getEstado()) {
-                    mecanicaAux.setEstado(new Pronto());
+                if (mecanicaAux.getEstado() instanceof Bloqueado) {
+                    if (verificar(mecanicaAux.getReqMecanicas()) instanceof Pronto) {
+                        mecanicaAux.setEstado(new Pronto());
+                        if (((MecanicaSimples) mecanicaAux).getVisivel() == 0) {
+                            ((MecanicaSimples) mecanicaAux).setVisivel(1);
+                        }
+                    }
                 }
-            } else{
-                if(mecanicaAux.getEstado().getEstado() == new Bloqueado().getEstado())
-                if (verificar(mecanicaAux.getReqMecanicas()).getEstado() == new Pronto().getEstado()) {
-                    mecanicaAux.setEstado(new Pronto());
+            } else {
+                if (mecanicaAux.getEstado() instanceof Bloqueado) {
+                    if (verificar(mecanicaAux.getReqMecanicas()) instanceof Pronto) {
+                        mecanicaAux.setEstado(new Pronto());
+                        if (((MecanicaSimples) mecanicaAux).getVisivel() == 0) {
+                            ((MecanicaSimples) mecanicaAux).setVisivel(1);
+                        }
+                    }
                 }
             }
         }
     }
-    private Estado verificar(ArrayList<Mecanica> mecs){
-        for(Mecanica mecanica: mecs){
-            if(mecanica.getEstado().getEstado() != new Finalizado().getEstado()){
+
+    private Estado verificar(ArrayList<Mecanica> mecs) {
+        for (Mecanica mecanica : mecs) {
+            if (mecanica.getEstado() instanceof Finalizado) {
                 return new Bloqueado();
             }
         }

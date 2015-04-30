@@ -1,9 +1,13 @@
 package br.com.great.contexto;
 
-public class IrLocal extends MecanicaSimples {
-    private int irlocal_id, mecsimples_id;
-    private Posicao posicao;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+public class IrLocal extends MecanicaSimples {
+    private int irlocal_id, jogador_id;
+    private Posicao posicao;
 
     public Posicao getPosicao() {
         return posicao;
@@ -20,18 +24,29 @@ public class IrLocal extends MecanicaSimples {
     public void setIrlocal_id(int irlocal_id) {
         this.irlocal_id = irlocal_id;
     }
-    
-    public int getMecsimples_id() {
-        return mecsimples_id;
+
+    public int getJogador_id() {
+        return jogador_id;
     }
 
-    public void setMecsimples_id(int mecsimples_id) {
-        this.mecsimples_id = mecsimples_id;
+    public void setJogador_id(int jogador_id) {
+        this.jogador_id = jogador_id;
     }
+
 
     @Override
-    public void executar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Objeto executar(JSONObject jObj) {
+        try {
+            int jogador = jObj.getInt("jogador_id");
+            double latitude = Double.valueOf(jObj.getString("latitude"));
+            double longitude = Double.valueOf(jObj.getString("longitude"));
+            this.posicao = new Posicao(latitude, longitude);
+            this.jogador_id = jogador;
+            return objeto;
+        } catch (JSONException ex) {
+            Logger.getLogger(CapturarObjeto.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 
 }

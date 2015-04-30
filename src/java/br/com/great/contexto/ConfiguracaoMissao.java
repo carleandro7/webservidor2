@@ -19,6 +19,9 @@ public class ConfiguracaoMissao {
     }
 
     public ArrayList<Grupo> getGrupo() {
+        if(grupo == null){
+            grupo = new ArrayList<Grupo>();
+        }
         return grupo;
     }
 

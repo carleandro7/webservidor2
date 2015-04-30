@@ -73,13 +73,13 @@ public class Missao {
                 if (reqMecanica) {
                     mecanica.getReqMecanicas().clear();
                 }
-                if (estado.getEstado() == new Bloqueado().getEstado()) {
+                if (estado instanceof Bloqueado) {
                     mecanica.setEstado(new Bloqueado());
                 }
                 mecanicasAux.add(mecanica);
             } else if (mecanicas.get(j).getTipo() == 1) {
                 Mecanica mecanica = mecanicas.get(j);
-                if (estado.getEstado() == new Bloqueado().getEstado()) {
+                if (estado instanceof Bloqueado) {
                     mecanica.setEstado(new Bloqueado());
                 }
                 mecanicasAux.addAll(getMecanicasComposta(((MecanicaComposta) mecanica), reqMecanica));
@@ -108,14 +108,14 @@ public class Missao {
                 if (reqMecanica) {
                     mecanica.getReqMecanicas().clear();
                 }
-                if (mecComposta.getEstado().getEstado() == new Bloqueado().getEstado()) {
+                if (mecComposta.getEstado() instanceof Bloqueado) {
                     mecanica.setEstado(new Bloqueado());
                 }
                 mecanicasAux.add(mecanica);
             } else if (mecComposta.getMecanica().get(j).getTipo() == 1) {
                 Mecanica mecanica = mecComposta.getMecanica().get(j);
                 mecanica.getReqMecanicas().clear();
-                if (mecComposta.getEstado().getEstado() == new Bloqueado().getEstado()) {
+                if (mecComposta.getEstado() instanceof Bloqueado) {
                     mecanica.setEstado(new Bloqueado());
                 }
                 mecanicasAux.addAll(getMecanicasComposta(((MecanicaComposta) mecanica), reqMecanica));

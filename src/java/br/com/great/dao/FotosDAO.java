@@ -5,7 +5,6 @@
  */
 package br.com.great.dao;
 
-import br.com.great.contexto.CapturarObjeto;
 import br.com.great.contexto.Foto;
 import br.com.great.contexto.Posicao;
 import br.com.great.factory.ConnectionFactory;
@@ -88,8 +87,8 @@ public class FotosDAO extends ConnectionFactory{
 		Connection conexao = criarConexao();
                 Foto vfoto =null;
                 try{
-                        String sql = "SELECT * FROM  vfotos LEFT JOIN mecsimples ON "
-                                + " (mecsimples.id = vfotos.mecsimples_id) WHERE vfotos.mecsimples_id = "+mecanica_id;
+                        String sql = "SELECT * FROM  cfotos LEFT JOIN mecsimples ON "
+                                + " (mecsimples.id = cfotos.mecsimples_id) WHERE vfotos.mecsimples_id = "+mecanica_id;
                         pstmt = conexao.prepareStatement(sql);
                         rs = pstmt.executeQuery();
 			if(rs.next()){

@@ -127,60 +127,24 @@ public class MecanicasDAO extends ConnectionFactory {
             rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                Texto texto;
-                Foto foto;
-                Som som;
-                Video video;
-                IrLocal irlocal;
-                MecanicaSimples mecSimples;
-                switch (rs.getString("mecsimples.tipo")) {
-                    case "vtextos":
-                        texto = new TextosDAO().getMecVTexto(rs.getInt("mecsimples.id"));
-                        mecSimples = getVisualizarObjeto(rs);
-                        mecSimples.setObjeto(texto);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecTextos().add(texto);
-                        break;
-                    case "vfotos":
-                        foto = new FotosDAO().getMecVFotos(rs.getInt("mecsimples.id"));
-                        mecSimples = getVisualizarObjeto(rs);
-                        mecSimples.setObjeto(foto);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecFotos().add(foto);
-                        break;
-                    case "irlocais":
-                        irlocal = getIrLocal(rs, new IrLocaisDAO().getMecIrLocais(rs.getInt("mecsimples.id")));
-                        mecanicas.add(irlocal);
-                        PlayJogo.getIrlocais().add(irlocal);
-                        break;
-                    case "cfotos":
-                        foto = new FotosDAO().getMecCFotos(rs.getInt("mecsimples.id"));
-                        mecSimples = getCapturarObjeto(rs);
-                        mecSimples.setObjeto(foto);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecFotos().add(foto);
-                        break;
-                    case "csons":
-                        som = new SonsDAO().getMecCSons(rs.getInt("mecsimples.id"));
-                        mecSimples = getCapturarObjeto(rs);
-                        mecSimples.setObjeto(som);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecSons().add(som);
-                        break;
-                    case "cvideos":
-                        video = new VideosDAO().getMecCVideos(rs.getInt("mecsimples.id"));
-                        mecSimples = getCapturarObjeto(rs);
-                        mecSimples.setObjeto(video);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecVideos().add(video);
-                        break;
-                    case "ctextos":
-                        texto = new TextosDAO().getMecCTextos(rs.getInt("mecsimples.id"));
-                        mecSimples = getCapturarObjeto(rs);
-                        mecSimples.setObjeto(texto);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecTextos().add(texto);
-                        break;
+                MecanicaSimples mecSimples = null;
+                String tipo = rs.getString("mecsimples.tipo");
+                if (tipo.equals("vtextos") || tipo.equals("ctextos") || tipo.equals("dtextos")) {
+                    mecSimples = mecTexto(rs, tipo);
+                } else if (tipo.equals("vfotos") || tipo.equals("cfotos") || tipo.equals("dfotos")) {
+                    mecSimples = mecFotos(rs, tipo);
+                } else if (tipo.equals("vvideos") || tipo.equals("cvideos") || tipo.equals("dvideos")) {
+                    mecSimples = mecVideos(rs, tipo);
+                } else if (tipo.equals("vsons") || tipo.equals("csons") || tipo.equals("dsons")) {
+                    mecSimples = mecSons(rs, tipo);
+                } else if (tipo.equals("irlocais")) {
+                    IrLocal irlocal = getIrLocal(rs, new IrLocaisDAO().getMecIrLocais(rs.getInt("mecsimples.id")));
+                    mecSimples = irlocal;
+                }
+
+                if (mecSimples != null) {
+                    mecanicas.add(mecSimples);
+                    PlayJogo.getMecSimples().add(mecSimples);
                 }
             }
 
@@ -218,62 +182,25 @@ public class MecanicasDAO extends ConnectionFactory {
 
             pstmt = conexao.prepareStatement(sql);
             rs = pstmt.executeQuery();
-
             while (rs.next()) {
-                Texto texto;
-                Foto foto;
-                Som som;
-                Video video;
-                IrLocal irlocal;
-                MecanicaSimples mecSimples;
-                switch (rs.getString("mecsimples.tipo")) {
-                    case "vtextos":
-                        texto = new TextosDAO().getMecVTexto(rs.getInt("mecsimples.id"));
-                        mecSimples = getVisualizarObjeto(rs);
-                        mecSimples.setObjeto(texto);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecTextos().add(texto);
-                        break;
-                    case "vfotos":
-                        foto = new FotosDAO().getMecVFotos(rs.getInt("mecsimples.id"));
-                        mecSimples = getVisualizarObjeto(rs);
-                        mecSimples.setObjeto(foto);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecFotos().add(foto);
-                        break;
-                    case "irlocais":
-                        irlocal = getIrLocal(rs, new IrLocaisDAO().getMecIrLocais(rs.getInt("mecsimples.id")));
-                        mecanicas.add(irlocal);
-                        PlayJogo.getIrlocais().add(irlocal);
-                        break;
-                    case "cfotos":
-                        foto = new FotosDAO().getMecCFotos(rs.getInt("mecsimples.id"));
-                        mecSimples = getCapturarObjeto(rs);
-                        mecSimples.setObjeto(foto);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecFotos().add(foto);
-                        break;
-                    case "csons":
-                        som = new SonsDAO().getMecCSons(rs.getInt("mecsimples.id"));
-                        mecSimples = getCapturarObjeto(rs);
-                        mecSimples.setObjeto(som);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecSons().add(som);
-                        break;
-                    case "cvideos":
-                        video = new VideosDAO().getMecCVideos(rs.getInt("mecsimples.id"));
-                        mecSimples = getCapturarObjeto(rs);
-                        mecSimples.setObjeto(video);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecVideos().add(video);
-                        break;
-                    case "ctextos":
-                        texto = new TextosDAO().getMecCTextos(rs.getInt("mecsimples.id"));
-                        mecSimples = getCapturarObjeto(rs);
-                        mecSimples.setObjeto(texto);
-                        mecanicas.add(mecSimples);
-                        PlayJogo.getMecTextos().add(texto);
-                        break;
+                MecanicaSimples mecSimples = null;
+                String tipo = rs.getString("mecsimples.tipo");
+                if (tipo.equals("vtextos") || tipo.equals("ctextos") || tipo.equals("dtextos")) {
+                    mecSimples = mecTexto(rs, tipo);
+                } else if (tipo.equals("vfotos") || tipo.equals("cfotos") || tipo.equals("dfotos")) {
+                    mecSimples = mecFotos(rs, tipo);
+                } else if (tipo.equals("vvideos") || tipo.equals("cvideos") || tipo.equals("dvideos")) {
+                    mecSimples = mecVideos(rs, tipo);
+                } else if (tipo.equals("vsons") || tipo.equals("csons") || tipo.equals("dsons")) {
+                    mecSimples = mecSons(rs, tipo);
+                } else if (tipo.equals("irlocais")) {
+                    IrLocal irlocal = getIrLocal(rs, new IrLocaisDAO().getMecIrLocais(rs.getInt("mecsimples.id")));
+                    mecSimples = irlocal;
+                }
+
+                if (mecSimples != null) {
+                    mecanicas.add(mecSimples);
+                    PlayJogo.getMecSimples().add(mecSimples);
                 }
             }
 
@@ -283,6 +210,50 @@ public class MecanicasDAO extends ConnectionFactory {
             fecharConexao(conexao, pstmt, rs);
         }
         return mecanicas;
+    }
+
+    private MecanicaSimples mecTexto(ResultSet rs, String tipo) throws SQLException {
+        Texto texto = new TextosDAO().getMecCTextos(rs.getInt("mecsimples.id"));
+        MecanicaSimples mecSimples = getTipo(rs, tipo);
+        mecSimples.setObjeto(texto);
+        return mecSimples;
+    }
+
+    private MecanicaSimples mecFotos(ResultSet rs, String tipo) throws SQLException {
+        Foto foto = new FotosDAO().getMecCFotos(rs.getInt("mecsimples.id"));
+        MecanicaSimples mecSimples = getTipo(rs, tipo);
+        mecSimples.setObjeto(foto);
+        return mecSimples;
+    }
+
+    private MecanicaSimples mecVideos(ResultSet rs, String tipo) throws SQLException {
+        Video video = new VideosDAO().getMecCVideos(rs.getInt("mecsimples.id"));
+        MecanicaSimples mecSimples = getTipo(rs, tipo);
+        mecSimples.setObjeto(video);
+        return mecSimples;
+    }
+
+    private MecanicaSimples mecSons(ResultSet rs, String tipo) throws SQLException {
+        Som som = new SonsDAO().getMecCSons(rs.getInt("mecsimples.id"));
+        MecanicaSimples mecSimples = getTipo(rs, tipo);
+        mecSimples.setObjeto(som);
+        return mecSimples;
+    }
+
+    private MecanicaSimples getTipo(ResultSet rs, String tipo) {
+        MecanicaSimples mecSimples = null;
+        switch (tipo.charAt(0)) {
+            case 'v':
+                mecSimples = getVisualizarObjeto(rs);
+                break;
+            case 'c':
+                mecSimples = getCapturarObjeto(rs);
+                break;
+            case 'd':
+                mecSimples = getDeixarObjeto(rs);
+                break;
+        }
+        return mecSimples;
     }
 
     private CapturarObjeto getCapturarObjeto(ResultSet rs) {
@@ -295,6 +266,8 @@ public class MecanicasDAO extends ConnectionFactory {
             capturarObjeto.setTempo(rs.getTime("mecsimples.tempo"));
             capturarObjeto.setTiposimples(rs.getString("mecsimples.tipo"));
             capturarObjeto.setVisivel(rs.getInt("mecsimples.visivel"));
+            capturarObjeto.setVibrar(rs.getInt("mecsimples.vibrar"));
+            capturarObjeto.setLife(rs.getInt("mecsimples.life"));
         } catch (SQLException ex) {
             Logger.getLogger(MecanicasDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -311,6 +284,8 @@ public class MecanicasDAO extends ConnectionFactory {
             visualizarObjeto.setTempo(rs.getTime("mecsimples.tempo"));
             visualizarObjeto.setTiposimples(rs.getString("mecsimples.tipo"));
             visualizarObjeto.setVisivel(rs.getInt("mecsimples.visivel"));
+            visualizarObjeto.setVibrar(rs.getInt("mecsimples.vibrar"));
+            visualizarObjeto.setLife(rs.getInt("mecsimples.life"));
         } catch (SQLException ex) {
             Logger.getLogger(MecanicasDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -326,7 +301,8 @@ public class MecanicasDAO extends ConnectionFactory {
             deixarObjeto.setMecsimples_id(rs.getInt("mecsimples.id"));
             deixarObjeto.setTempo(rs.getTime("mecsimples.tempo"));
             deixarObjeto.setTiposimples(rs.getString("mecsimples.tipo"));
-            deixarObjeto.setVisivel(rs.getInt("mecsimples.visivel"));
+            deixarObjeto.setVibrar(rs.getInt("mecsimples.vibrar"));
+            deixarObjeto.setLife(rs.getInt("mecsimples.life"));
         } catch (SQLException ex) {
             Logger.getLogger(MecanicasDAO.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -342,6 +318,7 @@ public class MecanicasDAO extends ConnectionFactory {
             irLocal.setTempo(rs.getTime("mecsimples.tempo"));
             irLocal.setTiposimples(rs.getString("mecsimples.tipo"));
             irLocal.setVisivel(rs.getInt("mecsimples.visivel"));
+            irLocal.setLife(rs.getInt("mecsimples.life"));
         } catch (SQLException ex) {
             Logger.getLogger(MecanicasDAO.class.getName()).log(Level.SEVERE, null, ex);
         }

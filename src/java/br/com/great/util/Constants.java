@@ -43,7 +43,8 @@ public final class Constants {
    public static final int JOGO_ESTADOMECANICA = 106;
    public static final int JOGO_SET_ESTADOEXE = 107;
    public static final int JOGO_SET_ESTADOFINALIZAR = 108;
-      public static final int JOGO_MECDOWNLOAD = 109;
+   public static final int JOGO_MECDOWNLOAD = 109;
+   public static final int JOGO_JOGADOR_DADOSPERSONAGEM = 110;
    
    
    

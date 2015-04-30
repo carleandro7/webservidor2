@@ -47,17 +47,17 @@ public class IrLocaisDAO extends ConnectionFactory{
 		Connection conexao = criarConexao();
                 IrLocal irLocais =null;
                 try{
-                        String sql = "SELECT * FROM  `irlocais` WHERE  `irlocais`.`mecanica_id` =  "+mecanica_id;
+                        String sql = "SELECT * FROM  `irlocais` WHERE  `irlocais`.`mecsimples_id` =  "+mecanica_id;
                         pstmt = conexao.prepareStatement(sql);
                         rs = pstmt.executeQuery();
 			if(rs.next()){
 				irLocais = new IrLocal();
                                 irLocais.setIrlocal_id(rs.getInt("id"));
                                 irLocais.setPosicao(new Posicao(rs.getDouble("latitude"), rs.getDouble("longitude")));
-                                irLocais.setMecsimples_id(rs.getInt("mecanica_id"));
+                                irLocais.setMecsimples_id(rs.getInt("mecsimples_id"));
                         }
 		} catch (SQLException  e) {
-			System.out.println("Erro ao listar todos os clientes: " + e.getMessage());
+			System.out.println("Erro ao listar todos os locais: " + e.getMessage());
                 } finally {
 			fecharConexao(conexao, pstmt, rs);
 		}

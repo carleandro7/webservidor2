@@ -1,15 +1,16 @@
 package br.com.great.contexto;
 
 import java.sql.Time;
+import org.json.JSONObject;
 
 public abstract class MecanicaSimples extends Mecanica {
 
     protected Objeto objeto;
-    protected int visivel, mecsimples_id;
+    protected int visivel, vibrar, mecsimples_id, life;
     protected String tiposimples;
     protected Time tempo;
 
-    public abstract void executar();
+    public abstract Objeto executar(JSONObject jObj);
 
     public int getVisivel() {
         return visivel;
@@ -43,6 +44,14 @@ public abstract class MecanicaSimples extends Mecanica {
         this.tempo = tempo;
     }
 
+    public int getVibrar() {
+        return vibrar;
+    }
+
+    public void setVibrar(int vibrar) {
+        this.vibrar = vibrar;
+    }
+    
     public void setObjeto(Objeto objeto) {
         this.objeto = objeto;
     }
@@ -50,5 +59,14 @@ public abstract class MecanicaSimples extends Mecanica {
     public Objeto getObjeto() {
         return objeto;
     }
+
+    public int getLife() {
+        return life;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+    
 
 }

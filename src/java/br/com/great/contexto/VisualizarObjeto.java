@@ -1,10 +1,13 @@
 package br.com.great.contexto;
 
+import org.json.JSONObject;
+
 public class VisualizarObjeto extends MecanicaSimples {
 
+   
     @Override
-    public void executar() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Objeto executar(JSONObject jObj) {
+        return objeto;
     }
 
 }
